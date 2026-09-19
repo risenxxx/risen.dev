@@ -206,7 +206,7 @@
   }
 
   .lede {
-    font-size: clamp(16px, 1.2vw, 17.5px);
+    font-size: clamp(16px, 1.2vw, 17px);
     line-height: 1.62;
     /* A measure, not a pixel width: 66 characters holds at every type size. */
     max-width: 66ch;
@@ -216,6 +216,21 @@
   .h-section {
     font-size: clamp(28px, 3.4vw, 40px);
     letter-spacing: -0.03em;
+  }
+
+  /*
+    A break placed so a two-sentence lede puts one sentence per line instead of
+    turning over mid-thought. Wide only: once the measure is short enough that
+    the first sentence wraps on its own, the break would strand a few words,
+    so it goes away and the text wraps where it wants to.
+
+    Same rule as the hero: the space belongs after the tag in the markup. At the
+    start of a line it collapses; with the break gone it is the sentence gap.
+  */
+  @media (max-width: 560px) {
+    .br-wide {
+      display: none;
+    }
   }
 
   /* ── controls ───────────────────────────────────────────────────────── */

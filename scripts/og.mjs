@@ -28,9 +28,9 @@ const FONTS = [
     weight: '100 800',
   },
   {
-    family: 'Manrope Variable',
-    file: 'node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2',
-    weight: '200 800',
+    family: 'Public Sans Variable',
+    file: 'node_modules/@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2',
+    weight: '100 900',
   },
   {
     family: 'DM Mono',

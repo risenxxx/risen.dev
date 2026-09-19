@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "risen.dev \u2014 personal landing page",
+  "description": "risen.dev — personal landing page",
   "author": "Evgenii Zakharov <to@risen.dev>",
   "scripts": {
     "dev": "astro dev",
@@ -15,7 +15,7 @@
     "og": "node scripts/og.mjs"
   },
   "dependencies": {
-    "@fontsource-variable/manrope": "^5.2.5",
+    "@fontsource-variable/public-sans": "^5.3.0",
     "@fontsource-variable/rubik": "^5.2.5",
     "@fontsource-variable/sora": "^5.2.5",
     "@fontsource/dm-mono": "^5.2.5",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.10.2",
     "typescript": "^5.9.2",
-    "wrangler": "^4.42.0",
-    "@types/node": "^22.10.2"
+    "wrangler": "^4.42.0"
   }
 }

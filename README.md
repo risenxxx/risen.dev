@@ -51,8 +51,8 @@ the fonts as data URIs because a `file://` page drops a font fetched from a
 sibling path. Needs a Chrome on the machine — set `CHROME_PATH` if it is
 somewhere unusual.
 
-**Fonts** are latin-only and self-hosted. Three of them — Sora, Manrope and DM
-Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
+**Fonts** are latin-only and self-hosted. Three of them — Sora, Public Sans and
+DM Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
 because Frame Player and Gift Fight are really drawn in it; it is checked in as
 a subset of printable ASCII over the 400–700 weights those previews use, 12.7 KB
 instead of 35. Rebuild it with `scripts/subset-rubik.sh` after editing a

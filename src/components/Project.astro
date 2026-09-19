@@ -166,15 +166,24 @@ const {
   .points {
     display: grid;
     gap: 12px;
-    margin: 0 0 22px;
+    margin: 22px 0;
+  }
+
+  /*
+    The blurb is the claim and the list is the evidence, so the blurb is the
+    brighter of the two. It used to be the other way round, which read as an
+    accident rather than a step down.
+  */
+  .lede {
+    color: #e4e4ea;
   }
 
   .points li {
     display: flex;
     gap: 12px;
     font-size: 14.5px;
-    line-height: 1.55;
-    color: var(--fg-mid);
+    line-height: 1.6;
+    color: var(--fg-body);
   }
 
   .points :global(em) {

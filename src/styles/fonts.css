@@ -20,9 +20,9 @@
   }
 
   @font-face {
-    font-family: "Manrope Variable";
-    src: url("../../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2") format("woff2-variations");
-    font-weight: 200 800;
+    font-family: "Public Sans Variable";
+    src: url("../../node_modules/@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2") format("woff2-variations");
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,

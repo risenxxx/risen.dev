@@ -23,6 +23,9 @@
     --fg2: #a3a3ad;
     --fg3: #75757f;
     --fg-mid: #c4c4cc;
+    /* Body copy below 16 px: the size carries the detail, so the colour steps
+       back and lets whatever it sits under stay the brighter of the two. */
+    --fg-body: #9c9ca6;
     --fg-soft: #b6b6c0;
     /* The dimmest text on the page. 4.8:1 on --bg and 4.8:1 on the footer's
        #08080a; the #6f6f7a it replaces measured 4.0 and failed both. */
@@ -43,7 +46,7 @@
     --sh-card: 0 24px 48px -30px rgba(0, 0, 0, 0.8);
 
     --display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
-    --sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+    --sans: "Public Sans Variable", "Public Sans", ui-sans-serif, system-ui, sans-serif;
     --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     /* Frame Player and Gift Fight are both drawn in Rubik. The previews use it
        so their chrome matches the real applications rather than this page. */
