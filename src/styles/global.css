@@ -316,6 +316,7 @@
   .pill {
     display: inline-flex;
     align-items: center;
+    white-space: nowrap;
     gap: 9px;
     padding: 7px 15px;
     border: 1px solid var(--line2);
@@ -334,23 +335,18 @@
   }
 
   /*
-    Below this width the availability line runs to two rows. A 999px radius on a
-    two-row box reads as a mistake, so the pill becomes a small card and the dot
-    aligns with the first line instead of floating in the middle of both.
+    The availability line is 32 monospaced characters, which at 12 px comes to
+    within five pixels of the content width on a 320 px screen. Below that it
+    would touch both gutters, so the pill gives back a little size and padding
+    rather than wrapping — 11.5 px is still above the floor for functional text.
   */
-  @media (max-width: 620px) {
+  @media (max-width: 355px) {
     .pill {
-      align-items: flex-start;
-      text-align: left;
-      border-radius: 14px;
-      padding: 9px 14px;
-      line-height: 1.45;
-    }
-
-    .pill .live {
-      margin-top: 5px;
+      font-size: 11.5px;
+      padding: 7px 12px;
     }
   }
+
 
   /* Thumbs, not cursors: the icon-only buttons grow to the 44 px floor. */
   @media (max-width: 720px) {
