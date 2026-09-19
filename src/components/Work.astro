@@ -12,7 +12,7 @@ import Stage from './Stage.astro'
   <div class="wrap intro">
     <h2 class="h-section" data-reveal>Selected work</h2>
     <p class="lede">
-      Five products I built alone, end to end. Permissive licences, written documentation, real users — and a
+      Five products I built alone, end to end. Permissive licences, written documentation, real users, and a
       link to the source of every one that has public source.
     </p>
   </div>
@@ -20,8 +20,8 @@ import Stage from './Stage.astro'
   <Project
     accent="#818cf8"
     title="Frame Player"
-    meta="Desktop media — Windows and macOS"
-    blurb="Casts a 4K HDR file to a television exactly as it is — no re-encode, no quality loss — while the app window stays a working remote. Torrents play while they are still downloading."
+    meta={['Desktop media', 'Windows and macOS']}
+    blurb="Casts a 4K HDR file to a television exactly as it is: no re-encode, no quality loss, and the app window stays a working remote. Torrents play while they are still downloading."
     bullets={[
       'mpv renders into a native child view <em>behind</em> a transparent webview, the whole UI composited on top as HTML. On macOS that meant patching libmpv, whose backend has no window-embedding support at all.',
       'Piece priority follows the playhead, the seekbar shades what has already arrived, and the next episode is prefetched.',
@@ -61,7 +61,7 @@ import Stage from './Stage.astro'
   <Project
     accent="#a8ff35"
     title="Gift Fight"
-    meta="Real-time iGaming — a Telegram Mini App"
+    meta={['Real-time iGaming', 'a Telegram Mini App']}
     blurb="A PvP roulette where players bet collectible Telegram gifts against each other, and every round can be recomputed afterwards by anyone who played it. Architected, built and operated single-handedly."
     bullets={[
       "A round in progress lives in a Temporal workflow rather than in a server's memory, so a restart or a release never drops it.",
@@ -99,8 +99,8 @@ import Stage from './Stage.astro'
   <Project
     accent="#7c8cff"
     title="Tuned"
-    meta="SaaS — document tooling"
-    blurb="Résumé tailoring where every variant is a patch over one base document rather than a copy — so a hundred applications stay one source of truth, and nothing silently drifts."
+    meta={['SaaS', 'document tooling']}
+    blurb="Résumé tailoring where every variant is a patch over one base document rather than a copy, so a hundred applications stay one source of truth, and nothing silently drifts."
     bullets={[
       "A provenance check refuses any claim that doesn't trace back to a source node, so the model can rewrite but cannot invent.",
       'The live preview renders the same react-pdf component inside a Web Worker and rasterises it with pdf.js, so page fitting is measured against a real renderer instead of estimated.',
@@ -123,10 +123,10 @@ import Stage from './Stage.astro'
   <Project
     accent="#a855f7"
     title="dubsync"
-    meta="Audio DSP — desktop, CLI and headless"
+    meta={['Audio DSP', 'desktop, CLI and headless']}
     blurb="The 4K release ships only the original audio, and the dub you want exists on an old rip that is cut and timed differently. dubsync finds the offset by itself and produces one file with both."
     bullets={[
-      'The soundtracks are correlated with GCC-PHAT and every result carries a peak-to-sidelobe score — so a bad match is <em>reported</em>, not silently shipped.',
+      'The soundtracks are correlated with GCC-PHAT and every result carries a peak-to-sidelobe score, so a bad match is <em>reported</em> rather than silently shipped.',
       'Differently cut releases are aligned segment by segment to about 50 ms, frame rates normalised, audio time-stretched instead of clipped, subtitles shifted to match.',
       'Correlation is parallelised across cores; the same engine runs from a GUI, a CLI or a CI job on Windows, macOS and Linux.',
     ]}
@@ -159,11 +159,11 @@ import Stage from './Stage.astro'
   <Project
     accent="#ffd400"
     title="DeskVolt"
-    meta="Systems programming — Windows, USB HID"
+    meta={['Systems programming', 'Windows, USB HID']}
     blurb="Battery levels for wireless peripherals read straight from the devices, with none of the vendor software running in the background to get them."
     bullets={[
       'Logitech HID++ 2.0, SteelSeries, Corsair, HyperX and PlayStation DualSense are each queried directly over USB HID, from protocols reverse-engineered rather than published.',
-      'Native Win32 rendering through windows-rs — Direct2D and DirectWrite, LTO-optimised, under 10 MB resident.',
+      'Native Win32 rendering through windows-rs: Direct2D and DirectWrite, LTO-optimised, under 10 MB resident.',
       'Every peripheral sits behind the same trait, so adding one is a single driver module and nothing else.',
     ]}
     metrics={[

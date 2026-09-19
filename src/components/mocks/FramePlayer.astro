@@ -67,7 +67,7 @@
       <div class="hovertip">
         <span class="thumb"><i class="light"></i><i class="figure"></i></span>
         <span class="tip-time">16:22</span>
-        <span class="tip-chapter">Chapter 02 — The Approach</span>
+        <span class="tip-chapter">Chapter 02, The Approach</span>
       </div>
 
       <div class="seektrack">
@@ -164,14 +164,12 @@
     font-family: var(--ui);
   }
 
-  /* An abstract frame rather than a still: the picture is not the work, the
-     interface on top of it is. */
+  /* An abstract frame, not a still: light through a gap, in bands. A soft
+     radial wash here would be a gradient standing in for a photograph. */
   .scene {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(110% 80% at 76% 26%, rgba(188, 132, 72, 0.22), transparent 62%),
-      radial-gradient(90% 80% at 16% 86%, rgba(40, 62, 96, 0.34), transparent 62%);
+    background: linear-gradient(105deg, #0b0d12 38%, #171412 62%, #0c0e13);
   }
 
   .slit {
@@ -438,7 +436,7 @@
   .thumb .light {
     position: absolute;
     inset: 0;
-    background: radial-gradient(90% 90% at 32% 42%, rgba(122, 142, 172, 0.34), transparent 70%);
+    background: linear-gradient(120deg, #1b2029 30%, #2c333f);
   }
 
   .thumb .figure {

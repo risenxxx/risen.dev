@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro'
+import Sep from './Sep.astro'
 
 export interface Link {
   label: string
@@ -18,7 +19,7 @@ interface Props {
   accent: string
   title: string
   /** Domain and platform, as a caption under the name. */
-  meta: string
+  meta: [string, string]
   blurb: string
   /** Trusted, hand-written copy: emphasis and non-breaking spaces are markup. */
   bullets: string[]
@@ -52,14 +53,19 @@ const {
 
     <div class="copy" data-reveal style="--dl: 1">
       <h3>{title}</h3>
-      <p class="meta"><span class="dot" aria-hidden="true"></span>{meta}</p>
+      <p class="meta">
+        <span class="dot" aria-hidden="true"></span>
+        {meta[0]}
+        <Sep />
+        {meta[1]}
+      </p>
       <p class="lede" set:html={blurb}></p>
 
       <ul class="points">
         {
           bullets.map((b) => (
             <li>
-              <span class="tick" aria-hidden="true">—</span>
+              <span class="tick" aria-hidden="true" />
               <span set:html={b} />
             </li>
           ))
@@ -177,10 +183,10 @@ const {
   }
 
   .tick {
-    color: var(--accent);
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.55;
+    width: 11px;
+    height: 1px;
+    margin-top: 11px;
+    background: var(--accent);
     flex: none;
   }
 
@@ -189,6 +195,7 @@ const {
   }
 
   .note {
+    max-width: 68ch;
     margin-bottom: 22px;
     font-size: 14px;
     line-height: 1.55;

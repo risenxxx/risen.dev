@@ -9,15 +9,13 @@ const social = contacts.filter((c) => c.id !== 'email')
 ---
 
 <section id="contact">
-  <span class="bloom" aria-hidden="true"></span>
-
   <div class="wrap inner">
     <p class="pill" data-reveal><span class="live" aria-hidden="true"></span>Available now</p>
 
     <h2 data-reveal style="--dl: 1">You have seen the work. Let’s talk about yours.</h2>
 
     <p class="lede" data-reveal style="--dl: 2">
-      Senior full-stack, backend or platform roles — remote worldwide as a contractor or through an EOR, or
+      Senior full-stack, backend or platform roles. Remote worldwide as a contractor or through an EOR, or
       hybrid in {site.location}. Contract work and one-off architecture reviews too.
     </p>
 
@@ -62,11 +60,6 @@ const social = contacts.filter((c) => c.id !== 'email')
     padding-block: clamp(54px, 6vw, 80px);
   }
 
-  .bloom {
-    top: -120px;
-    width: min(1000px, 120vw);
-    height: 520px;
-  }
 
   .inner {
     position: relative;
@@ -103,6 +96,8 @@ const social = contacts.filter((c) => c.id !== 'email')
   }
 
   .fine {
+    max-width: 70ch;
+    margin-inline: auto;
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;

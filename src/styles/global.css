@@ -225,8 +225,8 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    height: 40px;
-    padding: 0 16px;
+    min-height: 40px;
+    padding: 12px 16px;
     border-radius: 999px;
     border: 1px solid transparent;
     font: 500 14px / 1 var(--sans);
@@ -265,8 +265,8 @@
   }
 
   .btn-lg {
-    height: 50px;
-    padding: 0 26px;
+    min-height: 50px;
+    padding: 16px 26px;
     font-size: 16px;
   }
 
@@ -276,8 +276,8 @@
     font-size: 14px;
     border-color: var(--line2);
     color: var(--fg-mid);
-    height: 42px;
-    padding: 0 18px;
+    min-height: 42px;
+    padding: 13px 18px;
   }
 
   .btn-id:hover {
@@ -289,6 +289,7 @@
   .btn-icon {
     width: 38px;
     height: 38px;
+    min-height: 0;
     padding: 0;
     border-color: var(--line2);
     color: var(--fg-mid);
@@ -420,16 +421,8 @@
   .metrics dd {
     margin: 3px 0 0;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--fg3);
-  }
-
-  .bloom {
-    position: absolute;
-    left: 50%;
-    translate: -50% 0;
-    background: radial-gradient(closest-side, var(--glow), var(--glow2) 55%, transparent);
-    pointer-events: none;
   }
 
   /* ── motion ─────────────────────────────────────────────────────────── */
