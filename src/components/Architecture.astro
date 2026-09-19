@@ -19,8 +19,9 @@
         <p class="mono aside">every product below is a subset of this, sized to the problem</p>
       </div>
 
-      <div class="scroller">
-        <svg
+      <div class="figwrap">
+        <div class="scroller">
+          <svg
           class="fig"
           viewBox="0 0 1256 510"
           data-scene
@@ -129,8 +130,15 @@
             <text x="666" y="468" class="val2 big">Every box above reports, and pages me before a user does</text>
             <text x="666" y="489" class="sub">Prometheus, Grafana, Sentry, an event pipeline into ClickHouse, SLOs</text>
           </g>
-        </svg>
+          </svg>
+        </div>
+        <span class="edge" aria-hidden="true"></span>
       </div>
+
+      <p class="hint">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7 4 12l4 5M16 7l4 5-4 5M4.6 12h14.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Drag the figure sideways to follow the path
+      </p>
     </div>
   </div>
 </section>
@@ -167,10 +175,47 @@
   }
 
   /* Below roughly a laptop the figure stops being readable when it shrinks, so
-     it keeps its size and the reader pans it instead. */
+     it keeps its size and the reader pans it instead — which only works if the
+     page says so, hence the fade at the edge and the line underneath. */
+  .figwrap {
+    position: relative;
+  }
+
   .scroller {
     overflow-x: auto;
     overscroll-behavior-x: contain;
+  }
+
+  .edge,
+  .hint {
+    display: none;
+  }
+
+  @media (max-width: 1060px) {
+    .edge {
+      display: block;
+      position: absolute;
+      inset: 0 0 0 auto;
+      width: 64px;
+      background: linear-gradient(to right, transparent, var(--s2));
+      pointer-events: none;
+    }
+
+    .hint {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 14px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--fg3);
+    }
+
+    .hint svg {
+      width: 15px;
+      height: 15px;
+      flex: none;
+    }
   }
 
   .fig {

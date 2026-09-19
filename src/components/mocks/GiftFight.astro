@@ -9,8 +9,13 @@
   wallet pill, the points badge, the pot ValueBadge, a ContentCard holding the
   live bet feed, and the gradient Place-bet button.
 
-  The round settles as the section arrives: the wheel turns down to its winner
-  and the second bet drops into the feed.
+  Two things here are about performance rather than looks. The rotation is on
+  the <svg> ELEMENT, not on a group inside it: an element transform is handed to
+  the compositor, while a transform on an inner <g> makes the browser re-raster
+  the whole drawing every frame — and because this preview is itself inside a
+  scaled box, that repaint took the text with it, which is what made the type
+  shimmer while the wheel turned. For the same reason the wheel carries no
+  drop-shadow filter: a filter over a rotating subtree is re-computed per frame.
 */
 ---
 
@@ -24,7 +29,7 @@
   </div>
 
   <div class="head">
-    <span class="avatar"></span>
+    <span class="avatar">RZ</span>
     <span class="who">
       <span class="name">risenxx</span>
       <span class="points">1 240
@@ -42,40 +47,33 @@
   </div>
 
   <div class="wheelbox">
-    <span class="pointer"></span>
-    <svg class="wheel" viewBox="-150 -150 300 300">
-      <circle cx="0" cy="0" r="145" fill="none" stroke="rgba(168,255,53,0.28)" stroke-width="4"></circle>
-      <g class="spin">
+    <div class="wheelwrap">
+      <span class="pointer"></span>
+      <svg class="wheel" viewBox="-150 -150 300 300">
+        <circle cx="0" cy="0" r="145" fill="none" stroke="rgba(168,255,53,0.28)" stroke-width="4"></circle>
         <path d="M 0 -40 L 0 -140 A 140 140 0 0 1 137.5 26.2 L 39.3 7.5 A 40 40 0 0 0 0 -40 Z" fill="rgba(34,85,34,0.8)"></path>
         <path d="M 39.3 7.5 L 137.5 26.2 A 140 140 0 0 1 8.8 139.7 L 2.5 39.9 A 40 40 0 0 0 39.3 7.5 Z" fill="rgba(21,32,60,0.8)"></path>
         <path d="M 2.5 39.9 L 8.8 139.7 A 140 140 0 0 1 -118.2 75 L -33.8 21.4 A 40 40 0 0 0 2.5 39.9 Z" fill="rgba(25,25,25,0.8)"></path>
         <path d="M -33.8 21.4 L -118.2 75 A 140 140 0 0 1 -133.1 -43.3 L -38 -12.4 A 40 40 0 0 0 -33.8 21.4 Z" fill="rgba(34,85,34,0.8)"></path>
         <path d="M -38 -12.4 L -133.1 -43.3 A 140 140 0 0 1 -75 -118.2 L -21.4 -33.8 A 40 40 0 0 0 -38 -12.4 Z" fill="rgba(21,32,60,0.8)"></path>
         <path d="M -21.4 -33.8 L -75 -118.2 A 140 140 0 0 1 0 -140 L 0 -40 A 40 40 0 0 0 -21.4 -33.8 Z" fill="rgba(25,25,25,0.8)"></path>
+
         <g class="seats">
-          <circle cx="90.9" cy="-75.2" r="15" stroke="#a8ff35"></circle>
-          <circle cx="78.1" cy="88.5" r="15" stroke="#6c8cff"></circle>
-          <circle cx="-53.6" cy="105.2" r="15" stroke="#e8e8ef"></circle>
-          <circle cx="-117.1" cy="14.8" r="15" stroke="#3dd6c0"></circle>
-          <circle cx="-93.3" cy="-72.3" r="15" stroke="#e24a8b"></circle>
-          <circle cx="-33" cy="-113.3" r="15" stroke="#ff8a3d"></circle>
+          <g transform="translate(90.9,-75.2)"><circle r="15" stroke="#a8ff35"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(78.1,88.5)"><circle r="15" stroke="#6c8cff"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(-53.6,105.2)"><circle r="15" stroke="#e8e8ef"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(-117.1,14.8)"><circle r="15" stroke="#3dd6c0"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(-93.3,-72.3)"><circle r="15" stroke="#e24a8b"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(-33,-113.3)"><circle r="15" stroke="#ff8a3d"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
         </g>
-        <g class="gifts">
-          <rect x="13" y="-9" width="18" height="18" rx="5"></rect>
-          <rect x="-40.3" y="19.7" width="18" height="18" rx="5"></rect>
-          <rect x="-4.5" y="-59.7" width="18" height="18" rx="5"></rect>
-          <rect x="25.9" y="36.6" width="18" height="18" rx="5"></rect>
-          <rect x="-71" y="-20" width="18" height="18" rx="5"></rect>
-          <rect x="48.2" y="-45.4" width="18" height="18" rx="5"></rect>
-          <rect x="-27.7" y="60.6" width="18" height="18" rx="5"></rect>
-        </g>
-      </g>
-    </svg>
+      </svg>
+      <span class="centre"><b>0:24</b>left</span>
+    </div>
   </div>
 
   <div class="stats">
     <span class="players">
-      <span class="faces"><i></i><i></i><i></i><i class="more">+3</i></span>
+      <span class="faces"><i>MK</i><i>AI</i><i>DV</i><i class="more">+3</i></span>
       6 players
     </span>
     <span class="pot">84.2 TON</span>
@@ -88,12 +86,14 @@
   <div class="feed">
     <p class="live"><i></i>Bets</p>
     <div class="bet">
-      <span class="face"></span><span class="gift"></span>
+      <span class="face">NK</span>
+      <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
       <span class="what"><b>Plush Pepe</b><em>@nikita<i class="sep"></i>2s ago</em></span>
       <span class="value">21.4</span>
     </div>
     <div class="bet drop">
-      <span class="face alt"></span><span class="gift"></span>
+      <span class="face alt">AI</span>
+      <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
       <span class="what"><b>Durov’s Cap</b><em>@aiko<i class="sep"></i>9s ago</em></span>
       <span class="value">18.0</span>
     </div>
@@ -111,16 +111,26 @@
 </div>
 
 <style>
+  /*
+    The phone fills the plinth exactly and clips nothing: the wheel is the one
+    flexible row, so whatever height is left after the fixed chrome is what it
+    gets. Before this the phone was laid out at its natural height and could
+    push its own tab bar out through the bottom of the container.
+  */
   .phone {
     position: relative;
     width: 316px;
+    height: 100%;
     margin-inline: auto;
+    display: flex;
+    flex-direction: column;
     background: #191623;
     border: 1px solid #2e304d;
     border-radius: 26px;
     overflow: hidden;
     box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.9);
     font-family: var(--ui);
+    contain: content;
   }
 
   .backdrop {
@@ -131,6 +141,7 @@
 
   .phone > *:not(.backdrop) {
     position: relative;
+    flex: none;
   }
 
   .tg {
@@ -174,12 +185,19 @@
     padding: 12px 14px;
   }
 
+  /* Initials rather than an empty disc: a blank circle reads as a failed image. */
   .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     background: linear-gradient(135deg, #4a4468, #2e2a44);
     flex: none;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #c7c2e0;
+    letter-spacing: 0.02em;
   }
 
   .who {
@@ -259,15 +277,26 @@
   }
 
   .wheelbox {
+    flex: 1 1 auto !important;
+    min-height: 0;
     padding: 4px 14px 0;
     display: flex;
     justify-content: center;
+    align-items: center;
+  }
+
+  .wheelwrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    max-height: 100%;
   }
 
   .pointer {
     position: absolute;
     left: 50%;
-    top: 6px;
+    top: 2px;
     margin-left: -4px;
     width: 0;
     height: 0;
@@ -277,17 +306,19 @@
     z-index: 2;
   }
 
+  /*
+    Three turns and a little, easing into the winner. The rotation lives on the
+    element so the compositor owns it; the progress is the scene's, so it cannot
+    run away on a slow frame.
+  */
   .wheel {
     width: 262px;
-    height: 262px;
-    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.5));
-  }
-
-  /* Three turns and a little, easing into the winner. The rotation is the scene
-     progress and nothing else, so it cannot run away on a slow frame. */
-  .spin {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    aspect-ratio: 1;
     transform: rotate(calc(var(--p) * 1134deg));
-    transform-origin: 0 0;
+    will-change: transform;
   }
 
   .seats circle {
@@ -295,9 +326,31 @@
     stroke-width: 2.5;
   }
 
-  .gifts rect {
-    fill: #241f38;
-    stroke: rgba(255, 255, 255, 0.14);
+  .seats path {
+    fill: #8f8aa8;
+  }
+
+  /* Over the wheel, not in it: anything inside the <svg> turns with the wheel. */
+  .centre {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: #7d7e9b;
+    pointer-events: none;
+  }
+
+  .centre b {
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: #e6e6f0;
   }
 
   .stats {
@@ -326,6 +379,12 @@
     border-radius: 50%;
     border: 2px solid #12101b;
     background: #3a3550;
+    display: grid;
+    place-items: center;
+    font-size: 8.5px;
+    font-style: normal;
+    font-weight: 500;
+    color: #bdb7d4;
   }
 
   .faces i + i {
@@ -339,12 +398,9 @@
 
   .faces .more {
     background: linear-gradient(135deg, #a8ff35, #88dd20);
-    display: grid;
-    place-items: center;
     font-size: 10px;
     font-weight: 700;
     color: #000;
-    font-style: normal;
   }
 
   .pot {
@@ -423,11 +479,16 @@
     width: 28px;
     height: 28px;
     flex: none;
+    display: grid;
+    place-items: center;
   }
 
   .face {
     border-radius: 50%;
     background: #3a3550;
+    font-size: 9.5px;
+    font-weight: 500;
+    color: #bdb7d4;
   }
 
   .face.alt {
@@ -438,6 +499,12 @@
     border-radius: 8px;
     background: #241f38;
     border: 1px solid #3e3a5c;
+    color: #8f8aa8;
+  }
+
+  .gift svg {
+    width: 16px;
+    height: 16px;
   }
 
   .what {

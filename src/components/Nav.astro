@@ -34,8 +34,10 @@ const social = contacts.filter((c) => c.id !== 'email')
     position: sticky;
     top: 0;
     z-index: 40;
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    backdrop-filter: blur(12px);
+    /* Opaque on purpose. A translucent bar with `backdrop-filter: blur()` has
+       to blur the page behind it again on every frame the page is scrolled,
+       and on a long document that is the single most expensive thing on it. */
+    background: var(--bg);
     border-bottom: 1px solid var(--line);
   }
 
@@ -55,7 +57,7 @@ const social = contacts.filter((c) => c.id !== 'email')
   }
 
   .mark span {
-    color: #6f6f7a;
+    color: var(--fg4);
   }
 
   .tabs {
@@ -98,6 +100,15 @@ const social = contacts.filter((c) => c.id !== 'email')
      headings further down, and the contact buttons do not. */
   @media (max-width: 960px) {
     .tabs {
+      display: none;
+    }
+  }
+
+  /* The row stopped fitting at phone width and clipped the résumé button. The
+     same three links sit in the hero just below, so the bar keeps the one
+     thing that is only here. */
+  @media (max-width: 600px) {
+    .right .btn-icon {
       display: none;
     }
   }

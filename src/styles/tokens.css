@@ -24,6 +24,9 @@
     --fg3: #75757f;
     --fg-mid: #c4c4cc;
     --fg-soft: #b6b6c0;
+    /* The dimmest text on the page. 4.8:1 on --bg and 4.8:1 on the footer's
+       #08080a; the #6f6f7a it replaces measured 4.0 and failed both. */
+    --fg4: #7c7c86;
 
     --btn: #f5f5f7;
     --btn-fg: #0a0a0c;

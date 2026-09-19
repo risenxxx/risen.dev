@@ -1,23 +1,31 @@
 ---
 /*
-  The plinth every product preview stands on.
+  The box a product preview stands in.
 
-  A preview is drawn once at its real pixel size — 660 × 372, the size the
-  application's own chrome was measured at — and scaled down in steps as the
-  column narrows. Scaling beats re-flowing here: a player's controls rearranging
-  themselves at 480 px would stop being a picture of that player.
+  A preview is drawn once at its real pixel size — the size the application's
+  own chrome was measured at — and scaled down in steps as the column narrows.
+  Scaling beats re-flowing: a player's controls rearranging themselves at 480 px
+  would stop being a picture of that player.
+
+  Four of the five previews are application windows and bring their own frame
+  and their own shadow, so they get `bare` and sit directly on the page. A panel
+  around a window is a frame around a frame. Gift Fight is the exception: it is
+  a phone, and the gradient behind it is the product's own backdrop rather than
+  decoration invented here.
 */
 interface Props {
   w?: number
   h?: number
-  /** A preview whose own backdrop belongs to the product, like the Mini App's. */
+  /** No plinth: the preview already has a window frame of its own. */
+  bare?: boolean
+  /** A backdrop that belongs to the product being shown. */
   backdrop?: string
 }
 
-const { w = 660, h = 372, backdrop } = Astro.props
+const { w = 660, h = 372, bare = false, backdrop } = Astro.props
 ---
 
-<div class="stage" style={backdrop ? `background: ${backdrop}` : undefined}>
+<div class:list={['stage', { bare }]} style={backdrop ? `background: ${backdrop}` : undefined}>
   <div class="frame" style={`--w: ${w}; --h: ${h}`}>
     <div class="inner"><slot /></div>
   </div>
@@ -30,6 +38,20 @@ const { w = 660, h = 372, backdrop } = Astro.props
     border: 1px solid var(--line);
     border-radius: 20px;
     padding: 20px;
+    /*
+      A preview animates in place and nothing outside it depends on what it
+      draws, so the browser is told it can keep the work inside: a repaint from
+      a turning wheel or a filling seekbar stops at this box instead of being
+      considered against the rest of the page.
+    */
+    contain: layout paint;
+  }
+
+  .stage.bare {
+    background: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
   }
 
   .frame {
@@ -84,7 +106,7 @@ const { w = 660, h = 372, backdrop } = Astro.props
   }
 
   @media (max-width: 640px) {
-    .stage {
+    .stage:not(.bare) {
       padding: 12px;
       border-radius: 16px;
     }

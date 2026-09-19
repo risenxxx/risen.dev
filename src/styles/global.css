@@ -313,6 +313,33 @@
     flex: none;
   }
 
+  /*
+    Below this width the availability line runs to two rows. A 999px radius on a
+    two-row box reads as a mistake, so the pill becomes a small card and the dot
+    aligns with the first line instead of floating in the middle of both.
+  */
+  @media (max-width: 620px) {
+    .pill {
+      align-items: flex-start;
+      text-align: left;
+      border-radius: 14px;
+      padding: 9px 14px;
+      line-height: 1.45;
+    }
+
+    .pill .live {
+      margin-top: 5px;
+    }
+  }
+
+  /* Thumbs, not cursors: the icon-only buttons grow to the 44 px floor. */
+  @media (max-width: 720px) {
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+    }
+  }
+
   .card {
     background: var(--s3);
     border: 1px solid var(--line);
@@ -400,6 +427,13 @@
   html.js [data-reveal] {
     opacity: 0;
     transform: translateY(14px);
+    /*
+      Scroll anchoring picks a node to hold still and re-picks it as elements
+      appear. With eighty of them fading in on the way down it kept changing
+      its mind, which is what made the page nudge up and back over a couple of
+      frames. These blocks opt out; the page has a stable layout without them.
+    */
+    overflow-anchor: none;
     transition:
       opacity 0.6s var(--ease) calc(var(--dl, 0) * 70ms),
       transform 0.6s var(--ease) calc(var(--dl, 0) * 70ms);
