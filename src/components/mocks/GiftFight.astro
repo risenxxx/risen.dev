@@ -27,18 +27,20 @@
       <span class="clock">4:21</span>
       <span class="island"><i></i></span>
       <span class="sys">
-        <svg class="cell" viewBox="0 0 18 12">
-          <rect x="0" y="8" width="3" height="4" rx="1"></rect>
-          <rect x="5" y="5.5" width="3" height="6.5" rx="1"></rect>
-          <rect x="10" y="3" width="3" height="9" rx="1"></rect>
-          <rect x="15" y="0" width="3" height="12" rx="1"></rect>
+        <svg class="cell" viewBox="0 0 17 11">
+          <rect x="0" y="7.4" width="3" height="3.6" rx="1.1"></rect>
+          <rect x="4.67" y="5.1" width="3" height="5.9" rx="1.1"></rect>
+          <rect x="9.33" y="2.7" width="3" height="8.3" rx="1.1"></rect>
+          <rect x="14" y="0.4" width="3" height="10.6" rx="1.1"></rect>
         </svg>
         <svg class="wifi" viewBox="0 0 16 12">
-          <path d="M1 4.2a10.5 10.5 0 0 1 14 0M3.6 7a6.8 6.8 0 0 1 8.8 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
-          <circle cx="8" cy="9.9" r="1.35"></circle>
+          <path d="M1.1 4.1a10.1 10.1 0 0 1 13.8 0" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+          <path d="M4 7.1a6.1 6.1 0 0 1 8 0" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+          <circle cx="8" cy="10.2" r="1.55"></circle>
         </svg>
         <span class="batt">
-          <svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#0f2a10"></path></svg>
+          <b>63</b>
+          <svg viewBox="0 0 24 24"><path d="M13.6 1.8 4.2 14.4h5.8l-1 7.8 9.8-12.8h-6z"></path></svg>
         </span>
       </span>
     </div>
@@ -153,7 +155,7 @@
     height is left after the fixed chrome is what it gets.
   */
   .device {
-    width: 352px;
+    width: 364px;
     height: 100%;
     margin-inline: auto;
     padding: 10px;
@@ -189,16 +191,22 @@
 
   /* ── the phone's own bar ─────────────────────────────────────────────── */
 
+  /*
+    Sized off the real one: the island is 125 of an iPhone's 393 points across,
+    which on this screen is 108 — a little wider than the wordmark under it,
+    which is what it looks like on the device. The bar is tall enough to leave
+    the same air above the time as the phone does.
+  */
   .status {
-    height: 28px;
+    height: 46px;
     display: flex;
     align-items: center;
-    padding: 0 20px 0 24px;
+    padding: 4px 27px 0 30px;
     color: #fff;
   }
 
   .clock {
-    font-size: 12px;
+    font-size: 14.5px;
     font-weight: 600;
     letter-spacing: 0.01em;
   }
@@ -207,21 +215,21 @@
   .island {
     position: absolute;
     left: 50%;
-    top: 4px;
-    width: 80px;
-    height: 21px;
-    margin-left: -40px;
+    top: 9px;
+    width: 108px;
+    height: 32px;
+    margin-left: -54px;
     border-radius: 999px;
     background: #000;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-right: 6px;
+    padding-right: 9px;
   }
 
   .island i {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #121218;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
@@ -231,30 +239,33 @@
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 5.5px;
   }
 
   .cell {
-    width: 15px;
-    height: 10px;
+    width: 16.5px;
+    height: 10.7px;
     fill: currentColor;
   }
 
   .wifi {
-    width: 14px;
-    height: 10.5px;
+    width: 15px;
+    height: 11.2px;
     fill: currentColor;
   }
 
-  /* Charging, so the cell is full of colour rather than drawn as an outline. */
+  /* Charging, so the cell is full of colour rather than drawn as an outline,
+     and it carries the reading the way iOS puts it inside the body. */
   .batt {
-    width: 22px;
-    height: 11.5px;
-    border-radius: 3.4px;
-    background: #4ade5a;
-    display: grid;
-    place-items: center;
     position: relative;
+    height: 12.5px;
+    padding: 0 3.5px;
+    border-radius: 3.8px;
+    background: #4ade5a;
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    color: #06230a;
   }
 
   .batt::after {
@@ -262,16 +273,24 @@
     position: absolute;
     left: 100%;
     top: 50%;
-    width: 1.6px;
-    height: 4px;
-    margin-top: -2px;
-    border-radius: 0 1px 1px 0;
-    background: rgba(255, 255, 255, 0.45);
+    width: 1.8px;
+    height: 4.4px;
+    margin-top: -2.2px;
+    border-radius: 0 1.2px 1.2px 0;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .batt b {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
   .batt svg {
-    width: 8px;
-    height: 8px;
+    width: 7.5px;
+    height: 7.5px;
+    fill: currentColor;
   }
 
   /* ── the Mini App bar Telegram puts over it ──────────────────────────── */
