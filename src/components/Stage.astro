@@ -7,25 +7,22 @@
   Scaling beats re-flowing: a player's controls rearranging themselves at 480 px
   would stop being a picture of that player.
 
-  Four of the five previews are application windows and bring their own frame
-  and their own shadow, so they get `bare` and sit directly on the page. A panel
-  around a window is a frame around a frame. Gift Fight is the exception: it is
-  a phone, and the gradient behind it is the product's own backdrop rather than
-  decoration invented here.
+  Every preview brings its own frame — four window chromes and one phone shell —
+  so none of them gets a panel around it. A panel around a window is a frame
+  around a frame, and the one preview that had a backdrop was the only thing on
+  the page standing in a box.
 */
 interface Props {
   w?: number
   h?: number
-  /** No plinth: the preview already has a window frame of its own. */
+  /** No plinth: the preview already has a frame of its own. */
   bare?: boolean
-  /** A backdrop that belongs to the product being shown. */
-  backdrop?: string
 }
 
-const { w = 660, h = 372, bare = false, backdrop } = Astro.props
+const { w = 660, h = 372, bare = false } = Astro.props
 ---
 
-<div class:list={['stage', { bare }]} style={backdrop ? `background: ${backdrop}` : undefined}>
+<div class:list={['stage', { bare }]}>
   <div class="frame" style={`--w: ${w}; --h: ${h}`}>
     <div class="inner"><slot /></div>
   </div>

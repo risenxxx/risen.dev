@@ -197,9 +197,30 @@ const stages = [
     }
   }
 
+  /*
+    In one column the six stops still belong to one line, so the rule turns and
+    runs down the left of them. A horizontal rule over each step would say they
+    are six separate things again, which is the reading the layout exists to
+    prevent.
+  */
   @media (max-width: 520px) {
     .steps {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .steps li {
+      border-top: 0;
+      border-left: 1px solid var(--line3);
+      padding: 0 0 26px 24px;
+    }
+
+    .steps li:last-child {
+      padding-bottom: 0;
+    }
+
+    .marker {
+      top: 4px;
+      left: -4px;
     }
   }
 </style>

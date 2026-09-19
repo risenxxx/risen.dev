@@ -5,8 +5,11 @@ import FramePlayerMock from './mocks/FramePlayer.astro'
 import GiftFightMock from './mocks/GiftFight.astro'
 import TunedMock from './mocks/Tuned.astro'
 import Project from './Project.astro'
+import Scene from './mocks/Scene.astro'
 import Stage from './Stage.astro'
 ---
+
+<Scene defs />
 
 <section id="work">
   <div class="wrap intro">
@@ -91,7 +94,7 @@ import Stage from './Stage.astro'
     ]}
     reverse
   >
-    <Stage w={700} h={740} backdrop="linear-gradient(135deg, #0F0F10, #1A1A2E 55%, #16213E)">
+    <Stage bare w={700} h={740}>
       <GiftFightMock />
     </Stage>
   </Project>

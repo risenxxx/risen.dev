@@ -47,6 +47,9 @@
 
     --display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
     --sans: "Public Sans Variable", "Public Sans", ui-sans-serif, system-ui, sans-serif;
+    /* Only for strings a machine produced or would parse: a URL, a handle, a
+       step code, a label on the figure. English sentences are set in --sans,
+       whatever their size. */
     --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     /* Frame Player and Gift Fight are both drawn in Rubik. The previews use it
        so their chrome matches the real applications rather than this page. */

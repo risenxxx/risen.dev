@@ -22,7 +22,7 @@ const social = contacts.filter((c) => c.id !== 'email')
 
     <div class="cta" data-reveal style="--dl: 3">
       <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`}>
-        <Icon name="u-mail" />
+        <Icon name="b-mail" />
         {site.email}
       </a>
       <a class="btn btn-ghost btn-lg" href={site.cv} download>
@@ -36,7 +36,7 @@ const social = contacts.filter((c) => c.id !== 'email')
         social.map((c) => (
           <li>
             <a class="btn btn-id" href={c.href} rel="me">
-              <Icon name={c.icon} size={c.id === 'linkedin' ? 15 : 16} />
+              <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}
             </a>
           </li>
@@ -103,8 +103,7 @@ const social = contacts.filter((c) => c.id !== 'email')
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
-    font-family: var(--mono);
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.7;
     color: var(--fg3);
   }

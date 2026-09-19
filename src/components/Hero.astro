@@ -35,7 +35,7 @@ import Icon from './Icon.astro'
         contacts.map((c) => (
           <li>
             <a class="btn btn-id" href={c.href} rel={c.id === 'email' ? undefined : 'me'}>
-              <Icon name={c.icon} size={c.id === 'linkedin' ? 15 : 16} />
+              <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}
             </a>
           </li>

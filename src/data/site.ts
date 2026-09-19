@@ -13,11 +13,18 @@ export const site = {
   repo: 'https://github.com/risenxxx/risen.dev',
 } as const
 
+/*
+  `optical` is how large a mark has to be drawn to look the same size as the
+  ones beside it, since they fill the 24-unit grid differently: a square reads
+  larger than a disc of the same width, and Telegram's plane is a diagonal with
+  air on three sides of it. Every place that draws these picks a base size and
+  multiplies, so the four stay in step wherever they appear together.
+*/
 export const contacts = [
-  { id: 'github', label: 'github.com/risenxxx', href: 'https://github.com/risenxxx', icon: 'b-github' },
-  { id: 'linkedin', label: 'in/risenx', href: 'https://linkedin.com/in/risenx', icon: 'b-linkedin' },
-  { id: 'telegram', label: 't.me/risenx', href: 'https://t.me/risenx', icon: 'b-telegram' },
-  { id: 'email', label: site.email, href: `mailto:${site.email}`, icon: 'u-mail' },
+  { id: 'github', label: 'github.com/risenxxx', href: 'https://github.com/risenxxx', icon: 'b-github', optical: 1 },
+  { id: 'linkedin', label: 'in/risenx', href: 'https://linkedin.com/in/risenx', icon: 'b-linkedin', optical: 0.88 },
+  { id: 'telegram', label: 't.me/risenx', href: 'https://t.me/risenx', icon: 'b-telegram', optical: 1.1 },
+  { id: 'email', label: site.email, href: `mailto:${site.email}`, icon: 'b-mail', optical: 1 },
 ] as const
 
 export const nav = [

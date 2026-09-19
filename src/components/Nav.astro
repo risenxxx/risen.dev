@@ -16,8 +16,8 @@ const social = contacts.filter((c) => c.id !== 'email')
     <div class="right">
       {
         social.map((c) => (
-          <a class="btn btn-icon" href={c.href} aria-label={c.label} rel="me">
-            <Icon name={c.icon} size={17} />
+          <a class="social" href={c.href} aria-label={c.label} rel="me">
+            <Icon name={c.icon} size={Math.round(20 * c.optical)} />
           </a>
         ))
       }
@@ -92,6 +92,25 @@ const social = contacts.filter((c) => c.id !== 'email')
     gap: 8px;
   }
 
+  /*
+    The marks are the buttons. Ringing them put a circle inside a circle for
+    GitHub and Telegram and a circle around a square for LinkedIn, so the ring
+    is gone; the 38 px target it used to draw is now padding that still exists
+    but is not seen.
+  */
+  .social {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    color: var(--fg2);
+    transition: color 0.18s;
+  }
+
+  .social:hover {
+    color: var(--fg);
+  }
+
   .cv {
     margin-left: 4px;
   }
@@ -108,7 +127,7 @@ const social = contacts.filter((c) => c.id !== 'email')
      same three links sit in the hero just below, so the bar keeps the one
      thing that is only here. */
   @media (max-width: 600px) {
-    .right .btn-icon {
+    .right .social {
       display: none;
     }
   }

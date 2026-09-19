@@ -51,6 +51,19 @@ the fonts as data URIs because a `file://` page drops a font fetched from a
 sibling path. Needs a Chrome on the machine — set `CHROME_PATH` if it is
 somewhere unusual.
 
+**The picture inside the previews** is drawn, not photographed. Frame Player
+needs something on screen and DeskVolt needs a wallpaper, so
+`src/components/mocks/Scene.astro` holds one night landscape as SVG — sky,
+stars, seven ridges and the fog between them — and each preview shows a
+different part of it. It is emitted into the page once and referenced, which
+keeps the page free of bitmaps and makes the two look like two moments of the
+same film. `python3 scripts/scene.py` regenerates the terrain and writes it back
+into the component; every number in it is a seed, so a run reproduces.
+
+**Monospace is only for strings a machine produced or would parse** — a URL, a
+handle, a step code, a label on the figure. English sentences are set in the
+body face whatever their size, because monospace on prose is a costume.
+
 **Fonts** are latin-only and self-hosted. Three of them — Sora, Public Sans and
 DM Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
 because Frame Player and Gift Fight are really drawn in it; it is checked in as

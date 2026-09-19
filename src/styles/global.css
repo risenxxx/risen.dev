@@ -83,6 +83,9 @@
     margin: 0;
     font-family: var(--display);
     font-weight: 600;
+    /* Not the body's 1.6: that is leading for a paragraph, and a heading that
+       wraps to two lines wants them close enough to still read as one phrase. */
+    line-height: 1.15;
     letter-spacing: -0.028em;
     text-wrap: balance;
   }
@@ -181,15 +184,6 @@
 
   /* ── type ───────────────────────────────────────────────────────────── */
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--fg3);
-  }
 
   .eyebrow .dot {
     width: 7px;
@@ -336,8 +330,7 @@
     padding: 7px 15px;
     border: 1px solid var(--line2);
     border-radius: 999px;
-    font-family: var(--mono);
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--fg-soft);
   }
 
@@ -431,8 +424,7 @@
 
   .metrics dd {
     margin: 3px 0 0;
-    font-family: var(--mono);
-    font-size: 11.5px;
+    font-size: 12.5px;
     color: var(--fg3);
   }
 

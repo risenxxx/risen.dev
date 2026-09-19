@@ -1,4 +1,6 @@
 ---
+import Scene from './Scene.astro'
+
 /*
   Frame Player's window, rebuilt in HTML.
 
@@ -19,8 +21,7 @@
 ---
 
 <div class="player" aria-hidden="true" data-scene data-dur="1400">
-  <span class="scene"></span>
-  <span class="slit s1"></span><span class="slit s2"></span><span class="slit s3"></span><span class="slit s4"></span>
+  <Scene class="scene" view="150 105 1180 665" />
 
   <span class="scrim"></span>
 
@@ -65,7 +66,7 @@
 
     <div class="seekwrap">
       <div class="hovertip">
-        <span class="thumb"><i class="light"></i><i class="figure"></i></span>
+        <span class="thumb"><Scene class="still" view="780 330 560 316" /></span>
         <span class="tip-time">16:22</span>
         <span class="tip-chapter">Chapter 02, The Approach</span>
       </div>
@@ -164,42 +165,14 @@
     font-family: var(--ui);
   }
 
-  /* An abstract frame, not a still: light through a gap, in bands. A soft
-     radial wash here would be a gradient standing in for a photograph. */
+  /* The frame on screen, and further down the same scene at another point in
+     it for the hover preview — two moments of one film rather than two
+     unrelated pictures. */
   .scene {
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg, #0b0d12 38%, #171412 62%, #0c0e13);
-  }
-
-  .slit {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-  }
-
-  .s1 {
-    left: 44%;
-    width: 30px;
-    background: rgba(190, 172, 142, 0.13);
-  }
-
-  .s2 {
-    left: 52%;
-    width: 54px;
-    background: rgba(148, 162, 128, 0.17);
-  }
-
-  .s3 {
-    left: 64%;
-    width: 26px;
-    background: rgba(148, 162, 128, 0.11);
-  }
-
-  .s4 {
-    left: 77%;
-    width: 12px;
-    background: rgba(190, 172, 142, 0.09);
+    width: 100%;
+    height: 100%;
   }
 
   .scrim {
@@ -339,11 +312,19 @@
     height: 18px;
   }
 
+  /* The picture is a bright one, so the scrim under the controls has to be
+     heavier than a player over a dark scene would need. */
   .osc {
     position: absolute;
     inset: auto 0 0;
     padding: 44px 8px 10px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.88),
+      rgba(0, 0, 0, 0.66) 34%,
+      rgba(0, 0, 0, 0.28) 66%,
+      transparent
+    );
   }
 
   .times {
@@ -433,20 +414,11 @@
     overflow: hidden;
   }
 
-  .thumb .light {
+  .thumb .still {
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, #1b2029 30%, #2c333f);
-  }
-
-  .thumb .figure {
-    position: absolute;
-    left: 26%;
-    top: 24%;
-    width: 44px;
-    height: 54px;
-    border-radius: 22px 22px 5px 5px;
-    background: rgba(214, 206, 190, 0.32);
+    width: 100%;
+    height: 100%;
   }
 
   .tip-time {
