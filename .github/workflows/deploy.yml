@@ -48,6 +48,18 @@ jobs:
       - name: JavaScript budget
         run: npm run budget
 
+      # Prints which account the token can actually see and which permissions it
+      # carries. A deploy that fails with "No access to the specified resource"
+      # says nothing about which of the two secrets is wrong; this does.
+      - name: Check Cloudflare credentials
+        continue-on-error: true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "account id in secrets ends with: ...${CLOUDFLARE_ACCOUNT_ID: -6}"
+          npx wrangler whoami
+
       - name: Deploy to Cloudflare
         if: github.event_name != 'pull_request'
         uses: cloudflare/wrangler-action@v3
