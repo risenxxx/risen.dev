@@ -30,14 +30,14 @@ const libraries = [
 <section class="oss">
   <div class="wrap">
     <h2 class="h-section" data-reveal>Open source</h2>
-    <p class="lede" data-reveal style="--dl: 1">
+    <p class="lede">
       Two libraries still in the ecosystem, written and maintained by me.
     </p>
 
-    <ul class="grid">
+    <ul class="grid" data-reveal style="--dl: 1">
       {
-        libraries.map((lib, i) => (
-          <li data-reveal style={`--dl: ${i}`}>
+        libraries.map((lib) => (
+          <li>
             <a class="card" href={lib.href}>
               <div class="top">
                 <h3>{lib.name}</h3>
@@ -81,7 +81,6 @@ const libraries = [
   }
 
   .lede {
-    max-width: 720px;
     margin-bottom: 26px;
   }
 

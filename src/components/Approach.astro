@@ -2,6 +2,12 @@
 import Icon from './Icon.astro'
 import Sep from './Sep.astro'
 
+/*
+  Six steps in an order that matters, so they are drawn as a line with stops on
+  it rather than six identical cards. A card grid would say these are six
+  interchangeable features; the whole claim is that each one hands an artefact
+  to the next.
+*/
 const stages = [
   {
     n: '01',
@@ -29,7 +35,7 @@ const stages = [
     key: 'DELIVERY',
     icon: 'u-branch',
     title: 'GitOps, not hands',
-    body: 'FluxCD reconciles the cluster to the repository. Releases and rollbacks are the same operation, and both finish in under three minutes.',
+    body: 'FluxCD reconciles the cluster to the repository. Releases and rollbacks are the same operation, and both finish in under three minutes.',
   },
   {
     n: '05',
@@ -50,27 +56,24 @@ const stages = [
 
 <section id="approach">
   <div class="wrap">
-    <div class="head">
+    <div class="head" data-reveal>
       <div>
-        <h2 class="h-section" data-reveal>From a plan to a running service</h2>
-        <p class="lede" data-reveal style="--dl: 1">
+        <h2 class="h-section">From a plan to a running service</h2>
+        <p class="lede">
           The same six steps on every product above, whether it ships to a cluster or to an installer. Each
           one produces an artefact the next one depends on.
         </p>
       </div>
-      <p class="mono aside" data-reveal style="--dl: 1">
-        a deploy is a reviewed commit,<br />never a hand on a terminal
-      </p>
+      <p class="aside">a deploy is a reviewed commit,<br />never a hand on a terminal</p>
     </div>
 
-    <ol class="grid">
+    <ol class="steps">
       {
         stages.map((s, i) => (
-          <li class="card" data-reveal style={`--dl: ${i}`}>
-            <span class="badge">
-              <Icon name={s.icon} size={18} />
-            </span>
+          <li data-reveal style={`--dl: ${i}`}>
+            <span class="marker" aria-hidden="true" />
             <p class="key">
+              <Icon name={s.icon} size={14} />
               {s.n}
               <Sep />
               {s.key}
@@ -96,7 +99,7 @@ const stages = [
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-    margin-bottom: 30px;
+    margin-bottom: 38px;
   }
 
   h2 {
@@ -104,45 +107,58 @@ const stages = [
   }
 
   .lede {
-    max-width: 700px;
+    max-width: 58ch;
   }
 
   .aside {
-    font-size: 11.5px;
+    font-size: 13.5px;
+    line-height: 1.5;
     color: var(--fg3);
     text-align: right;
     flex: none;
   }
 
-  .grid {
+  /*
+    No column gap: each step owns the rule above it, so the six rules meet and
+    read as one line the sequence runs along. The separation is padding on the
+    right of each step instead.
+  */
+  .steps {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
   }
 
-  .card {
-    padding: 20px 18px;
+  .steps li {
+    position: relative;
+    border-top: 1px solid var(--line3);
+    padding: 26px 26px 0 0;
   }
 
-  .badge {
-    display: inline-flex;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.06);
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 14px;
+  .marker {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--fg);
+  }
+
+  /* The last stop is the thing actually running, so it is the one that is
+     coloured rather than white. */
+  .steps li:last-child .marker {
+    background: var(--green);
   }
 
   .key {
     display: flex;
     align-items: center;
+    gap: 8px;
     font-family: var(--mono);
     font-size: 10.5px;
     letter-spacing: 0.1em;
     color: var(--fg3);
-    margin-bottom: 7px;
+    margin-bottom: 10px;
   }
 
   h3 {
@@ -157,8 +173,12 @@ const stages = [
   }
 
   @media (max-width: 1180px) {
-    .grid {
+    .steps {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .steps li {
+      padding-bottom: 28px;
     }
   }
 
@@ -172,13 +192,13 @@ const stages = [
       text-align: left;
     }
 
-    .grid {
+    .steps {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (max-width: 520px) {
-    .grid {
+    .steps {
       grid-template-columns: minmax(0, 1fr);
     }
   }

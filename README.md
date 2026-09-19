@@ -40,6 +40,10 @@ reader is never held inside a section. Without JavaScript, or under
 **Brand marks** are the single paths from [simple-icons](https://simple-icons.org)
 (MIT), inlined as one sprite: no icon font, no request per logo.
 
+**Non-breaking spaces are the character, not `&nbsp;`.** Some copy is rendered
+as a text node and some through `set:html`; an entity is only decoded in the
+second, so a single convention avoids a literal `&nbsp;` appearing on the page.
+
 **Fonts** are latin-only and self-hosted. Three of them — Sora, Manrope and DM
 Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
 because Frame Player and Gift Fight are really drawn in it; it is checked in as

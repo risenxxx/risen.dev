@@ -59,15 +59,15 @@
         <path d="M -21.4 -33.8 L -75 -118.2 A 140 140 0 0 1 0 -140 L 0 -40 A 40 40 0 0 0 -21.4 -33.8 Z" fill="rgba(25,25,25,0.8)"></path>
 
         <g class="seats">
-          <g transform="translate(90.9,-75.2)"><circle r="15" stroke="#a8ff35"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
-          <g transform="translate(78.1,88.5)"><circle r="15" stroke="#6c8cff"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
-          <g transform="translate(-53.6,105.2)"><circle r="15" stroke="#e8e8ef"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
-          <g transform="translate(-117.1,14.8)"><circle r="15" stroke="#3dd6c0"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
-          <g transform="translate(-93.3,-72.3)"><circle r="15" stroke="#e24a8b"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
-          <g transform="translate(-33,-113.3)"><circle r="15" stroke="#ff8a3d"></circle><path d="M0 -5.4a3.7 3.7 0 1 1 0 7.4 3.7 3.7 0 0 1 0-7.4M-6.6 9.6a6.8 6.8 0 0 1 13.2 0z"></path></g>
+          <g transform="translate(90.9,-75.2)"><circle r="15" stroke="#a8ff35"></circle><text class="ini" y="3.4">MK</text></g>
+          <g transform="translate(78.1,88.5)"><circle r="15" stroke="#6c8cff"></circle><text class="ini" y="3.4">AI</text></g>
+          <g transform="translate(-53.6,105.2)"><circle r="15" stroke="#e8e8ef"></circle><text class="ini" y="3.4">DV</text></g>
+          <g transform="translate(-117.1,14.8)"><circle r="15" stroke="#3dd6c0"></circle><text class="ini" y="3.4">NK</text></g>
+          <g transform="translate(-93.3,-72.3)"><circle r="15" stroke="#e24a8b"></circle><text class="ini" y="3.4">RZ</text></g>
+          <g transform="translate(-33,-113.3)"><circle r="15" stroke="#ff8a3d"></circle><text class="ini" y="3.4">PL</text></g>
         </g>
       </svg>
-      <span class="centre"><b>0:24</b>left</span>
+      <span class="centre">24</span>
     </div>
   </div>
 
@@ -326,31 +326,32 @@
     stroke-width: 2.5;
   }
 
-  .seats path {
-    fill: #8f8aa8;
+  /*
+    The wheel turns, the initials do not: each one is given the rotation back so
+    it stays upright, the way a name on a real board would be.
+  */
+  .seats .ini {
+    text-anchor: middle;
+    font-family: var(--ui);
+    font-size: 9px;
+    font-weight: 500;
+    fill: #bdb7d4;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: rotate(calc(var(--p) * -1134deg));
   }
 
   /* Over the wheel, not in it: anything inside the <svg> turns with the wheel. */
   .centre {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1px;
-    font-family: var(--mono);
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    color: #7d7e9b;
+    display: grid;
+    place-items: center;
+    font-family: var(--ui);
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
     pointer-events: none;
-  }
-
-  .centre b {
-    font-size: 17px;
-    font-weight: 400;
-    letter-spacing: 0;
-    color: #e6e6f0;
   }
 
   .stats {

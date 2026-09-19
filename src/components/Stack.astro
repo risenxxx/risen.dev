@@ -87,15 +87,15 @@ const groups = [
 <section id="stack">
   <div class="wrap">
     <h2 class="h-section" data-reveal>Production-proven stack</h2>
-    <p class="lede" data-reveal style="--dl: 1">
+    <p class="lede">
       Tools I have shipped and operated, not ones I have read about. Chosen per constraint rather than per
       fashion.
     </p>
 
-    <div class="grid">
+    <div class="grid" data-reveal style="--dl: 1">
       {
-        groups.map((g, i) => (
-          <section class="card" data-reveal style={`--dl: ${i}`}>
+        groups.map((g) => (
+          <section class="card">
             <h3>
               <Icon name={g.icon} size={17} />
               {g.title}
@@ -126,7 +126,6 @@ const groups = [
   }
 
   .lede {
-    max-width: 720px;
     margin-bottom: 30px;
   }
 

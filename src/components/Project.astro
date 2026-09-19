@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro'
-import Sep from './Sep.astro'
 
 export interface Link {
   label: string
@@ -15,13 +14,13 @@ export interface Metric {
 }
 
 interface Props {
-  index: string
   /** The product's own accent, taken from its real interface rather than invented here. */
   accent: string
-  domain: string[]
   title: string
+  /** Domain and platform, as a caption under the name. */
+  meta: string
   blurb: string
-  /** Trusted, hand-written copy: a couple of bullets emphasise one word with <em>. */
+  /** Trusted, hand-written copy: emphasis and non-breaking spaces are markup. */
   bullets: string[]
   metrics?: Metric[]
   note?: string
@@ -32,10 +31,9 @@ interface Props {
 }
 
 const {
-  index,
   accent,
-  domain,
   title,
+  meta,
   blurb,
   bullets,
   metrics = [],
@@ -52,25 +50,12 @@ const {
       <slot />
     </div>
 
-    <div class="copy">
-      <p class="eyebrow" data-reveal>
-        <span class="dot" aria-hidden="true"></span>
-        {index}
-        {
-          domain.map((part) => (
-            <Fragment>
-              {' '}
-              <Sep />
-              {part}
-            </Fragment>
-          ))
-        }
-      </p>
+    <div class="copy" data-reveal style="--dl: 1">
+      <h3>{title}</h3>
+      <p class="meta"><span class="dot" aria-hidden="true"></span>{meta}</p>
+      <p class="lede" set:html={blurb}></p>
 
-      <h3 data-reveal style="--dl: 1">{title}</h3>
-      <p class="lede" data-reveal style="--dl: 2">{blurb}</p>
-
-      <ul class="points" data-reveal style="--dl: 3">
+      <ul class="points">
         {
           bullets.map((b) => (
             <li>
@@ -83,7 +68,7 @@ const {
 
       {
         metrics.length > 0 && (
-          <dl class="metrics" data-reveal style="--dl: 4">
+          <dl class="metrics">
             {metrics.map((m) => (
               <div>
                 <dt set:html={m.value} />
@@ -94,9 +79,9 @@ const {
         )
       }
 
-      {note && <p class="note" data-reveal style="--dl: 4">{note}</p>}
+      {note && <p class="note" set:html={note} />}
 
-      <ul class="stack" data-reveal style="--dl: 5">
+      <ul class="stack">
         {
           stack.map((s) => (
             <li class="chip">
@@ -107,7 +92,7 @@ const {
         }
       </ul>
 
-      <ul class="links" data-reveal style="--dl: 6">
+      <ul class="links">
         {
           links.map((l) => (
             <li>
@@ -150,20 +135,32 @@ const {
     min-width: 0;
   }
 
-  .eyebrow {
-    color: var(--accent);
-  }
-
   h3 {
-    margin: 14px 0 16px;
     font-size: clamp(26px, 3vw, 34px);
     line-height: 1.12;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 18px;
+    font-size: 14px;
+    color: var(--fg2);
+  }
+
+  .meta .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
   }
 
   .points {
     display: grid;
     gap: 12px;
-    margin: 20px 0 22px;
+    margin: 0 0 22px;
   }
 
   .points li {
