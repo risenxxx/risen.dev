@@ -51,9 +51,20 @@ const { w = 660, h = 372, bare = false } = Astro.props
     padding: 0;
   }
 
+  /*
+    `--k` is the ladder below, written once for a 660 px preview. `--fit` is
+    what makes it right for a preview that is not 660: Gift Fight is a phone
+    and is drawn 700 wide, and a ladder tuned to 660 pushed it past the column
+    at half the breakpoints — invisibly, because the page clips its own
+    overflow, until the gutter got small enough that the clipping showed.
+    Correcting per instance means every preview ends up the same width as every
+    other one, which is what they looked like they were doing anyway.
+  */
   .frame {
     --k: 1;
-    height: calc(var(--h) * var(--k) * 1px);
+    --fit: min(1, 660 / var(--w));
+    --s: calc(var(--k) * var(--fit));
+    height: calc(var(--h) * var(--s) * 1px);
     display: flex;
     justify-content: center;
   }
@@ -62,43 +73,73 @@ const { w = 660, h = 372, bare = false } = Astro.props
     width: calc(var(--w) * 1px);
     height: calc(var(--h) * 1px);
     flex: none;
-    transform: scale(var(--k));
+    transform: scale(var(--s));
     transform-origin: top center;
+  }
+
+  @container (max-width: 672px) {
+    .frame {
+      --k: 0.96;
+    }
   }
 
   @container (max-width: 655px) {
     .frame {
-      --k: 0.94;
+      --k: 0.93;
     }
   }
 
   @container (max-width: 615px) {
     .frame {
-      --k: 0.86;
+      --k: 0.84;
     }
   }
 
   @container (max-width: 560px) {
     .frame {
-      --k: 0.77;
+      --k: 0.75;
     }
   }
 
   @container (max-width: 500px) {
     .frame {
-      --k: 0.68;
+      --k: 0.66;
     }
   }
 
   @container (max-width: 440px) {
     .frame {
-      --k: 0.58;
+      --k: 0.57;
     }
   }
 
   @container (max-width: 380px) {
     .frame {
       --k: 0.5;
+    }
+  }
+
+  @container (max-width: 348px) {
+    .frame {
+      --k: 0.47;
+    }
+  }
+
+  @container (max-width: 316px) {
+    .frame {
+      --k: 0.43;
+    }
+  }
+
+  @container (max-width: 288px) {
+    .frame {
+      --k: 0.39;
+    }
+  }
+
+  @container (max-width: 260px) {
+    .frame {
+      --k: 0.35;
     }
   }
 

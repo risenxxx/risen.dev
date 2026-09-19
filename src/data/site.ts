@@ -24,7 +24,7 @@ export const contacts = [
   { id: 'github', label: 'github.com/risenxxx', href: 'https://github.com/risenxxx', icon: 'b-github', optical: 1 },
   { id: 'linkedin', label: 'in/risenx', href: 'https://linkedin.com/in/risenx', icon: 'b-linkedin', optical: 0.88 },
   { id: 'telegram', label: 't.me/risenx', href: 'https://t.me/risenx', icon: 'b-telegram', optical: 1.1 },
-  { id: 'email', label: site.email, href: `mailto:${site.email}`, icon: 'b-mail', optical: 1 },
+  { id: 'email', label: site.email, href: `mailto:${site.email}`, icon: 'b-mail', optical: 0.92 },
 ] as const
 
 export const nav = [

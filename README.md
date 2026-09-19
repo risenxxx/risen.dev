@@ -60,6 +60,14 @@ keeps the page free of bitmaps and makes the two look like two moments of the
 same film. `python3 scripts/scene.py` regenerates the terrain and writes it back
 into the component; every number in it is a seed, so a run reproduces.
 
+**`public/sw.js` unregisters a service worker rather than being one.** The
+Gatsby blog that used to live here shipped `gatsby-plugin-offline`, whose worker
+is still installed in every browser that opened the old site and still answers
+navigations from its own cache — a hard reload goes through it, not past it.
+Deleting the file was not enough, so the path serves a script that clears every
+cache, unregisters itself and reloads open tabs. It stays indefinitely: anyone
+who has not visited since the blog is still carrying the old one.
+
 **Monospace is only for strings a machine produced or would parse** — a URL, a
 handle, a step code, a label on the figure. English sentences are set in the
 body face whatever their size, because monospace on prose is a costume.

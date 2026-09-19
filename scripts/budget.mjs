@@ -23,8 +23,15 @@ async function* walk(dir) {
 let total = 0
 const parts = []
 
+/*
+  sw.js is not part of the page: it exists to unregister the old blog's service
+  worker and never runs in the document, so it is not spent against the budget
+  the footer claims.
+*/
+const EXEMPT = new Set(['dist/sw.js'])
+
 for await (const path of walk(DIST)) {
-  if (path.endsWith('.js')) {
+  if (path.endsWith('.js') && !EXEMPT.has(path)) {
     const bytes = (await readFile(path)).byteLength
     total += bytes
     parts.push([path, bytes])

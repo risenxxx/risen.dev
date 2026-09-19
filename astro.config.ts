@@ -32,6 +32,13 @@ function pagesHeaders(): AstroIntegration {
           '  Cache-Control: public, max-age=31536000, immutable',
           '/cv/*',
           '  Cache-Control: public, max-age=3600',
+          /*
+            The old blog's service worker only goes away if the browser can
+            fetch a newer script at this path, so it must never be answered
+            from a cache. See public/sw.js for what it is and why it stays.
+          */
+          '/sw.js',
+          '  Cache-Control: no-cache',
         ]
         await writeFile(new URL('_headers', dir), `${lines.join('\n')}\n`)
 

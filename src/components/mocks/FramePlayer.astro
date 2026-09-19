@@ -64,9 +64,9 @@ import Scene from './Scene.astro'
   <div class="osc">
     <div class="times"><span>9:04</span><span>56:55</span></div>
 
-    <div class="seekwrap">
+    <div class="seekwrap" style="--hover: 28%">
       <div class="hovertip">
-        <span class="thumb"><Scene class="still" view="780 330 560 316" /></span>
+        <span class="thumb"><Scene class="still" view="560 440 430 242" /></span>
         <span class="tip-time">16:22</span>
         <span class="tip-chapter">Chapter 02, The Approach</span>
       </div>
@@ -78,7 +78,17 @@ import Scene from './Scene.astro'
         <span class="chap" style="--at: 28.6%"></span>
         <span class="chap" style="--at: 61%"></span>
         <span class="knob"></span>
+        <span class="hairline"></span>
       </div>
+
+      <svg class="cursor" viewBox="0 0 24 24">
+        <path
+          d="M5 2 5 18.5 9.2 14.6 12 20.8 14.6 19.6 11.9 13.6 17 13.6Z"
+          fill="#fff"
+          stroke="rgba(0,0,0,.5)"
+          stroke-width="1.1"
+          stroke-linejoin="round"></path>
+      </svg>
     </div>
 
     <div class="controls">
@@ -102,22 +112,6 @@ import Scene from './Scene.astro'
       </div>
 
       <div class="cluster right">
-        <span class="b"
-          ><svg viewBox="0 0 24 24"
-            ><path fill="currentColor" d="M17 7H7v3l-4-4 4-4v3h12v6h-2V7zM7 17h10v-3l4 4-4 4v-3H5v-6h2v4z"></path></svg
-          ></span
-        >
-        <span class="b"
-          ><svg viewBox="0 0 24 24" fill="currentColor"
-            ><path d="M2.4 3.6h19.2v2.4H2.4zM2.4 10.8h19.2v2.4H2.4zM2.4 18h13.2v2.4H2.4zM16.8 16.4v5.6l4.8-2.8z"></path></svg
-          ></span
-        >
-        <span class="b"
-          ><svg viewBox="0 0 24 24" fill="currentColor"
-            ><path d="M8.4 3.6h13.2v2.4H8.4zM8.4 10.8h13.2v2.4H8.4zM8.4 18h13.2v2.4H8.4z"></path><circle cx="4.2" cy="4.8" r="1.8"
-            ></circle><circle cx="4.2" cy="12" r="1.8"></circle><circle cx="4.2" cy="19.2" r="1.8"></circle></svg
-          ></span
-        >
         <span class="b"
           ><svg viewBox="0 0 24 24"
             ><path
@@ -153,7 +147,16 @@ import Scene from './Scene.astro'
 </div>
 
 <style>
+  /*
+    Three beats, in the order a viewer would cause them: the overlay comes up,
+    a cursor arrives on the timeline, and the preview opens above it. Nothing
+    fills or scrubs — a seekbar filling by itself under a still frame says the
+    film is playing, and it plainly is not.
+  */
   .player {
+    --ui: clamp(0, var(--p) / 0.34, 1);
+    --cursor: clamp(0, (var(--p) - 0.38) / 0.22, 1);
+    --tip: clamp(0, (var(--p) - 0.62) / 0.3, 1);
     position: relative;
     width: 660px;
     height: 372px;
@@ -255,6 +258,7 @@ import Scene from './Scene.astro'
     color: #d6d6de;
     font-size: 11.5px;
     font-variant-numeric: tabular-nums;
+    opacity: var(--ui);
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -286,7 +290,7 @@ import Scene from './Scene.astro'
     height: 100%;
     border-radius: 1px;
     background: rgba(255, 255, 255, 0.75);
-    width: calc(46% * var(--p));
+    width: 46%;
   }
 
   .skip {
@@ -304,7 +308,8 @@ import Scene from './Scene.astro'
     color: #e8e8ec;
     font-size: 14px;
     font-weight: 500;
-    opacity: calc((var(--p) - 0.55) * 4);
+    opacity: var(--ui);
+    transform: translateY(calc((1 - var(--ui)) * 6px));
   }
 
   .skip svg {
@@ -325,6 +330,8 @@ import Scene from './Scene.astro'
       rgba(0, 0, 0, 0.28) 66%,
       transparent
     );
+    opacity: var(--ui);
+    transform: translateY(calc((1 - var(--ui)) * 8px));
   }
 
   .times {
@@ -360,12 +367,12 @@ import Scene from './Scene.astro'
      have to stay apart at a glance. */
   .buffered {
     background: rgba(255, 255, 255, 0.3);
-    width: calc(46% * var(--p));
+    width: 46%;
   }
 
   .fill {
     background: #fff;
-    width: calc(15.9% * var(--p));
+    width: 15.9%;
   }
 
   .chap {
@@ -382,7 +389,7 @@ import Scene from './Scene.astro'
   .knob {
     position: absolute;
     top: 50%;
-    left: calc(15.9% * var(--p));
+    left: 15.9%;
     width: 12px;
     height: 12px;
     margin: -6px 0 0 -6px;
@@ -390,24 +397,57 @@ import Scene from './Scene.astro'
     background: #fff;
   }
 
+  /* A mark on the track under the arrow, so the exact frame being previewed is
+     readable even where the cursor covers the bar. */
+  .hairline {
+    position: absolute;
+    top: 50%;
+    left: var(--hover);
+    width: 2px;
+    height: 15px;
+    margin: -7.5px 0 0 -1px;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: var(--cursor);
+  }
+
+  /*
+    Drawn, because the preview only makes sense over something. Its tip is at
+    (5, 2) of the 24-unit box, so the offsets put that point on the track
+    rather than the corner of the box it lives in.
+  */
+  .cursor {
+    position: absolute;
+    top: 50%;
+    left: var(--hover);
+    width: 19px;
+    height: 19px;
+    margin: -1.6px 0 0 -4px;
+    opacity: var(--cursor);
+    transform: translate(calc((1 - var(--cursor)) * -4px), calc((1 - var(--cursor)) * 4px));
+  }
+
   .hovertip {
     position: absolute;
-    left: 28%;
+    left: var(--hover);
     bottom: 18px;
-    transform: translateX(-50%) translateY(calc((1 - var(--p)) * 6px));
+    transform: translateX(-50%) translateY(calc((1 - var(--tip)) * 10px));
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
     white-space: nowrap;
-    opacity: calc((var(--p) - 0.45) * 4);
+    opacity: var(--tip);
   }
 
+  /* It floats over a picture of the same film, so it needs a shadow to read as
+     a panel rather than as part of what is behind it. */
   .thumb {
     position: relative;
     display: block;
     width: 184px;
     height: 104px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
     border-radius: 6px;
     border: 2px solid rgba(255, 255, 255, 0.86);
     background: #14161c;

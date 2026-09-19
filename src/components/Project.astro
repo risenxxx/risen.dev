@@ -54,10 +54,9 @@ const {
     <div class="copy" data-reveal style="--dl: 1">
       <h3>{title}</h3>
       <p class="meta">
-        <span class="dot" aria-hidden="true"></span>
-        {meta[0]}
+        <span class="part"><span class="dot" aria-hidden="true" />{meta[0]}</span>
         <Sep />
-        {meta[1]}
+        <span class="part">{meta[1]}</span>
       </p>
       <p class="lede" set:html={blurb}></p>
 
@@ -155,6 +154,12 @@ const {
     color: var(--fg2);
   }
 
+  .part {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
   .meta .dot {
     width: 7px;
     height: 7px;
@@ -201,6 +206,29 @@ const {
 
   .metrics {
     margin: 0 0 22px;
+  }
+
+  /*
+    Narrow enough and both halves wrap, which leaves the 3 px separator sitting
+    on its own beside the 7 px accent dot and reading as a second bullet of a
+    different size. One half per line instead, and the separator goes.
+  */
+  @media (max-width: 460px) {
+    .meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+
+    .meta > :global(.sep) {
+      display: none;
+    }
+
+    /* Aligned under the first half's text, past the dot and its gap. The
+       separator still sits between the two, so this is not an adjacent match. */
+    .part ~ .part {
+      padding-left: 17px;
+    }
   }
 
   .note {
