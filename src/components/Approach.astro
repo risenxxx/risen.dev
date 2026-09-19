@@ -1,0 +1,185 @@
+---
+import Icon from './Icon.astro'
+import Sep from './Sep.astro'
+
+const stages = [
+  {
+    n: '01',
+    key: 'SPEC',
+    icon: 'u-spec',
+    title: 'Acceptance cases first',
+    body: 'The requirements, the constraints and the failing tests are written before implementation — including when an agent does most of the typing.',
+  },
+  {
+    n: '02',
+    key: 'CONTRACTS',
+    icon: 'u-contracts',
+    title: 'Types at every seam',
+    body: 'One schema serves validation, types and the generated docs, so a broken state is impossible to express rather than merely unlikely.',
+  },
+  {
+    n: '03',
+    key: 'CI GATES',
+    icon: 'u-flask',
+    title: 'Tested against the real thing',
+    body: 'Unit, integration and contract tests, Testcontainers against real PostgreSQL, Redis and NATS. Security and performance are gates, not follow-ups.',
+  },
+  {
+    n: '04',
+    key: 'DELIVERY',
+    icon: 'u-branch',
+    title: 'GitOps, not hands',
+    body: 'FluxCD reconciles the cluster to the repository. Releases and rollbacks are the same operation, and both finish in under three minutes.',
+  },
+  {
+    n: '05',
+    key: 'INFRASTRUCTURE',
+    icon: 'u-server',
+    title: 'Written down, not clicked',
+    body: 'Kubernetes on Talos Linux across bare metal and cloud, described in one Pulumi program, with secrets that never live in the repository.',
+  },
+  {
+    n: '06',
+    key: 'OPERATION',
+    icon: 'u-gauge',
+    title: 'It pages me first',
+    body: 'Metrics, traces and structured logs on every service, SLOs with error budgets, and enough signal to know something is wrong before a user reports it.',
+  },
+]
+---
+
+<section id="approach">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h2 class="h-section" data-reveal>From a plan to a running service</h2>
+        <p class="lede" data-reveal style="--dl: 1">
+          The same six steps on every product above, whether it ships to a cluster or to an installer. Each
+          one produces an artefact the next one depends on.
+        </p>
+      </div>
+      <p class="mono aside" data-reveal style="--dl: 1">
+        a deploy is a reviewed commit,<br />never a hand on a terminal
+      </p>
+    </div>
+
+    <ol class="grid">
+      {
+        stages.map((s, i) => (
+          <li class="card" data-reveal style={`--dl: ${i}`}>
+            <span class="badge">
+              <Icon name={s.icon} size={18} />
+            </span>
+            <p class="key">
+              {s.n}
+              <Sep />
+              {s.key}
+            </p>
+            <h3>{s.title}</h3>
+            <p class="body">{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  section {
+    border-top: 1px solid var(--line);
+    background: var(--s1);
+    padding-block: clamp(44px, 5vw, 62px);
+  }
+
+  .head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  .lede {
+    max-width: 700px;
+  }
+
+  .aside {
+    font-size: 11.5px;
+    color: var(--fg3);
+    text-align: right;
+    flex: none;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    padding: 20px 18px;
+  }
+
+  .badge {
+    display: inline-flex;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .key {
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--fg3);
+    margin-bottom: 7px;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .body {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #9c9ca6;
+  }
+
+  @media (max-width: 1180px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .aside {
+      text-align: left;
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

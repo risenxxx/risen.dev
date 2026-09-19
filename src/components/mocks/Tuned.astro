@@ -1,0 +1,542 @@
+---
+/*
+  Tuned's editor, rebuilt from the product's own primitives rather than
+  photographed: the window chrome, the rail, the document rows with their
+  word-level diff, the match pill, the page thumbnails and the fitting bar.
+
+  Deliberately not a picture of the Tuned landing page — a landing inside a
+  landing says nothing, and this page links to the real one a line below.
+*/
+---
+
+<div class="win" aria-hidden="true" data-scene data-dur="1600">
+  <div class="bar">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="wtitle">Tuned — Stripe<i class="sep"></i>Senior Platform Engineer</span>
+    <span class="tag">sample</span>
+  </div>
+
+  <div class="app">
+    <div class="rail">
+      <span class="item">
+        <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        Base CV<b>24</b>
+      </span>
+      <span class="item on">
+        <svg viewBox="0 0 24 24"><path d="M7 4v9a3 3 0 0 0 3 3h7M7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4M7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4M18 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        Variants<b class="acc">1</b>
+      </span>
+      <span class="sub">Stripe</span>
+      <span class="item">
+        <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        Check
+      </span>
+      <span class="me"><i>EZ</i>Evgenii Z.</span>
+    </div>
+
+    <div class="editor">
+      <div class="ed-head">
+        <div>
+          <p class="crumb">Variants<i class="sep"></i>Stripe</p>
+          <p class="ed-title">Senior Platform Engineer, Payments</p>
+        </div>
+        <span class="match">Match <b data-count="92" data-decimals="0">92</b></span>
+      </div>
+
+      <div class="tabs"><span class="on">Résumé</span><span>Letter</span><span>Posting</span></div>
+
+      <div class="doc">
+        <p class="sec">EXPERIENCE</p>
+        <div class="row pos">
+          <span class="cb"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <span class="pn">Gift Fight<em> — Platform &amp; Full Stack Engineer</em></span>
+          <span class="pm">2025</span>
+        </div>
+        <div class="row bl lit">
+          <span>Architected multi-step rounds with <mark class="d1">Temporal workflows, reaching 99.5% completion</mark> through deterministic retries and idempotent handlers.</span>
+        </div>
+        <div class="row bl">
+          <span>Held p95 state-sync latency at <mark class="d2">120 ms with 300 concurrent sessions</mark> over a Socket.IO gameplay layer.</span>
+        </div>
+        <div class="row bl cut">
+          <span><s>Animated the game loop with Motion and Lottie inside the Telegram WebView.</s><em>kept in base</em></span>
+        </div>
+        <p class="sec">SKILLS</p>
+        <div class="skills">
+          <span class="s">Kubernetes</span><span class="s">PostgreSQL</span><span class="s">TypeScript</span>
+          <span class="s add a1">+ idempotency</span><span class="s add a2">+ PCI scope</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="pv-top"><span>Preview</span><span class="mono">2 pages</span></div>
+      <div class="pages">
+        <span class="paper">
+          <i style="left: 12%; top: 7%; width: 44%; height: 3.2%; background: #1f232b"></i>
+          <i style="left: 12%; top: 13%; width: 62%; height: 1.4%; background: #8a919e"></i>
+          <i style="left: 12%; top: 22%; width: 24%; height: 1.4%; background: #5561d6"></i>
+          <i class="lines" style="left: 12%; top: 27%; right: 12%; height: 22%; --pitch: 7%; --gap: 18%"></i>
+          <i style="left: 12%; top: 56%; width: 20%; height: 1.4%; background: #5561d6"></i>
+          <i class="lines" style="left: 12%; top: 61%; right: 12%; height: 16%; --pitch: 9%; --gap: 24%"></i>
+        </span>
+        <span class="paper second">
+          <i style="left: 12%; top: 8%; width: 24%; height: 1.4%; background: #5561d6"></i>
+          <i class="lines" style="left: 12%; top: 13%; right: 12%; height: 30%; --pitch: 6%; --gap: 15%"></i>
+          <i style="left: 12%; top: 52%; width: 20%; height: 1.4%; background: #5561d6"></i>
+          <i class="lines" style="left: 12%; top: 57%; right: 12%; height: 14%; --pitch: 9%; --gap: 24%"></i>
+        </span>
+      </div>
+      <div class="fit"><span class="track"><i></i></span><span class="mono">7 lines</span></div>
+      <span class="dl">
+        <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        Download PDF
+      </span>
+      <p class="fine">Page fitting is measured against a real PDF renderer, not estimated.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .win {
+    width: 660px;
+    height: 532px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0f1116;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--sh-mock);
+  }
+
+  .bar {
+    flex: none;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    background: #0b0d11;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    color: #a1a7b3;
+  }
+
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.11);
+  }
+
+  .wtitle {
+    flex: 1;
+    text-align: center;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 11px;
+  }
+
+  .app {
+    flex-grow: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  .rail {
+    width: 152px;
+    flex: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12.5px;
+    color: #a1a7b3;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 7px;
+  }
+
+  .item svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .item.on {
+    background: rgba(124, 140, 255, 0.1);
+    color: #f2f4f8;
+  }
+
+  .item.on svg {
+    color: #7c8cff;
+  }
+
+  .item b {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: #7c828e;
+  }
+
+  .item b.acc {
+    color: #7c8cff;
+  }
+
+  .rail .sub {
+    padding: 3px 9px 7px 31px;
+    font-size: 11.5px;
+    color: #7c828e;
+  }
+
+  .me {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 4px;
+    font-size: 12px;
+  }
+
+  .me i {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(124, 140, 255, 0.2);
+    color: #c7cdff;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .editor {
+    flex-grow: 1;
+    min-width: 0;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ed-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .crumb {
+    font-size: 11px;
+    color: #7c828e;
+    margin-bottom: 3px;
+  }
+
+  .ed-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f2f4f8;
+  }
+
+  .match {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(74, 222, 155, 0.36);
+    font-size: 12px;
+    color: #a1a7b3;
+    white-space: nowrap;
+  }
+
+  .match b {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: #4ade9b;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin: 12px 0 6px;
+  }
+
+  .tabs span {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    color: #7c828e;
+  }
+
+  .tabs .on {
+    background: rgba(255, 255, 255, 0.07);
+    color: #f2f4f8;
+  }
+
+  .doc {
+    font-size: 12.5px;
+    line-height: 19px;
+    color: #a1a7b3;
+  }
+
+  .sec {
+    margin: 10px 0 2px;
+    padding-left: 8px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #7c828e;
+  }
+
+  .row {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 5px 8px;
+    border-radius: 7px;
+  }
+
+  .row.bl {
+    padding-left: 34px;
+  }
+
+  .row.lit {
+    background: rgba(124, 140, 255, 0.07);
+  }
+
+  .row.cut {
+    opacity: 0.45;
+  }
+
+  .row.cut s {
+    text-decoration-color: rgba(161, 167, 179, 0.6);
+  }
+
+  .row.cut em {
+    margin-left: 8px;
+    font-style: normal;
+    font-size: 10.5px;
+    color: #7c828e;
+  }
+
+  .cb {
+    width: 13px;
+    height: 13px;
+    margin-top: 3px;
+    border-radius: 4px;
+    flex: none;
+    background: #7c8cff;
+    display: grid;
+    place-items: center;
+  }
+
+  .cb svg {
+    width: 9px;
+    height: 9px;
+    color: #0a0b0f;
+  }
+
+  .pn {
+    color: #f2f4f8;
+    font-weight: 500;
+  }
+
+  .pn em {
+    color: #a1a7b3;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .pm {
+    margin-left: auto;
+    font-size: 10.5px;
+    color: #7c828e;
+    white-space: nowrap;
+  }
+
+  /*
+    The rewrite writes itself in: each highlighted run wipes from left to right
+    as the scene runs, one after the other, which is what the editor's own diff
+    does when a variant is generated.
+  */
+  mark {
+    color: #4ade9b;
+    background-color: transparent;
+    background-image:
+      linear-gradient(rgba(74, 222, 155, 0.16), rgba(74, 222, 155, 0.16)),
+      linear-gradient(rgba(74, 222, 155, 0.5), rgba(74, 222, 155, 0.5));
+    background-size:
+      var(--w, 100%) 100%,
+      var(--w, 100%) 1px;
+    background-position:
+      0 0,
+      0 100%;
+    background-repeat: no-repeat;
+  }
+
+  .d1 {
+    --w: calc(clamp(0, (var(--p) - 0.15) * 3, 1) * 100%);
+  }
+
+  .d2 {
+    --w: calc(clamp(0, (var(--p) - 0.4) * 3, 1) * 100%);
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 2px 8px;
+  }
+
+  .s {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #a1a7b3;
+  }
+
+  .s.add {
+    border-color: rgba(74, 222, 155, 0.36);
+    background: rgba(74, 222, 155, 0.1);
+    color: #4ade9b;
+  }
+
+  .a1 {
+    opacity: calc((var(--p) - 0.62) * 6);
+  }
+
+  .a2 {
+    opacity: calc((var(--p) - 0.72) * 6);
+  }
+
+  .preview {
+    width: 156px;
+    flex: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pv-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #7c828e;
+  }
+
+  .pages {
+    display: flex;
+    gap: 8px;
+  }
+
+  .paper {
+    position: relative;
+    flex: 1;
+    aspect-ratio: 210 / 297;
+    border-radius: 3px;
+    background: #eceef3;
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+
+  /* The second page only exists once the rewrite has spilled onto it. */
+  .paper.second {
+    opacity: calc((var(--p) - 0.55) * 4);
+  }
+
+  .paper i {
+    position: absolute;
+  }
+
+  .paper .lines {
+    background: repeating-linear-gradient(#b9bfca 0 var(--pitch), transparent var(--pitch) var(--gap));
+  }
+
+  .fit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .track {
+    position: relative;
+    flex: 1;
+    height: 4px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .track i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(76% * var(--p));
+    border-radius: 3px;
+    background: #4ade9b;
+  }
+
+  .fit .mono {
+    font-size: 10px;
+    color: #7c828e;
+  }
+
+  .dl {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 28px;
+    border-radius: 7px;
+    background: #f2f4f8;
+    color: #0a0b0f;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .dl svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .fine {
+    margin-top: auto;
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: #7c828e;
+  }
+
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: middle;
+    margin-inline: 8px;
+  }
+</style>

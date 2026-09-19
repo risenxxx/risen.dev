@@ -1,0 +1,21 @@
+---
+import { contacts, site } from '../data/site.ts'
+
+/* Enough for a search engine to connect the page to the person, and no more:
+   every claim here is also visible on the page itself. */
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  alternateName: 'risen',
+  url: `https://${site.domain}/`,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Full-stack and platform engineer',
+  description: site.description,
+  address: { '@type': 'PostalAddress', addressLocality: site.location },
+  knowsLanguage: ['en', 'ru'],
+  sameAs: contacts.filter((c) => c.id !== 'email').map((c) => c.href),
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(person)} is:inline />

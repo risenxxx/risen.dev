@@ -1,0 +1,28 @@
+/*
+  risen.dev is static files and nothing else: Workers static assets serve `dist`
+  with no worker script at all. Pages was folded into Workers in wrangler 4, and
+  deploying through an explicit config keeps the CLI from rewriting package.json
+  on first run.
+
+  `npm run build` before every deploy: canonical links, the sitemap and the
+  noindex header all depend on SITE_ORIGIN / SITE_PREVIEW at build time
+  (astro.config.ts), so a stale `dist` would deploy the wrong ones.
+*/
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "risen-dev",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [{ "pattern": "risen.dev", "custom_domain": true }],
+  // One address rather than two: a *.workers.dev copy of the whole site under
+  // another name is something to keep out of search results for no benefit.
+  "workers_dev": false,
+  // Per-version preview addresses stay on, though — that is what a pull request
+  // gets a link to. They are separate from `workers_dev`: production is only
+  // ever served from risen.dev, while each uploaded version keeps its own
+  // throwaway URL. The account still needs a workers.dev subdomain for them.
+  "preview_urls": true
+}

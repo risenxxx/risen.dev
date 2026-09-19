@@ -1,0 +1,410 @@
+---
+/*
+  dubsync as a timeline: the anchor track, the donor track, and the file that
+  comes out of them.
+
+  The scene is the tool's actual job — the donor slides the measured offset into
+  place, the regions that do not exist in the master are marked and dropped, and
+  the output resolves underneath once the alignment holds. The readout at the
+  bottom is the part that matters most: a confidence score, so a bad match is
+  reported rather than shipped.
+*/
+
+/** One lane of waveform: vertical strokes above and below the centre line. */
+const wave = (mid: number, seed: number, amp: number): string => {
+  let d = ''
+  for (let i = 0; i < 52; i++) {
+    const x = 8 + i * 10
+    const h = amp * (0.35 + 0.65 * Math.abs(Math.sin(i * 1.7 + seed)))
+    d += `M${x} ${mid - h}V${mid + h}`
+  }
+  return d
+}
+
+const tall = wave(38, 0.6, 28)
+const short = wave(29, 1.4, 21)
+---
+
+<div class="app" aria-hidden="true" data-scene data-dur="1800">
+  <div class="bar">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="name">dubsync</span>
+    <span class="themes"><i>System</i><i class="on">Dark</i><i>Light</i></span>
+  </div>
+
+  <div class="tools">
+    <span class="file">master.2160p.mkv</span>
+    <svg class="swap" viewBox="0 0 24 24"><path d="M4 9h16l-3-3M20 15H4l3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <span class="file">donor.dvdrip.mkv</span>
+    <span class="run">Run sync</span>
+  </div>
+
+  <div class="timeline">
+    <div class="ruler">
+      <span class="gutter"></span>
+      <span class="ticks"><i>00:00</i><i>00:20</i><i>00:40</i></span>
+    </div>
+
+    <div class="lane">
+      <span class="gutter">
+        <b>MASTER</b>
+        <span class="track-name">eac3 5.1<i class="sep"></i>eng</span>
+        <em>anchor track</em>
+      </span>
+      <span class="wave"><svg viewBox="0 0 528 76" preserveAspectRatio="none"><path class="master" d={tall}></path></svg></span>
+    </div>
+
+    <div class="lane">
+      <span class="gutter">
+        <b>DONOR</b>
+        <span class="track-name">ac3 2.0<i class="sep"></i>fre dub</span>
+        <em class="shift">shifted −1.284 s</em>
+      </span>
+      <span class="wave">
+        <svg class="slide" viewBox="0 0 528 76" preserveAspectRatio="none"><path class="donor" d={tall}></path></svg>
+        <i class="cut c1">cut</i>
+        <i class="cut c2">cut</i>
+      </span>
+    </div>
+
+    <div class="lane out">
+      <span class="gutter">
+        <b>OUTPUT</b>
+        <span class="track-name">master.synced.mkv</span>
+      </span>
+      <span class="wave"><svg viewBox="0 0 528 58" preserveAspectRatio="none"><path class="result" d={short}></path></svg></span>
+    </div>
+
+    <span class="playhead"></span>
+    <span class="playhandle"></span>
+  </div>
+
+  <div class="readout">
+    <span>offset −1.284 s<i class="sep"></i>PSR 9.4<i class="sep"></i>7 / 7 segments aligned</span>
+    <span class="confident">confident</span>
+  </div>
+</div>
+
+<style>
+  .app {
+    width: 660px;
+    height: 372px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1b1b1f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--sh-mock);
+    font-family: var(--sans);
+  }
+
+  .bar {
+    flex: none;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    background: #242429;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #3a3a40;
+  }
+
+  .name {
+    font-size: 12.5px;
+    color: #d6d6da;
+    margin-left: 4px;
+  }
+
+  .themes {
+    margin-left: auto;
+    display: flex;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .themes i {
+    padding: 3px 9px;
+    border-radius: 5px;
+    color: #9a9aa2;
+    font-style: normal;
+  }
+
+  .themes .on {
+    background: #2f6fbf;
+    color: #fff;
+  }
+
+  .tools {
+    flex: none;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+
+  .file {
+    color: #d6d6da;
+  }
+
+  .swap {
+    width: 14px;
+    height: 14px;
+    color: #a855f7;
+  }
+
+  .run {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 11px;
+    border-radius: 6px;
+    background: #a855f7;
+    color: #120a1c;
+    font-weight: 500;
+  }
+
+  .timeline {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ruler,
+  .lane {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .ruler {
+    flex: none;
+    height: 24px;
+  }
+
+  .lane {
+    flex: none;
+    height: 76px;
+  }
+
+  .lane.out {
+    flex: 1 1 auto;
+    height: auto;
+    border-bottom: 0;
+  }
+
+  .gutter {
+    width: 132px;
+    flex: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 12px 12px 0;
+  }
+
+  .lane.out .gutter {
+    padding-top: 10px;
+  }
+
+  .gutter b {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: #78787f;
+  }
+
+  .track-name {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #d6d6da;
+  }
+
+  .gutter em {
+    display: block;
+    margin-top: 3px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-style: normal;
+    color: #6e6e75;
+  }
+
+  .gutter .shift {
+    color: #c084fc;
+    opacity: calc((var(--p) - 0.3) * 4);
+  }
+
+  .ticks {
+    flex-grow: 1;
+    position: relative;
+    background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 52.6px);
+  }
+
+  .ticks i {
+    position: absolute;
+    top: 5px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-style: normal;
+    color: #78787f;
+  }
+
+  .ticks i:nth-child(1) {
+    left: 6px;
+  }
+
+  .ticks i:nth-child(2) {
+    left: 217px;
+  }
+
+  .ticks i:nth-child(3) {
+    left: 428px;
+  }
+
+  .wave {
+    flex-grow: 1;
+    position: relative;
+    background: #17171a;
+    overflow: hidden;
+  }
+
+  .wave svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .master,
+  .donor,
+  .result {
+    stroke-width: 5;
+    stroke-linecap: round;
+    fill: none;
+  }
+
+  .master {
+    stroke: #6e6e78;
+  }
+
+  .donor {
+    stroke: #a855f7;
+  }
+
+  .result {
+    stroke: #4ade9b;
+  }
+
+  /* The measured offset, applied: the donor walks into place rather than
+     appearing already correct. */
+  .slide {
+    transform: translateX(calc((1 - var(--p)) * 34px));
+  }
+
+  .cut {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    border: 1px dashed rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    background: rgba(10, 10, 12, 0.72);
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-style: normal;
+    color: #c4c4cc;
+    opacity: calc((var(--p) - 0.45) * 5);
+  }
+
+  .c1 {
+    left: 22.6%;
+    width: 9.5%;
+  }
+
+  .c2 {
+    left: 63%;
+    width: 7%;
+  }
+
+  .lane.out .wave {
+    background: #14211c;
+  }
+
+  .lane.out svg {
+    opacity: calc((var(--p) - 0.65) * 4);
+  }
+
+  .playhead {
+    position: absolute;
+    left: 44%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .playhandle {
+    position: absolute;
+    left: 44%;
+    top: 0;
+    width: 9px;
+    height: 9px;
+    margin-left: -4px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .readout {
+    flex: none;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    background: #1f1f23;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #9a9aa2;
+  }
+
+  .confident {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(74, 222, 155, 0.12);
+    border: 1px solid rgba(74, 222, 155, 0.4);
+    color: #4ade9b;
+    opacity: calc((var(--p) - 0.75) * 5);
+  }
+
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    vertical-align: middle;
+    margin-inline: 8px;
+  }
+</style>

@@ -1,0 +1,172 @@
+---
+import Icon from './Icon.astro'
+
+/** Tools shipped and operated, not read about. An entry without a mark is a
+    practice or a platform API that has no logo to borrow. */
+const groups = [
+  {
+    title: 'Frontend',
+    icon: 'u-monitor',
+    items: [
+      { label: 'TypeScript', icon: 'b-typescript' },
+      { label: 'React', icon: 'b-react' },
+      { label: 'Next.js', icon: 'b-nextdotjs' },
+      { label: 'Svelte 5', icon: 'b-svelte' },
+      { label: 'Astro', icon: 'b-astro' },
+      { label: 'Tailwind', icon: 'b-tailwindcss' },
+      { label: 'SSR' },
+      { label: 'Effector' },
+      { label: 'TanStack' },
+      { label: 'Core Web Vitals' },
+      { label: 'Web Workers' },
+      { label: 'Canvas 2D' },
+      { label: 'WCAG' },
+      { label: 'Design systems' },
+    ],
+  },
+  {
+    title: 'Backend & data',
+    icon: 'u-database',
+    items: [
+      { label: '.NET 9', icon: 'b-dotnet' },
+      { label: 'Node.js', icon: 'b-nodedotjs' },
+      { label: 'Bun', icon: 'b-bun' },
+      { label: 'Hono', icon: 'b-hono' },
+      { label: 'PostgreSQL', icon: 'b-postgresql' },
+      { label: 'Drizzle', icon: 'b-drizzle' },
+      { label: 'ClickHouse', icon: 'b-clickhouse' },
+      { label: 'Redis', icon: 'b-redis' },
+      { label: 'NATS', icon: 'b-natsdotio' },
+      { label: 'Temporal', icon: 'b-temporal' },
+      { label: 'Socket.IO', icon: 'b-socketdotio' },
+      { label: 'Kafka', icon: 'b-apachekafka' },
+      { label: 'EF Core' },
+      { label: 'OpenAPI' },
+    ],
+  },
+  {
+    title: 'Platform & ops',
+    icon: 'u-cloud',
+    items: [
+      { label: 'Kubernetes', icon: 'b-kubernetes' },
+      { label: 'Talos Linux' },
+      { label: 'Docker', icon: 'b-docker' },
+      { label: 'Pulumi', icon: 'b-pulumi' },
+      { label: 'Terraform', icon: 'b-terraform' },
+      { label: 'FluxCD' },
+      { label: 'Cloudflare', icon: 'b-cloudflare' },
+      { label: 'Hetzner', icon: 'b-hetzner' },
+      { label: 'GCP', icon: 'b-googlecloud' },
+      { label: 'Prometheus', icon: 'b-prometheus' },
+      { label: 'Grafana', icon: 'b-grafana' },
+      { label: 'Sentry', icon: 'b-sentry' },
+      { label: 'Actions', icon: 'b-githubactions' },
+      { label: 'SLOs' },
+    ],
+  },
+  {
+    title: 'Further afield',
+    icon: 'u-star',
+    items: [
+      { label: 'Rust', icon: 'b-rust' },
+      { label: 'Tauri 2', icon: 'b-tauri' },
+      { label: 'FFmpeg', icon: 'b-ffmpeg' },
+      { label: 'WebAssembly', icon: 'b-webassembly' },
+      { label: 'Win32 / Direct2D' },
+      { label: 'USB HID' },
+      { label: 'libmpv' },
+      { label: 'Audio DSP / FFT' },
+      { label: 'HDR / Dolby Vision' },
+      { label: 'Applied cryptography' },
+      { label: 'Telegram Mini Apps' },
+    ],
+  },
+]
+---
+
+<section id="stack">
+  <div class="wrap">
+    <h2 class="h-section" data-reveal>Production-proven stack</h2>
+    <p class="lede" data-reveal style="--dl: 1">
+      Tools I have shipped and operated, not ones I have read about. Chosen per constraint rather than per
+      fashion.
+    </p>
+
+    <div class="grid">
+      {
+        groups.map((g, i) => (
+          <section class="card" data-reveal style={`--dl: ${i}`}>
+            <h3>
+              <Icon name={g.icon} size={17} />
+              {g.title}
+            </h3>
+            <ul>
+              {g.items.map((item) => (
+                <li class="chip chip-lg">
+                  {item.icon && <Icon name={item.icon} size={14} />}
+                  {item.label}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  section[id] {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(44px, 5vw, 62px);
+  }
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  .lede {
+    max-width: 720px;
+    margin-bottom: 30px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    padding: 22px 20px;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  h3 :global(.ic) {
+    color: var(--fg3);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  @media (max-width: 1180px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

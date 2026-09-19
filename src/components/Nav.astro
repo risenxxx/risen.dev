@@ -1,0 +1,116 @@
+---
+import { contacts, nav, site } from '../data/site.ts'
+import Icon from './Icon.astro'
+
+const social = contacts.filter((c) => c.id !== 'email')
+---
+
+<header class="bar">
+  <div class="wrap row">
+    <a class="mark" href="#top">risen<span>.dev</span></a>
+
+    <nav class="tabs" aria-label="Sections">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="right">
+      {
+        social.map((c) => (
+          <a class="btn btn-icon" href={c.href} aria-label={c.label} rel="me">
+            <Icon name={c.icon} size={17} />
+          </a>
+        ))
+      }
+      <a class="btn btn-primary cv" href={site.cv} download>
+        <Icon name="u-download" size={15} />
+        Download CV
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row {
+    height: 74px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .mark {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+  }
+
+  .mark span {
+    color: #6f6f7a;
+  }
+
+  .tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .tabs a {
+    padding: 7px 15px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fg2);
+    transition:
+      color 0.18s,
+      background-color 0.18s;
+  }
+
+  .tabs a:hover {
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cv {
+    margin-left: 4px;
+  }
+
+  /* The tab strip is the first thing to go: the four anchors all exist as
+     headings further down, and the contact buttons do not. */
+  @media (max-width: 960px) {
+    .tabs {
+      display: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .cv span,
+    .cv {
+      font-size: 13px;
+      padding: 0 14px;
+    }
+
+    .row {
+      height: 64px;
+    }
+  }
+</style>

@@ -1,0 +1,116 @@
+---
+import { contacts, site } from '../data/site.ts'
+import Icon from './Icon.astro'
+import Sep from './Sep.astro'
+
+/* The second ask. The first one is a button in the navigation, before anybody
+   has a reason to press it; this one comes after five products. */
+const social = contacts.filter((c) => c.id !== 'email')
+---
+
+<section id="contact">
+  <span class="bloom" aria-hidden="true"></span>
+
+  <div class="wrap inner">
+    <p class="pill" data-reveal><span class="live" aria-hidden="true"></span>Available now</p>
+
+    <h2 data-reveal style="--dl: 1">You have seen the work. Let’s talk about yours.</h2>
+
+    <p class="lede" data-reveal style="--dl: 2">
+      Senior full-stack, backend or platform roles — remote worldwide as a contractor or through an EOR, or
+      hybrid in {site.location}. Contract work and one-off architecture reviews too.
+    </p>
+
+    <div class="cta" data-reveal style="--dl: 3">
+      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`}>
+        <Icon name="u-mail" />
+        {site.email}
+      </a>
+      <a class="btn btn-ghost btn-lg" href={site.cv} download>
+        <Icon name="u-download" />
+        Download CV
+      </a>
+    </div>
+
+    <ul class="ids" data-reveal style="--dl: 4">
+      {
+        social.map((c) => (
+          <li>
+            <a class="btn btn-id" href={c.href} rel="me">
+              <Icon name={c.icon} size={c.id === 'linkedin' ? 15 : 16} />
+              {c.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="fine" data-reveal style="--dl: 5">
+      {site.location}, {site.timezone}
+      <Sep />
+      remote worldwide, contractor or EOR
+      <Sep />
+      English (full professional), Russian
+    </p>
+  </div>
+</section>
+
+<style>
+  section {
+    position: relative;
+    border-top: 1px solid var(--line);
+    padding-block: clamp(54px, 6vw, 80px);
+  }
+
+  .bloom {
+    top: -120px;
+    width: min(1000px, 120vw);
+    height: 520px;
+  }
+
+  .inner {
+    position: relative;
+    text-align: center;
+  }
+
+  h2 {
+    margin: 22px auto 20px;
+    max-width: 900px;
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  .lede {
+    margin-inline: auto;
+    max-width: 660px;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 34px 0 22px;
+  }
+
+  .ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 26px;
+  }
+
+  .fine {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--fg3);
+  }
+</style>

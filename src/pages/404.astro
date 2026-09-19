@@ -1,0 +1,45 @@
+---
+import Page from '../layouts/Page.astro'
+import { site } from '../data/site.ts'
+---
+
+<Page title={`Not found — ${site.domain}`} noindex>
+  <main class="missing">
+    <p class="mono code">404</p>
+    <h1>There is nothing at this address.</h1>
+    <p class="lede">The page you were looking for has either moved or never existed.</p>
+    <a class="btn btn-primary btn-lg" href="/">Back to the landing</a>
+  </main>
+</Page>
+
+<style>
+  .missing {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: var(--gut);
+    text-align: center;
+  }
+
+  .code {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--fg3);
+  }
+
+  h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: -0.03em;
+  }
+
+  .lede {
+    max-width: 480px;
+  }
+
+  .btn {
+    margin-top: 10px;
+  }
+</style>

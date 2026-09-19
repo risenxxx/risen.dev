@@ -1,0 +1,434 @@
+/*
+  Reset, base typography, and the primitives more than one section draws with.
+  Anything that belongs to a single section lives in that component.
+
+  Everything here is in the `base` layer and component styles are outside it, so
+  a component always wins over a shared primitive whatever order Astro happens
+  to concatenate the chunks in. Scoped styles compile through :where()
+  (astro.config.ts), so specificity matches the prototype rather than being
+  inflated by an extra attribute selector.
+*/
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  html {
+    background: var(--bg);
+    scrollbar-color: #2a2a30 var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font: 400 16px / 1.6 var(--sans);
+    color: var(--fg);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: rgba(150, 158, 200, 0.32);
+    color: var(--fg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a30;
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 3px;
+    border-radius: 10px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 600;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  ul,
+  ol,
+  figure {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  section[id] {
+    scroll-margin-top: 84px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* ── layout ─────────────────────────────────────────────────────────── */
+
+  .wrap {
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gut);
+  }
+
+  .rule {
+    border-top: 1px solid var(--line);
+  }
+
+  .mono {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .vh {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /*
+    Separator. A middle dot at 11 px is almost invisible and a bullet reads as a
+    list marker, which none of these rows are. A 3 px circle in currentColor
+    stays visible at every size the page uses, and screen readers skip it —
+    the parts around it are separated by real spaces in the markup.
+  */
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: middle;
+    margin-inline: 9px;
+    flex: none;
+  }
+
+  .sep-tight {
+    margin-inline: 7px;
+  }
+
+  /* ── type ───────────────────────────────────────────────────────────── */
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg3);
+  }
+
+  .eyebrow .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-right: 10px;
+    flex: none;
+  }
+
+  .lede {
+    font-size: clamp(16px, 1.2vw, 17.5px);
+    line-height: 1.62;
+    color: var(--fg2);
+  }
+
+  .h-section {
+    font-size: clamp(28px, 3.4vw, 40px);
+    letter-spacing: -0.03em;
+  }
+
+  /* ── controls ───────────────────────────────────────────────────────── */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font: 500 14px / 1 var(--sans);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.18s,
+      border-color 0.18s,
+      color 0.18s,
+      transform 0.18s;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary {
+    background: var(--btn);
+    color: var(--btn-fg);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    background: var(--btn-hover);
+    color: var(--btn-fg);
+  }
+
+  .btn-ghost {
+    border-color: var(--line3);
+    color: var(--fg);
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .btn-lg {
+    height: 50px;
+    padding: 0 26px;
+    font-size: 16px;
+  }
+
+  /* A contact address: monospace, because it is an identifier and not a phrase. */
+  .btn-id {
+    font-family: var(--mono);
+    font-size: 14px;
+    border-color: var(--line2);
+    color: var(--fg-mid);
+    height: 42px;
+    padding: 0 18px;
+  }
+
+  .btn-id:hover {
+    border-color: var(--line3);
+    color: var(--fg);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .btn-icon {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-color: var(--line2);
+    color: var(--fg-mid);
+  }
+
+  .btn-icon:hover {
+    border-color: var(--line3);
+    color: var(--fg);
+  }
+
+  .btn .ic {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+
+  .btn-lg .ic {
+    width: 17px;
+    height: 17px;
+  }
+
+  /* ── surfaces ───────────────────────────────────────────────────────── */
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 15px;
+    border: 1px solid var(--line2);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-soft);
+  }
+
+  .pill .live {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex: none;
+  }
+
+  .card {
+    background: var(--s3);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 5px 10px;
+    border: 1px solid var(--line2);
+    border-radius: 7px;
+    color: var(--fg-soft);
+  }
+
+  .chip .ic {
+    width: 13px;
+    height: 13px;
+    flex: none;
+  }
+
+  /* The stack section says the same thing at reading size. */
+  .chip-lg {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    padding: 6px 11px;
+    border-radius: 8px;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--fg-mid);
+  }
+
+  .chip-lg .ic {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* One product's numbers, banded between two hairlines. */
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 26px;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .metrics dt {
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .metrics dd {
+    margin: 3px 0 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--fg3);
+  }
+
+  .bloom {
+    position: absolute;
+    left: 50%;
+    translate: -50% 0;
+    background: radial-gradient(closest-side, var(--glow), var(--glow2) 55%, transparent);
+    pointer-events: none;
+  }
+
+  /* ── motion ─────────────────────────────────────────────────────────── */
+
+  /*
+    Three rules, and they are the whole motion system.
+
+    Everything animates only inside its own section and only while it is on
+    screen; nothing is tied to the page's scroll position, so the page scrolls
+    at its normal speed from top to bottom. `html.js` gates the hidden state:
+    without JavaScript the class is never added and every element renders in its
+    finished position, which is also what `prefers-reduced-motion` gets.
+  */
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s var(--ease) calc(var(--dl, 0) * 70ms),
+      transform 0.6s var(--ease) calc(var(--dl, 0) * 70ms);
+  }
+
+  html.js [data-reveal].in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Scene progress, 0 to 1. Its default is the finished state: with no script
+     the previews show the result of the run rather than an empty stage. */
+  [data-scene] {
+    --p: 1;
+  }
+
+  html.js [data-scene] {
+    --p: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.js [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    html.js [data-scene] {
+      --p: 1;
+    }
+  }
+}

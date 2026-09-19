@@ -1,0 +1,240 @@
+---
+/*
+  DeskVolt on a desktop corner.
+
+  The widget is what `src/ui/render.rs` actually draws: a #2D2D2D panel, 44 px
+  rows, 16 px side padding, the device name in Segoe UI beside its glyph and the
+  percentage right-aligned in tabular figures — white when the battery is fine,
+  gold while charging, red when it is low, grey when the device is not there.
+
+  Rows arrive one after another and the percentages count up, which is also how
+  the real widget fills in as each HID query comes back.
+*/
+
+const devices = [
+  { name: 'G Pro X Superlight 2', value: 68, state: 'ok', icon: 'mouse' },
+  { name: 'Arctis Nova Pro', value: 92, state: 'charging', icon: 'headset' },
+  { name: 'DualSense', value: 14, state: 'low', icon: 'pad' },
+  { name: 'HyperX Cloud III', value: null, state: 'off', icon: 'headset' },
+]
+---
+
+<div class="desk" aria-hidden="true" data-scene data-dur="1500">
+  <span class="wall"></span>
+
+  <span class="claim">no G HUB<i class="sep"></i>no iCUE<i class="sep"></i>no SteelSeries GG</span>
+
+  <div class="widget">
+    {
+      devices.map((d, i) => (
+        <div class:list={['row', d.state]} style={`--i: ${i}`}>
+          <span class="glyph">
+            {d.icon === 'mouse' && (
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3a6 6 0 0 0-6 6v6a6 6 0 0 0 12 0V9a6 6 0 0 0-6-6M12 6.5v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+            )}
+            {d.icon === 'headset' && (
+              <svg viewBox="0 0 24 24">
+                <path d="M5 16v-4a7 7 0 0 1 14 0v4M5 14h1.6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5zM19 14h-1.6a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1H19z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            )}
+            {d.icon === 'pad' && (
+              <svg viewBox="0 0 24 24">
+                <path d="M7.5 8h9a4.5 4.5 0 0 1 4.4 3.6l.8 4A2.6 2.6 0 0 1 19.2 19c-.9 0-1.7-.5-2.2-1.2L16 16.4H8l-1 1.4C6.5 18.5 5.7 19 4.8 19a2.6 2.6 0 0 1-2.5-3.4l.8-4A4.5 4.5 0 0 1 7.5 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <path d="M6.6 12h2.2M7.7 10.9v2.2M15.6 12h.01M17.6 12h.01" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            )}
+          </span>
+          <span class="label">{d.name}</span>
+          <span class="pct">
+            {d.state === 'charging' && (
+              <svg class="bolt" viewBox="0 0 24 24">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="currentColor" />
+              </svg>
+            )}
+            {d.value === null ? (
+              'offline'
+            ) : (
+              <b data-count={d.value} data-decimals="0" data-suffix="%">{d.value}%</b>
+            )}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="taskbar">
+    <span class="tile"></span><span class="tile dim"></span><span class="tile dim"></span>
+    <span class="tray">
+      <svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0M12 19h.01" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+      <svg class="batt" viewBox="0 0 24 24"><rect x="2" y="8" width="17" height="9" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"></rect><path d="M21 11.2v2.6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path><rect x="4" y="10" width="10" height="5" fill="currentColor"></rect></svg>
+      <span class="clock">21:04</span>
+    </span>
+  </div>
+</div>
+
+<style>
+  .desk {
+    position: relative;
+    width: 660px;
+    height: 372px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1c2230;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--sh-mock);
+    font-family: "Segoe UI", var(--sans);
+  }
+
+  .wall {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(90% 80% at 24% 24%, rgba(86, 118, 170, 0.35), transparent 62%),
+      radial-gradient(80% 70% at 82% 86%, rgba(38, 52, 80, 0.6), transparent 60%);
+  }
+
+  .claim {
+    position: absolute;
+    left: 22px;
+    top: 22px;
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    padding: 0 13px;
+    border-radius: 999px;
+    background: rgba(10, 12, 18, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #d6dce8;
+  }
+
+  .widget {
+    position: absolute;
+    right: 22px;
+    bottom: 74px;
+    width: 312px;
+    background: #2d2d2d;
+    border-radius: 8px;
+    box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+    padding: 5px 0 16px;
+  }
+
+  /* One row per HID answer, arriving in order. */
+  .row {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    opacity: calc((var(--p) - var(--i) * 0.16) * 5);
+    transform: translateY(calc((1 - clamp(0, (var(--p) - var(--i) * 0.16) * 5, 1)) * 6px));
+  }
+
+  .glyph {
+    width: 22px;
+    flex: none;
+  }
+
+  .glyph svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .label {
+    margin-left: 16px;
+    font-size: 15px;
+  }
+
+  .pct {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pct b {
+    font-weight: 400;
+  }
+
+  .bolt {
+    width: 13px;
+    height: 13px;
+  }
+
+  .ok {
+    color: #ffffff;
+  }
+
+  .charging {
+    color: #ffd400;
+  }
+
+  .low {
+    color: #ff5050;
+  }
+
+  .off {
+    color: #909090;
+  }
+
+  .taskbar {
+    position: absolute;
+    inset: auto 0 0;
+    height: 48px;
+    background: rgba(18, 20, 26, 0.88);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 14px;
+  }
+
+  .tile {
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .tile.dim {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .tray {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #c7ccd6;
+  }
+
+  .tray svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tray .batt {
+    color: #ffd400;
+  }
+
+  .clock {
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: middle;
+    margin-inline: 9px;
+  }
+</style>

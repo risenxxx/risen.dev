@@ -1,0 +1,92 @@
+---
+/*
+  The plinth every product preview stands on.
+
+  A preview is drawn once at its real pixel size — 660 × 372, the size the
+  application's own chrome was measured at — and scaled down in steps as the
+  column narrows. Scaling beats re-flowing here: a player's controls rearranging
+  themselves at 480 px would stop being a picture of that player.
+*/
+interface Props {
+  w?: number
+  h?: number
+  /** A preview whose own backdrop belongs to the product, like the Mini App's. */
+  backdrop?: string
+}
+
+const { w = 660, h = 372, backdrop } = Astro.props
+---
+
+<div class="stage" style={backdrop ? `background: ${backdrop}` : undefined}>
+  <div class="frame" style={`--w: ${w}; --h: ${h}`}>
+    <div class="inner"><slot /></div>
+  </div>
+</div>
+
+<style>
+  .stage {
+    container-type: inline-size;
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .frame {
+    --k: 1;
+    height: calc(var(--h) * var(--k) * 1px);
+    display: flex;
+    justify-content: center;
+  }
+
+  .inner {
+    width: calc(var(--w) * 1px);
+    height: calc(var(--h) * 1px);
+    flex: none;
+    transform: scale(var(--k));
+    transform-origin: top center;
+  }
+
+  @container (max-width: 655px) {
+    .frame {
+      --k: 0.94;
+    }
+  }
+
+  @container (max-width: 615px) {
+    .frame {
+      --k: 0.86;
+    }
+  }
+
+  @container (max-width: 560px) {
+    .frame {
+      --k: 0.77;
+    }
+  }
+
+  @container (max-width: 500px) {
+    .frame {
+      --k: 0.68;
+    }
+  }
+
+  @container (max-width: 440px) {
+    .frame {
+      --k: 0.58;
+    }
+  }
+
+  @container (max-width: 380px) {
+    .frame {
+      --k: 0.5;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .stage {
+      padding: 12px;
+      border-radius: 16px;
+    }
+  }
+</style>

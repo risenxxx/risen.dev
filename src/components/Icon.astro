@@ -1,0 +1,25 @@
+---
+/** One symbol out of the sprite. Decorative by default: the text beside an icon
+    is what carries the meaning, and an icon alone gets an aria-label instead. */
+interface Props {
+  name: string
+  size?: number
+  class?: string
+}
+
+const { name, size, class: cls } = Astro.props
+---
+
+<svg
+  class:list={['ic', cls]}
+  style={size ? `width: ${size}px; height: ${size}px` : undefined}
+  aria-hidden="true"
+  focusable="false"><use href={`#${name}`}></use></svg>
+
+<style>
+  .ic {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+</style>

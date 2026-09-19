@@ -1,0 +1,78 @@
+---
+import { site } from '../data/site.ts'
+import Sep from './Sep.astro'
+
+const year = new Date().getFullYear()
+---
+
+<footer>
+  <div class="wrap row">
+    <span class="mark">risen<span>.dev</span></span>
+
+    <p class="colophon">
+      Astro, no framework runtime
+      <Sep />
+      under 4 KB of JavaScript
+      <Sep />
+      deployed to Cloudflare by GitHub Actions on every push
+      <Sep />
+      <a href={site.repo}>source</a>
+    </p>
+
+    <p class="rights">© {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    background: #08080a;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 28px;
+  }
+
+  .mark {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+
+  .mark span {
+    color: #6f6f7a;
+  }
+
+  .colophon,
+  .rights {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #6f6f7a;
+  }
+
+  .colophon a {
+    color: var(--fg2);
+    border-bottom: 1px solid rgba(163, 163, 173, 0.4);
+  }
+
+  .colophon a:hover {
+    color: var(--fg);
+    border-bottom-color: var(--fg);
+  }
+
+  @media (max-width: 1080px) {
+    .row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>

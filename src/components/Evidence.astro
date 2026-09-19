@@ -1,0 +1,74 @@
+---
+/*
+  Only claims that hold for the whole page belong here. A product's own numbers
+  — p95 latency, rollback time, workflow completion — sit beside that product,
+  where the reader can see what they are a property of.
+
+  The figures that count up carry their final value in the markup, so the
+  no-script page and the first paint both show the real number.
+*/
+const figures = [
+  { value: '5.5M', note: 'installs a month of a library I wrote', count: 5.5, decimals: 1, suffix: 'M' },
+  { value: '5 / 5', note: 'solo products across unrelated domains' },
+  { value: '3 languages', note: 'in production: TypeScript, C#, Rust' },
+  { value: '8 years', note: 'shipping, from the interface to the cluster' },
+]
+---
+
+<section class="evidence">
+  <ul class="wrap row">
+    {
+      figures.map((f, i) => (
+        <li data-reveal style={`--dl: ${i}`}>
+          <p
+            class="figure"
+            data-count={f.count}
+            data-decimals={f.decimals}
+            data-suffix={f.suffix}
+          >
+            {f.value}
+          </p>
+          <p class="note">{f.note}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .evidence {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--s1);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px 40px;
+    padding-block: 30px;
+  }
+
+  .figure {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.4vw, 28px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 5px;
+  }
+
+  .note {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #8a8a94;
+  }
+
+  @media (max-width: 860px) {
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

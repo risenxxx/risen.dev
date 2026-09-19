@@ -1,0 +1,11 @@
+---
+/** The 3 px separator. Hidden from assistive tech: the parts either side of it
+    are separated by real spaces in the markup already. */
+interface Props {
+  tight?: boolean
+}
+
+const { tight = false } = Astro.props
+---
+
+<span class:list={['sep', { 'sep-tight': tight }]} aria-hidden="true"></span>

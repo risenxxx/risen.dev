@@ -1,0 +1,88 @@
+name: Deploy
+
+# A deploy is a reviewed commit, not a hand on a terminal: every push to master
+# builds, passes the gates and goes out. A pull request builds the same way and
+# gets its own preview address, so a change can be looked at before it lands.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build
+        env:
+          # A preview build asks search engines to stay away (astro.config.ts);
+          # production keeps the canonical origin.
+          SITE_ORIGIN: ${{ github.event_name == 'pull_request' && '' || 'https://risen.dev' }}
+          SITE_PREVIEW: ${{ github.event_name == 'pull_request' && '1' || '' }}
+        run: npm run build
+
+      # The page claims a JavaScript budget in its own footer. A gate is the only
+      # thing that keeps such a claim true six months from now.
+      - name: JavaScript budget
+        run: npm run budget
+
+      - name: Deploy to Cloudflare
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      # Forks do not get the secrets, so they build and stop there.
+      - name: Upload preview version
+        id: preview
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload
+
+      - name: Comment the preview address
+        if: steps.preview.outputs.deployment-url != ''
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.deployment-url }}
+        with:
+          script: |
+            const url = process.env.PREVIEW_URL
+            const marker = '<!-- preview-url -->'
+            const body = `${marker}\nPreview of ${context.sha.slice(0, 7)}: ${url}`
+            const { data: comments } = await github.rest.issues.listComments({
+              ...context.repo,
+              issue_number: context.issue.number,
+            })
+            const existing = comments.find((c) => c.body?.startsWith(marker))
+            if (existing) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body })
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body })
+            }

@@ -1,0 +1,47 @@
+---
+import Approach from '../components/Approach.astro'
+import Architecture from '../components/Architecture.astro'
+import Contact from '../components/Contact.astro'
+import Evidence from '../components/Evidence.astro'
+import Footer from '../components/Footer.astro'
+import Hero from '../components/Hero.astro'
+import IconSprite from '../components/IconSprite.astro'
+import Nav from '../components/Nav.astro'
+import OpenSource from '../components/OpenSource.astro'
+import Stack from '../components/Stack.astro'
+import Work from '../components/Work.astro'
+import Page from '../layouts/Page.astro'
+import StructuredData from '../components/StructuredData.astro'
+---
+
+<Page>
+  <StructuredData />
+  <IconSprite />
+  <Nav />
+  <main>
+    <Hero />
+    <Evidence />
+    <Architecture />
+    <Work />
+    <Approach />
+    <Stack />
+    <OpenSource />
+    <Contact />
+  </main>
+  <Footer />
+</Page>
+
+<script>
+  import { initMotion } from '../scripts/motion.ts'
+
+  /*
+    If anything in here fails, the page must not be left holding its own content
+    hidden: dropping `.js` puts every reveal and every scene into its finished
+    state, which is exactly the no-script rendering.
+  */
+  try {
+    initMotion()
+  } catch {
+    document.documentElement.classList.remove('js')
+  }
+</script>

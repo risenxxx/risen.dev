@@ -1,0 +1,526 @@
+---
+/*
+  The Telegram Mini App, rebuilt from its own source.
+
+  The wheel is the real one: a donut of 140 / 40 user units, sectors coloured
+  from `getSectorColors` (muted greens, blues and greys — the accent belongs to
+  the pointer and the money, not to the board), the 145-unit rim, and the eight
+  pixel lime pointer at the top. Around it the app's own primitives: the TON
+  wallet pill, the points badge, the pot ValueBadge, a ContentCard holding the
+  live bet feed, and the gradient Place-bet button.
+
+  The round settles as the section arrives: the wheel turns down to its winner
+  and the second bet drops into the feed.
+*/
+---
+
+<div class="phone" aria-hidden="true" data-scene data-dur="2200">
+  <span class="backdrop"></span>
+
+  <div class="tg">
+    <svg class="back" viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <span class="tg-title">Gift Fight</span>
+    <span class="dots"><i></i><i></i><i></i></span>
+  </div>
+
+  <div class="head">
+    <span class="avatar"></span>
+    <span class="who">
+      <span class="name">risenxx</span>
+      <span class="points">1 240
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l4.5 5.2L12 22 7.5 7.2z"></path></svg>
+      </span>
+    </span>
+    <span class="wallet">
+      <svg class="ton" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"></circle><path d="M7.4 8.2h9.2L12 17.4zM12 8.6v8.4" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+      <span class="ton-value">84.2</span>
+      <span class="wbtns">
+        <i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
+        <i><svg viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
+      </span>
+    </span>
+  </div>
+
+  <div class="wheelbox">
+    <span class="pointer"></span>
+    <svg class="wheel" viewBox="-150 -150 300 300">
+      <circle cx="0" cy="0" r="145" fill="none" stroke="rgba(168,255,53,0.28)" stroke-width="4"></circle>
+      <g class="spin">
+        <path d="M 0 -40 L 0 -140 A 140 140 0 0 1 137.5 26.2 L 39.3 7.5 A 40 40 0 0 0 0 -40 Z" fill="rgba(34,85,34,0.8)"></path>
+        <path d="M 39.3 7.5 L 137.5 26.2 A 140 140 0 0 1 8.8 139.7 L 2.5 39.9 A 40 40 0 0 0 39.3 7.5 Z" fill="rgba(21,32,60,0.8)"></path>
+        <path d="M 2.5 39.9 L 8.8 139.7 A 140 140 0 0 1 -118.2 75 L -33.8 21.4 A 40 40 0 0 0 2.5 39.9 Z" fill="rgba(25,25,25,0.8)"></path>
+        <path d="M -33.8 21.4 L -118.2 75 A 140 140 0 0 1 -133.1 -43.3 L -38 -12.4 A 40 40 0 0 0 -33.8 21.4 Z" fill="rgba(34,85,34,0.8)"></path>
+        <path d="M -38 -12.4 L -133.1 -43.3 A 140 140 0 0 1 -75 -118.2 L -21.4 -33.8 A 40 40 0 0 0 -38 -12.4 Z" fill="rgba(21,32,60,0.8)"></path>
+        <path d="M -21.4 -33.8 L -75 -118.2 A 140 140 0 0 1 0 -140 L 0 -40 A 40 40 0 0 0 -21.4 -33.8 Z" fill="rgba(25,25,25,0.8)"></path>
+        <g class="seats">
+          <circle cx="90.9" cy="-75.2" r="15" stroke="#a8ff35"></circle>
+          <circle cx="78.1" cy="88.5" r="15" stroke="#6c8cff"></circle>
+          <circle cx="-53.6" cy="105.2" r="15" stroke="#e8e8ef"></circle>
+          <circle cx="-117.1" cy="14.8" r="15" stroke="#3dd6c0"></circle>
+          <circle cx="-93.3" cy="-72.3" r="15" stroke="#e24a8b"></circle>
+          <circle cx="-33" cy="-113.3" r="15" stroke="#ff8a3d"></circle>
+        </g>
+        <g class="gifts">
+          <rect x="13" y="-9" width="18" height="18" rx="5"></rect>
+          <rect x="-40.3" y="19.7" width="18" height="18" rx="5"></rect>
+          <rect x="-4.5" y="-59.7" width="18" height="18" rx="5"></rect>
+          <rect x="25.9" y="36.6" width="18" height="18" rx="5"></rect>
+          <rect x="-71" y="-20" width="18" height="18" rx="5"></rect>
+          <rect x="48.2" y="-45.4" width="18" height="18" rx="5"></rect>
+          <rect x="-27.7" y="60.6" width="18" height="18" rx="5"></rect>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="stats">
+    <span class="players">
+      <span class="faces"><i></i><i></i><i></i><i class="more">+3</i></span>
+      6 players
+    </span>
+    <span class="pot">84.2 TON</span>
+    <span class="fair">
+      <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>
+      Provably fair<i class="sep"></i>verify round
+    </span>
+  </div>
+
+  <div class="feed">
+    <p class="live"><i></i>Bets</p>
+    <div class="bet">
+      <span class="face"></span><span class="gift"></span>
+      <span class="what"><b>Plush Pepe</b><em>@nikita<i class="sep"></i>2s ago</em></span>
+      <span class="value">21.4</span>
+    </div>
+    <div class="bet drop">
+      <span class="face alt"></span><span class="gift"></span>
+      <span class="what"><b>Durov’s Cap</b><em>@aiko<i class="sep"></i>9s ago</em></span>
+      <span class="value">18.0</span>
+    </div>
+  </div>
+
+  <div class="cta"><span>Place bet</span></div>
+
+  <div class="tabs">
+    <span><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Home</span>
+    <span><svg viewBox="0 0 24 24"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM4 8l2-4h12l2 4M12 4v16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Cases</span>
+    <span class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="12" cy="12" r="2.4" fill="currentColor"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Roulette</span>
+    <span><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Items</span>
+    <span><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Profile</span>
+  </div>
+</div>
+
+<style>
+  .phone {
+    position: relative;
+    width: 316px;
+    margin-inline: auto;
+    background: #191623;
+    border: 1px solid #2e304d;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.9);
+    font-family: var(--ui);
+  }
+
+  .backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0f0f10, #1a1a2e 55%, #16213e);
+  }
+
+  .phone > *:not(.backdrop) {
+    position: relative;
+  }
+
+  .tg {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 13px;
+    background: rgba(32, 32, 44, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .back {
+    width: 15px;
+    height: 15px;
+    color: #8e8ea0;
+  }
+
+  .tg-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e6e6f0;
+  }
+
+  .dots {
+    margin-left: auto;
+    display: flex;
+    gap: 3px;
+  }
+
+  .dots i {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #8e8ea0;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4a4468, #2e2a44);
+    flex: none;
+  }
+
+  .who {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .points {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(232, 121, 249, 0.2), rgba(217, 70, 239, 0.2));
+    border: 1px solid rgba(240, 171, 252, 0.3);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #e879f9;
+  }
+
+  .points svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .wallet {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(0, 152, 234, 0.1), rgba(0, 136, 204, 0.1));
+    border: 1px solid rgba(0, 152, 234, 0.2);
+  }
+
+  .ton {
+    width: 20px;
+    height: 20px;
+    color: #0098ea;
+  }
+
+  .ton-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0098ea;
+  }
+
+  .wbtns {
+    display: flex;
+    gap: 2px;
+  }
+
+  .wbtns i {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 152, 234, 0.14);
+    display: grid;
+    place-items: center;
+  }
+
+  .wbtns svg {
+    width: 11px;
+    height: 11px;
+    color: #0098ea;
+  }
+
+  .wheelbox {
+    padding: 4px 14px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pointer {
+    position: absolute;
+    left: 50%;
+    top: 6px;
+    margin-left: -4px;
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 8px solid #a8ff35;
+    z-index: 2;
+  }
+
+  .wheel {
+    width: 262px;
+    height: 262px;
+    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.5));
+  }
+
+  /* Three turns and a little, easing into the winner. The rotation is the scene
+     progress and nothing else, so it cannot run away on a slow frame. */
+  .spin {
+    transform: rotate(calc(var(--p) * 1134deg));
+    transform-origin: 0 0;
+  }
+
+  .seats circle {
+    fill: #2a2740;
+    stroke-width: 2.5;
+  }
+
+  .gifts rect {
+    fill: #241f38;
+    stroke: rgba(255, 255, 255, 0.14);
+  }
+
+  .stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 0;
+  }
+
+  .players {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #9494a5;
+  }
+
+  .faces {
+    display: flex;
+  }
+
+  .faces i {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #12101b;
+    background: #3a3550;
+  }
+
+  .faces i + i {
+    margin-left: -8px;
+    background: #45406b;
+  }
+
+  .faces i:nth-child(3) {
+    background: #2f5a52;
+  }
+
+  .faces .more {
+    background: linear-gradient(135deg, #a8ff35, #88dd20);
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #000;
+    font-style: normal;
+  }
+
+  .pot {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(168, 255, 53, 0.2), rgba(136, 221, 32, 0.2));
+    border: 1px solid rgba(168, 255, 53, 0.3);
+    font-size: 17px;
+    font-weight: 500;
+    color: #a8ff35;
+  }
+
+  .fair {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #7d7e9b;
+  }
+
+  .fair svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .feed {
+    margin: 12px 14px 0;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid #2e304d;
+    border-radius: 16px;
+    padding: 12px;
+  }
+
+  .live {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #c0c1d9;
+    margin-bottom: 10px;
+  }
+
+  .live i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fd473a;
+  }
+
+  .bet {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  .bet + .bet {
+    margin-top: 7px;
+  }
+
+  /* The newest bet slides in from the left, the way the real feed animates it. */
+  .drop {
+    opacity: calc((var(--p) - 0.72) * 5);
+    transform: translateX(calc((1 - clamp(0, (var(--p) - 0.72) * 5, 1)) * -16px));
+  }
+
+  .face,
+  .gift {
+    width: 28px;
+    height: 28px;
+    flex: none;
+  }
+
+  .face {
+    border-radius: 50%;
+    background: #3a3550;
+  }
+
+  .face.alt {
+    background: #45406b;
+  }
+
+  .gift {
+    border-radius: 8px;
+    background: #241f38;
+    border: 1px solid #3e3a5c;
+  }
+
+  .what {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .what b {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: #e6e6f0;
+  }
+
+  .what em {
+    display: block;
+    font-size: 11px;
+    font-style: normal;
+    color: #7d7e9b;
+  }
+
+  .value {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(168, 255, 53, 0.2), rgba(136, 221, 32, 0.2));
+    border: 1px solid rgba(168, 255, 53, 0.3);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #a8ff35;
+  }
+
+  .cta {
+    padding: 14px 14px 12px;
+  }
+
+  .cta span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #a8ff35, #88dd20);
+    color: #000;
+    font-size: 17px;
+    font-weight: 600;
+    box-shadow: 0 10px 22px -8px rgba(168, 255, 53, 0.45);
+  }
+
+  .tabs {
+    display: flex;
+    border-top: 1px solid #2e304d;
+    background: rgba(15, 15, 16, 0.7);
+  }
+
+  .tabs > span {
+    flex-grow: 1;
+    padding: 9px 0 11px;
+    text-align: center;
+    font-size: 9.5px;
+    color: #6e6f8a;
+  }
+
+  .tabs svg {
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 3px;
+  }
+
+  .tabs .on {
+    color: #a8ff35;
+  }
+
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+    vertical-align: middle;
+    margin-inline: 6px;
+  }
+</style>

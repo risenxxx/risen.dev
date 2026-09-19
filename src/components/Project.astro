@@ -1,0 +1,227 @@
+---
+import Icon from './Icon.astro'
+import Sep from './Sep.astro'
+
+export interface Link {
+  label: string
+  href: string
+  primary?: boolean
+  icon?: string
+}
+
+export interface Metric {
+  value: string
+  note: string
+}
+
+interface Props {
+  index: string
+  /** The product's own accent, taken from its real interface rather than invented here. */
+  accent: string
+  domain: string[]
+  title: string
+  blurb: string
+  /** Trusted, hand-written copy: a couple of bullets emphasise one word with <em>. */
+  bullets: string[]
+  metrics?: Metric[]
+  note?: string
+  stack: { label: string; icon?: string }[]
+  links: Link[]
+  /** false puts the preview on the left; the sections alternate down the page. */
+  reverse?: boolean
+}
+
+const {
+  index,
+  accent,
+  domain,
+  title,
+  blurb,
+  bullets,
+  metrics = [],
+  note,
+  stack,
+  links,
+  reverse = false,
+} = Astro.props
+---
+
+<section class:list={['project', { reverse }]} style={`--accent: ${accent}`}>
+  <div class="wrap row">
+    <div class="shot" data-reveal>
+      <slot />
+    </div>
+
+    <div class="copy">
+      <p class="eyebrow" data-reveal>
+        <span class="dot" aria-hidden="true"></span>
+        {index}
+        {
+          domain.map((part) => (
+            <Fragment>
+              {' '}
+              <Sep />
+              {part}
+            </Fragment>
+          ))
+        }
+      </p>
+
+      <h3 data-reveal style="--dl: 1">{title}</h3>
+      <p class="lede" data-reveal style="--dl: 2">{blurb}</p>
+
+      <ul class="points" data-reveal style="--dl: 3">
+        {
+          bullets.map((b) => (
+            <li>
+              <span class="tick" aria-hidden="true">—</span>
+              <span set:html={b} />
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        metrics.length > 0 && (
+          <dl class="metrics" data-reveal style="--dl: 4">
+            {metrics.map((m) => (
+              <div>
+                <dt set:html={m.value} />
+                <dd>{m.note}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {note && <p class="note" data-reveal style="--dl: 4">{note}</p>}
+
+      <ul class="stack" data-reveal style="--dl: 5">
+        {
+          stack.map((s) => (
+            <li class="chip">
+              {s.icon && <Icon name={s.icon} size={13} />}
+              {s.label}
+            </li>
+          ))
+        }
+      </ul>
+
+      <ul class="links" data-reveal style="--dl: 6">
+        {
+          links.map((l) => (
+            <li>
+              <a class:list={['btn', l.primary ? 'btn-primary' : 'btn-ghost']} href={l.href}>
+                {l.icon && <Icon name={l.icon} size={15} />}
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .project {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(36px, 4.4vw, 56px);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 4vw, 60px);
+  }
+
+  .reverse .row {
+    flex-direction: row-reverse;
+  }
+
+  .shot {
+    width: 700px;
+    flex: none;
+    max-width: 100%;
+  }
+
+  .copy {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .eyebrow {
+    color: var(--accent);
+  }
+
+  h3 {
+    margin: 14px 0 16px;
+    font-size: clamp(26px, 3vw, 34px);
+    line-height: 1.12;
+  }
+
+  .points {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0 22px;
+  }
+
+  .points li {
+    display: flex;
+    gap: 12px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--fg-mid);
+  }
+
+  .points :global(em) {
+    font-style: normal;
+    color: var(--fg);
+  }
+
+  .tick {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    flex: none;
+  }
+
+  .metrics {
+    margin: 0 0 22px;
+  }
+
+  .note {
+    margin-bottom: 22px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fg3);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 22px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* One column once the preview can no longer hold its own width: the preview
+     goes first either way, because it is what makes somebody read the text. */
+  @media (max-width: 1180px) {
+    .row,
+    .reverse .row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .shot {
+      width: 100%;
+    }
+  }
+</style>

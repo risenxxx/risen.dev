@@ -1,0 +1,575 @@
+---
+/*
+  Frame Player's window, rebuilt in HTML.
+
+  Every measurement and every glyph here comes out of the application's own
+  source, not out of a screenshot: the 48 px title bar and its 76 px gradient
+  tail, the brand mark from TopBar.svelte, the torrent chip down to its 2 px
+  progress line, and the 4 px seek track with its buffered shading, 2 px chapter
+  notches and 12 px knob from SeekBar.svelte. The control glyphs are the real
+  paths, copied one at a time from Controls.svelte.
+
+  The control row and the seek track share the same 16 px inset — the buttons
+  are 36 px wide around a 20 px glyph, so eight pixels of button plus the OSC's
+  own eight put the first glyph's edge exactly where the track starts, which is
+  what the application does too.
+
+  Decorative in full: the product's claims are made in the prose beside it.
+*/
+---
+
+<div class="player" aria-hidden="true" data-scene data-dur="1400">
+  <span class="scene"></span>
+  <span class="slit s1"></span><span class="slit s2"></span><span class="slit s3"></span><span class="slit s4"></span>
+
+  <span class="scrim"></span>
+
+  <span class="lights"><i></i><i></i><i></i></span>
+  <span class="title">S02E04.2160p.HDR.DV.mkv</span>
+  <span class="brand">
+    <span class="appname">Frame Player</span>
+    <svg class="logo" viewBox="0 0 24 24">
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        d="M3.2 7.6V5.9c0-1.5 1.2-2.7 2.7-2.7h1.7M16.4 3.2h1.7c1.5 0 2.7 1.2 2.7 2.7v1.7M20.8 16.4v1.7c0 1.5-1.2 2.7-2.7 2.7h-1.7M7.6 20.8H5.9c-1.5 0-2.7-1.2-2.7-2.7v-1.7"></path>
+      <path fill="#e8e8ec" stroke="#e8e8ec" stroke-width="1.6" stroke-linejoin="round" d="M10 9v6l5.4-3z"></path>
+    </svg>
+  </span>
+
+  <div class="torchip">
+    <span class="torchip-line">
+      <svg class="torchip-icon" viewBox="0 0 16 16">
+        <path
+          d="M8 2.5v8m0 0L4.8 7.3M8 10.5l3.2-3.2M3 13.5h10"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      <span>4.2 MB/s<i class="sep"></i>28 peers</span>
+    </span>
+    <span class="torchip-bar"><i></i></span>
+  </div>
+
+  <span class="skip">
+    Skip intro
+    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg>
+  </span>
+
+  <div class="osc">
+    <div class="times"><span>9:04</span><span>56:55</span></div>
+
+    <div class="seekwrap">
+      <div class="hovertip">
+        <span class="thumb"><i class="light"></i><i class="figure"></i></span>
+        <span class="tip-time">16:22</span>
+        <span class="tip-chapter">Chapter 02 — The Approach</span>
+      </div>
+
+      <div class="seektrack">
+        <span class="buffered"></span>
+        <span class="fill"></span>
+        <span class="chap" style="--at: 12%"></span>
+        <span class="chap" style="--at: 28.6%"></span>
+        <span class="chap" style="--at: 61%"></span>
+        <span class="knob"></span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="cluster left">
+        <span class="b"
+          ><svg viewBox="0 0 24 24"
+            ><path
+              fill="currentColor"
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"
+            ></path></svg
+          ></span
+        >
+        <span class="volume"><i></i><b></b></span>
+        <span class="speed">1.25×</span>
+      </div>
+
+      <div class="cluster center">
+        <span class="b"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg></span>
+        <span class="b play"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"></path></svg></span>
+        <span class="b"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"></path></svg></span>
+      </div>
+
+      <div class="cluster right">
+        <span class="b"
+          ><svg viewBox="0 0 24 24"
+            ><path fill="currentColor" d="M17 7H7v3l-4-4 4-4v3h12v6h-2V7zM7 17h10v-3l4 4-4 4v-3H5v-6h2v4z"></path></svg
+          ></span
+        >
+        <span class="b"
+          ><svg viewBox="0 0 24 24" fill="currentColor"
+            ><path d="M2.4 3.6h19.2v2.4H2.4zM2.4 10.8h19.2v2.4H2.4zM2.4 18h13.2v2.4H2.4zM16.8 16.4v5.6l4.8-2.8z"></path></svg
+          ></span
+        >
+        <span class="b"
+          ><svg viewBox="0 0 24 24" fill="currentColor"
+            ><path d="M8.4 3.6h13.2v2.4H8.4zM8.4 10.8h13.2v2.4H8.4zM8.4 18h13.2v2.4H8.4z"></path><circle cx="4.2" cy="4.8" r="1.8"
+            ></circle><circle cx="4.2" cy="12" r="1.8"></circle><circle cx="4.2" cy="19.2" r="1.8"></circle></svg
+          ></span
+        >
+        <span class="b"
+          ><svg viewBox="0 0 24 24"
+            ><path
+              fill="currentColor"
+              d="M12 3a9 9 0 0 0-9 9v7a2 2 0 0 0 2 2h3v-8H5v-1a7 7 0 1 1 14 0v1h-3v8h3a2 2 0 0 0 2-2v-7a9 9 0 0 0-9-9z"
+            ></path></svg
+          ></span
+        >
+        <span class="b"
+          ><svg viewBox="0 0 24 24"
+            ><path
+              fill="currentColor"
+              d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM6 10h2v2H6v-2zm8 6H6v-2h8v2zm4 0h-2v-2h2v2zm0-4H10v-2h8v2z"
+            ></path></svg
+          ></span
+        >
+        <span class="b on"
+          ><svg viewBox="0 0 24 24"
+            ><path
+              fill="currentColor"
+              d="M21 3H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.93-11-11-11z"
+            ></path></svg
+          ></span
+        >
+        <span class="b fs"
+          ><svg viewBox="0 0 24 24"
+            ><path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"></path></svg
+          ></span
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .player {
+    position: relative;
+    width: 660px;
+    height: 372px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #08080a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--sh-mock);
+    font-family: var(--ui);
+  }
+
+  /* An abstract frame rather than a still: the picture is not the work, the
+     interface on top of it is. */
+  .scene {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(110% 80% at 76% 26%, rgba(188, 132, 72, 0.22), transparent 62%),
+      radial-gradient(90% 80% at 16% 86%, rgba(40, 62, 96, 0.34), transparent 62%);
+  }
+
+  .slit {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+
+  .s1 {
+    left: 44%;
+    width: 30px;
+    background: rgba(190, 172, 142, 0.13);
+  }
+
+  .s2 {
+    left: 52%;
+    width: 54px;
+    background: rgba(148, 162, 128, 0.17);
+  }
+
+  .s3 {
+    left: 64%;
+    width: 26px;
+    background: rgba(148, 162, 128, 0.11);
+  }
+
+  .s4 {
+    left: 77%;
+    width: 12px;
+    background: rgba(190, 172, 142, 0.09);
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 76px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent);
+  }
+
+  .lights {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .lights i {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .lights i:nth-child(1) {
+    background: #ff5f57;
+  }
+
+  .lights i:nth-child(2) {
+    background: #febc2e;
+  }
+
+  .lights i:nth-child(3) {
+    background: #28c840;
+  }
+
+  .title {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #b9b9c3;
+  }
+
+  .brand {
+    position: absolute;
+    right: 18px;
+    top: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .appname {
+    color: #e8e8ec;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .logo {
+    width: 18px;
+    height: 18px;
+    color: #818cf8;
+  }
+
+  .torchip {
+    position: absolute;
+    top: 58px;
+    right: 18px;
+    min-width: 172px;
+    padding: 7px 11px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+    background: rgba(16, 16, 22, 0.82);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    color: #d6d6de;
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .torchip-line {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+  }
+
+  .torchip-icon {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    color: #8f8f9c;
+  }
+
+  .torchip-bar {
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+  }
+
+  .torchip-bar i {
+    display: block;
+    height: 100%;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.75);
+    width: calc(46% * var(--p));
+  }
+
+  .skip {
+    position: absolute;
+    right: 24px;
+    bottom: 108px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(16, 16, 22, 0.82);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    color: #e8e8ec;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: calc((var(--p) - 0.55) * 4);
+  }
+
+  .skip svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .osc {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 44px 8px 10px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+  }
+
+  .times {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    font-size: 12.5px;
+    color: #e8e8ec;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .seekwrap {
+    position: relative;
+    margin: 6px 8px 0;
+    padding: 6px 0;
+  }
+
+  .seektrack {
+    position: relative;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .buffered,
+  .fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 2px;
+  }
+
+  /* Dimmer than the fill and brighter than the track: at four pixels the three
+     have to stay apart at a glance. */
+  .buffered {
+    background: rgba(255, 255, 255, 0.3);
+    width: calc(46% * var(--p));
+  }
+
+  .fill {
+    background: #fff;
+    width: calc(15.9% * var(--p));
+  }
+
+  .chap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--at);
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: rgba(16, 16, 22, 0.9);
+  }
+
+  .knob {
+    position: absolute;
+    top: 50%;
+    left: calc(15.9% * var(--p));
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .hovertip {
+    position: absolute;
+    left: 28%;
+    bottom: 18px;
+    transform: translateX(-50%) translateY(calc((1 - var(--p)) * 6px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    opacity: calc((var(--p) - 0.45) * 4);
+  }
+
+  .thumb {
+    position: relative;
+    display: block;
+    width: 184px;
+    height: 104px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.86);
+    background: #14161c;
+    overflow: hidden;
+  }
+
+  .thumb .light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(90% 90% at 32% 42%, rgba(122, 142, 172, 0.34), transparent 70%);
+  }
+
+  .thumb .figure {
+    position: absolute;
+    left: 26%;
+    top: 24%;
+    width: 44px;
+    height: 54px;
+    border-radius: 22px 22px 5px 5px;
+    background: rgba(214, 206, 190, 0.32);
+  }
+
+  .tip-time {
+    color: #fff;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  /* The chapter title is a caption for the time above it, not a peer of it. */
+  .tip-chapter {
+    margin-top: -4px;
+    max-width: 184px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #d6d6de;
+    font-size: 11px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .cluster {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .left {
+    justify-self: start;
+  }
+
+  .center {
+    justify-self: center;
+    gap: 14px;
+  }
+
+  .right {
+    justify-self: end;
+  }
+
+  .b {
+    width: 36px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #e8e8ec;
+  }
+
+  .b svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .b.play {
+    width: 46px;
+    height: 42px;
+  }
+
+  .b.play svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .b.fs svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .b.on {
+    color: #818cf8;
+  }
+
+  .volume {
+    position: relative;
+    width: 90px;
+    height: 4px;
+    margin: 0 6px 0 2px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .volume i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 62%;
+    border-radius: 2px;
+    background: #fff;
+  }
+
+  .volume b {
+    position: absolute;
+    left: 62%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .speed {
+    color: #818cf8;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 6px;
+  }
+
+  .sep {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    vertical-align: middle;
+    margin-inline: 7px;
+  }
+</style>

@@ -1,0 +1,54 @@
+/*
+  Tokens. The page is dark only for now, on purpose: three of the five product
+  previews are rebuilt from dark desktop applications, and a light page would
+  either lie about them or need a second set of mocks. `color-scheme` is set so
+  form controls and scrollbars follow, and the values below are the only place
+  a colour is written down.
+*/
+@layer base {
+  :root {
+    /* surfaces, darkest first */
+    --bg: #0a0a0c;
+    --s1: #0c0c0f;
+    --s2: #0e0e11;
+    --s3: #131317;
+
+    --line: rgba(255, 255, 255, 0.08);
+    --line2: rgba(255, 255, 255, 0.12);
+    --line3: rgba(255, 255, 255, 0.16);
+
+    /* #75757f is the floor for 11 px text on --bg: 4.6:1. Anything dimmer is
+       decoration and carries no information. */
+    --fg: #f5f5f7;
+    --fg2: #a3a3ad;
+    --fg3: #75757f;
+    --fg-mid: #c4c4cc;
+    --fg-soft: #b6b6c0;
+
+    --btn: #f5f5f7;
+    --btn-fg: #0a0a0c;
+    --btn-hover: #ffffff;
+
+    --green: #5bd8a6;
+
+    /* The hero and the closing section share one cool bloom. Not a brand
+       colour: the colour on this page comes out of the products themselves. */
+    --glow: rgba(150, 158, 200, 0.14);
+    --glow2: rgba(150, 158, 200, 0.03);
+
+    --sh-mock: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+    --sh-card: 0 24px 48px -30px rgba(0, 0, 0, 0.8);
+
+    --display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
+    --sans: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    /* Frame Player and Gift Fight are both drawn in Rubik. The previews use it
+       so their chrome matches the real applications rather than this page. */
+    --ui: "Rubik Variable", "Rubik", ui-sans-serif, system-ui, sans-serif;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --gut: clamp(20px, 4.2vw, 60px);
+
+    color-scheme: dark;
+  }
+}

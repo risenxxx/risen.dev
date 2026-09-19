@@ -1,0 +1,308 @@
+---
+/*
+  The reference figure. Not any one product's diagram — the shape all five are
+  cut from, so the hero can say "I design the system" and then show what that
+  means before the first product appears.
+
+  Laid out in a 1256 × 510 user-space grid and drawn at `width: 100%` with the
+  height left to the aspect ratio, so the figure's own edges land exactly on the
+  heading above it at every width. A fixed height would letterbox it inside a
+  wider box and pull both edges in.
+*/
+---
+
+<section class="arch">
+  <div class="wrap">
+    <div class="panel" data-reveal>
+      <div class="head">
+        <h2>How I draw a system before any of it exists</h2>
+        <p class="mono aside">every product below is a subset of this, sized to the problem</p>
+      </div>
+
+      <div class="scroller">
+        <svg
+          class="fig"
+          viewBox="0 0 1256 510"
+          data-scene
+          data-dur="1100"
+          role="img"
+          aria-label="A reference architecture in three bands. Delivery: specification and acceptance cases, typed contracts, CI gates, a signed image, GitOps reconciliation, the cluster. Runtime: clients through the edge and an API gateway into HTTP services, a real-time layer and workers, then durable workflows and the OLTP, OLAP and cache tiers. Beneath both: Kubernetes on Talos across bare metal and cloud, and observability tapping every box."
+        >
+          <g class="b1">
+            <text x="0" y="10" class="idx">01</text>
+            <circle cx="24" cy="6" r="1.5" class="sepdot"></circle>
+            <text x="34" y="10" class="cap">DELIVERY — A DEPLOY IS A REVIEWED COMMIT, NEVER A HAND ON A TERMINAL</text>
+            <rect x="0.5" y="24.5" width="1255" height="54" rx="10" class="strip"></rect>
+            <path class="divider" d="M209.5 24.5v54M419.5 24.5v54M628.5 24.5v54M837.5 24.5v54M1047.5 24.5v54"></path>
+            <g class="lbl">
+              <text x="18" y="45">01 SPEC</text><text x="227" y="45">02 CONTRACTS</text><text x="437" y="45">03 CI GATES</text>
+              <text x="646" y="45">04 IMAGE</text><text x="855" y="45">05 GITOPS</text><text x="1065" y="45">06 CLUSTER</text>
+            </g>
+            <g class="val">
+              <text x="18" y="65">acceptance cases first</text><text x="227" y="65">types at every seam</text>
+              <text x="437" y="65">gates, not follow-ups</text><text x="646" y="65">signed, reproducible</text>
+              <text x="855" y="65">reconcile, don’t push</text><text x="1065" y="65">rollback in minutes</text>
+            </g>
+          </g>
+
+          <g class="b2">
+            <text x="0" y="110" class="idx">02</text>
+            <circle cx="24" cy="106" r="1.5" class="sepdot"></circle>
+            <text x="34" y="110" class="cap">RUNTIME — ONE REQUEST, EDGE TO STORAGE</text>
+
+            <rect x="0.5" y="124.5" width="175" height="257" rx="10" class="box"></rect>
+            <text x="16" y="148" class="lbl">CLIENTS</text>
+            <g class="val2">
+              <text x="16" y="186">web and SSR</text><text x="16" y="222">Telegram Mini App</text>
+              <text x="16" y="258">desktop app</text><text x="16" y="294">bot and CLI</text>
+            </g>
+            <path class="hair" d="M16 198h143M16 234h143M16 270h143"></path>
+            <text x="16" y="330" class="sub">one typed contract</text>
+            <text x="16" y="346" class="sub">serves all of them</text>
+
+            <rect x="216.5" y="203.5" width="175" height="99" rx="10" class="box"></rect>
+            <text x="232" y="227" class="lbl">EDGE</text>
+            <text x="232" y="250" class="val2 big">Cloudflare</text>
+            <text x="232" y="268" class="sub">WAF, cache, bot rules</text>
+            <text x="232" y="284" class="sub">per-route rate limits</text>
+
+            <rect x="432.5" y="203.5" width="195" height="99" rx="10" class="box"></rect>
+            <text x="448" y="227" class="lbl">API GATEWAY</text>
+            <text x="448" y="250" class="val2 big">typed contracts</text>
+            <text x="448" y="268" class="sub">one schema, both sides</text>
+            <text x="448" y="284" class="sub">authn, idempotency keys</text>
+
+            <rect x="668.5" y="124.5" width="215" height="77" rx="10" class="box"></rect>
+            <text x="684" y="148" class="lbl">HTTP SERVICES</text>
+            <text x="684" y="172" class="val2">stateless, scaled out</text>
+
+            <rect x="668.5" y="214.5" width="215" height="77" rx="10" class="box lit"></rect>
+            <text x="684" y="238" class="lbl">REAL-TIME LAYER</text>
+            <text x="684" y="262" class="val2">websockets, reconnect-safe</text>
+
+            <rect x="668.5" y="304.5" width="215" height="77" rx="10" class="box"></rect>
+            <text x="684" y="328" class="lbl">WORKERS</text>
+            <text x="684" y="352" class="val2">queues, schedules, ingest</text>
+
+            <rect x="924.5" y="214.5" width="155" height="77" rx="10" class="box"></rect>
+            <text x="940" y="238" class="lbl">WORKFLOWS</text>
+            <text x="940" y="259" class="val2 big">durable state</text>
+            <text x="940" y="276" class="sub">retry, compensate</text>
+
+            <rect x="1120.5" y="124.5" width="135" height="77" rx="10" class="box"></rect>
+            <text x="1136" y="148" class="lbl">OLTP</text>
+            <text x="1136" y="171" class="val2">PostgreSQL</text>
+
+            <rect x="1120.5" y="214.5" width="135" height="77" rx="10" class="box"></rect>
+            <text x="1136" y="238" class="lbl">OLAP</text>
+            <text x="1136" y="261" class="val2">ClickHouse</text>
+
+            <rect x="1120.5" y="304.5" width="135" height="77" rx="10" class="box"></rect>
+            <text x="1136" y="328" class="lbl">CACHE, BLOB</text>
+            <text x="1136" y="351" class="val2">Redis, S3</text>
+          </g>
+
+          <!-- One path, so the dash runs along the whole route in order: the
+               request traces itself from the clients to storage. -->
+          <path
+            class="flow"
+            d="M175.5 253h30M391.5 253h30M627.5 253h20M648 163v180M648 163h11M648 253h11M648 343h11M883.5 163h20v90M883.5 343h20v-90M883.5 253h30M1079.5 253h20M1100 163v180M1100 163h11M1100 253h11M1100 343h11"
+          ></path>
+          <path
+            class="heads"
+            d="M199 248.5l6 4.5-6 4.5M415 248.5l6 4.5-6 4.5M652.5 158.5l6 4.5-6 4.5M652.5 248.5l6 4.5-6 4.5M652.5 338.5l6 4.5-6 4.5M907 248.5l6 4.5-6 4.5M1104.5 158.5l6 4.5-6 4.5M1104.5 248.5l6 4.5-6 4.5M1104.5 338.5l6 4.5-6 4.5"
+          ></path>
+
+          <g class="b3">
+            <text x="0" y="408" class="idx">03</text>
+            <circle cx="24" cy="404" r="1.5" class="sepdot"></circle>
+            <text x="34" y="408" class="cap">WHAT IT ALL RUNS ON, AND WHAT WATCHES IT</text>
+            <path class="tap" d="M88 381v39M304 302v118M530 302v118M776 381v39M1002 291v129M1188 381v39"></path>
+
+            <rect x="0.5" y="420.5" width="607" height="85" rx="10" class="box deep"></rect>
+            <text x="18" y="444" class="lbl">PLATFORM</text>
+            <text x="18" y="468" class="val2 big">Kubernetes on Talos Linux — bare metal and cloud, one plane</text>
+            <text x="18" y="489" class="sub">Pulumi, FluxCD, External Secrets — rollback in under three minutes</text>
+
+            <rect x="648.5" y="420.5" width="607" height="85" rx="10" class="box deep"></rect>
+            <text x="666" y="444" class="lbl">OBSERVABILITY</text>
+            <text x="666" y="468" class="val2 big">Every box above reports, and pages me before a user does</text>
+            <text x="666" y="489" class="sub">Prometheus, Grafana, Sentry, an event pipeline into ClickHouse, SLOs</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arch {
+    padding-top: clamp(44px, 5vw, 66px);
+  }
+
+  .panel {
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: clamp(20px, 2.4vw, 30px) clamp(20px, 2.6vw, 32px) clamp(24px, 2.8vw, 34px);
+  }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+  }
+
+  h2 {
+    font-size: clamp(20px, 2.2vw, 26px);
+    letter-spacing: -0.026em;
+  }
+
+  .aside {
+    font-size: 11.5px;
+    color: var(--fg3);
+    text-align: right;
+  }
+
+  /* Below roughly a laptop the figure stops being readable when it shrinks, so
+     it keeps its size and the reader pans it instead. */
+  .scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+
+  .fig {
+    width: 100%;
+    min-width: 900px;
+    height: auto;
+    font-family: var(--mono);
+  }
+
+  .strip,
+  .box {
+    fill: #101014;
+    stroke: rgba(255, 255, 255, 0.11);
+  }
+
+  .box.lit {
+    stroke: rgba(255, 255, 255, 0.2);
+  }
+
+  .box.deep {
+    fill: #0f0f13;
+  }
+
+  .divider {
+    stroke: rgba(255, 255, 255, 0.09);
+    fill: none;
+  }
+
+  .hair {
+    stroke: rgba(255, 255, 255, 0.07);
+    fill: none;
+  }
+
+  .idx {
+    font-size: 10.5px;
+    fill: #9b9ba5;
+    letter-spacing: 1.4px;
+  }
+
+  .sepdot {
+    fill: var(--fg3);
+  }
+
+  .cap {
+    font-size: 10.5px;
+    fill: var(--fg3);
+    letter-spacing: 1.4px;
+  }
+
+  .lbl {
+    font-size: 10px;
+    fill: #8a8a94;
+    letter-spacing: 1.1px;
+  }
+
+  .b1 .lbl {
+    font-size: 10.5px;
+  }
+
+  .val {
+    font-size: 12px;
+    fill: #e7e7ec;
+  }
+
+  .val2 {
+    font-size: 11.5px;
+    fill: #d6d6de;
+  }
+
+  .val2.big {
+    font-size: 12.5px;
+    fill: var(--fg);
+  }
+
+  .sub {
+    font-size: 10.5px;
+    fill: #8a8a94;
+  }
+
+  .tap {
+    stroke: rgba(255, 255, 255, 0.13);
+    stroke-dasharray: 3 5;
+    fill: none;
+  }
+
+  /*
+    Three bands arrive in order, then the route draws itself along them and the
+    arrowheads land last. Opacity clamps on its own, so a negative value simply
+    means "not yet" and no clamp() is needed.
+  */
+  .b1 {
+    opacity: calc(var(--p) * 4);
+  }
+
+  .b2 {
+    opacity: calc((var(--p) - 0.18) * 4);
+  }
+
+  .b3 {
+    opacity: calc((var(--p) - 0.36) * 4);
+  }
+
+  .flow {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* One dash as long as the whole route: the offset walks it from start to
+       end, and because every leg lives in the same path the draw runs in
+       document order instead of all at once. */
+    stroke-dasharray: 1120;
+    stroke-dashoffset: calc(1120 * (1 - clamp(0, (var(--p) - 0.45) * 1.9, 1)));
+  }
+
+  .heads {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: calc((var(--p) - 0.85) * 7);
+  }
+
+  @media (max-width: 720px) {
+    .head {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .aside {
+      text-align: left;
+    }
+  }
+</style>

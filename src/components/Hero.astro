@@ -1,0 +1,97 @@
+---
+import { contacts, site } from '../data/site.ts'
+import Icon from './Icon.astro'
+---
+
+<section class="hero" id="top">
+  <span class="bloom" aria-hidden="true"></span>
+
+  <div class="wrap copy">
+    <p class="pill" data-reveal>
+      <span class="live" aria-hidden="true"></span>
+      Open to senior full-stack, backend and platform roles
+    </p>
+
+    <h1 data-reveal style="--dl: 1">Five products. Five domains.<br />One engineer.</h1>
+
+    <p class="lede" data-reveal style="--dl: 2">
+      A desktop video player, a real-time gaming platform on a cluster I operate, a résumé SaaS, an
+      audio-alignment tool and a Windows HID widget. Each one specified, built, deployed and monitored by
+      the same person — eight years of it.
+    </p>
+
+    <div class="cta" data-reveal style="--dl: 3">
+      <a class="btn btn-primary btn-lg" href="#work">See the work</a>
+      <a class="btn btn-ghost btn-lg" href={site.cv} download>
+        <Icon name="u-download" />
+        Download CV
+      </a>
+    </div>
+
+    <ul class="ids" data-reveal style="--dl: 4">
+      {
+        contacts.map((c) => (
+          <li>
+            <a class="btn btn-id" href={c.href} rel={c.id === 'email' ? undefined : 'me'}>
+              <Icon name={c.icon} size={c.id === 'linkedin' ? 15 : 16} />
+              {c.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: clamp(56px, 7vw, 92px) 0 clamp(52px, 6vw, 78px);
+  }
+
+  .bloom {
+    top: -240px;
+    width: min(1180px, 130vw);
+    height: 720px;
+  }
+
+  .copy {
+    position: relative;
+    text-align: center;
+  }
+
+  h1 {
+    margin: 26px auto 24px;
+    max-width: 1020px;
+    font-size: clamp(38px, 5.6vw, 70px);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.037em;
+  }
+
+  .lede {
+    margin-inline: auto;
+    max-width: 720px;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin: 36px 0 22px;
+  }
+
+  .ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  @media (max-width: 560px) {
+    h1 br {
+      display: none;
+    }
+  }
+</style>
