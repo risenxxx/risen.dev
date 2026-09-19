@@ -25,9 +25,10 @@ import Scene from './Scene.astro'
 
   <span class="scrim"></span>
 
-  <span class="lights"><i></i><i></i><i></i></span>
-  <span class="title">S02E04.2160p.HDR.DV.mkv</span>
-  <span class="brand">
+  <span class="titlebar">
+    <span class="lights"><i></i><i></i><i></i></span>
+    <span class="title">S02E04.2160p.HDR.DV.mkv</span>
+    <span class="brand">
     <span class="appname">Frame Player</span>
     <svg class="logo" viewBox="0 0 24 24">
       <path
@@ -36,8 +37,9 @@ import Scene from './Scene.astro'
         stroke-width="2.4"
         stroke-linecap="round"
         d="M3.2 7.6V5.9c0-1.5 1.2-2.7 2.7-2.7h1.7M16.4 3.2h1.7c1.5 0 2.7 1.2 2.7 2.7v1.7M20.8 16.4v1.7c0 1.5-1.2 2.7-2.7 2.7h-1.7M7.6 20.8H5.9c-1.5 0-2.7-1.2-2.7-2.7v-1.7"></path>
-      <path fill="#e8e8ec" stroke="#e8e8ec" stroke-width="1.6" stroke-linejoin="round" d="M10 9v6l5.4-3z"></path>
-    </svg>
+        <path fill="#e8e8ec" stroke="#e8e8ec" stroke-width="1.6" stroke-linejoin="round" d="M10 9v6l5.4-3z"></path>
+      </svg>
+    </span>
   </span>
 
   <div class="torchip">
@@ -62,12 +64,12 @@ import Scene from './Scene.astro'
   </span>
 
   <div class="osc">
-    <div class="times"><span>9:04</span><span>56:55</span></div>
+    <div class="times"><span>4:12</span><span>56:55</span></div>
 
-    <div class="seekwrap" style="--hover: 28%">
+    <div class="seekwrap" style="--hover: 24%">
       <div class="hovertip">
         <span class="thumb"><Scene class="still" view="560 440 430 242" /></span>
-        <span class="tip-time">16:22</span>
+        <span class="tip-time">13:39</span>
         <span class="tip-chapter">Chapter 02, The Approach</span>
       </div>
 
@@ -78,15 +80,14 @@ import Scene from './Scene.astro'
         <span class="chap" style="--at: 28.6%"></span>
         <span class="chap" style="--at: 61%"></span>
         <span class="knob"></span>
-        <span class="hairline"></span>
       </div>
 
       <svg class="cursor" viewBox="0 0 24 24">
         <path
-          d="M5 2 5 18.5 9.2 14.6 12 20.8 14.6 19.6 11.9 13.6 17 13.6Z"
+          d="M4.2 1.8 4.2 19 8.9 14.6 11.6 21 14.3 19.8 11.6 13.5 16.6 13.5Z"
           fill="#fff"
           stroke="rgba(0,0,0,.5)"
-          stroke-width="1.1"
+          stroke-width="0.9"
           stroke-linejoin="round"></path>
       </svg>
     </div>
@@ -176,6 +177,17 @@ import Scene from './Scene.astro'
     inset: 0;
     width: 100%;
     height: 100%;
+  }
+
+  /* The strip across the top is part of the same overlay as the controls: a
+     player that hides its OSD hides the file name with it. */
+  .titlebar,
+  .scrim {
+    opacity: var(--ui);
+  }
+
+  .titlebar {
+    transform: translateY(calc((1 - var(--ui)) * -6px));
   }
 
   .scrim {
@@ -293,9 +305,11 @@ import Scene from './Scene.astro'
     width: 46%;
   }
 
+  /* Flush with the right end of the seekbar: 8 px of padding on the OSD plus
+     8 px of margin on the track. */
   .skip {
     position: absolute;
-    right: 24px;
+    right: 16px;
     bottom: 108px;
     display: flex;
     align-items: center;
@@ -370,9 +384,10 @@ import Scene from './Scene.astro'
     width: 46%;
   }
 
+  /* 4:12 of 56:55. Before the first chapter mark, because Skip intro is up. */
   .fill {
     background: #fff;
-    width: 15.9%;
+    width: 7.4%;
   }
 
   .chap {
@@ -389,7 +404,7 @@ import Scene from './Scene.astro'
   .knob {
     position: absolute;
     top: 50%;
-    left: 15.9%;
+    left: 7.4%;
     width: 12px;
     height: 12px;
     margin: -6px 0 0 -6px;
@@ -397,23 +412,9 @@ import Scene from './Scene.astro'
     background: #fff;
   }
 
-  /* A mark on the track under the arrow, so the exact frame being previewed is
-     readable even where the cursor covers the bar. */
-  .hairline {
-    position: absolute;
-    top: 50%;
-    left: var(--hover);
-    width: 2px;
-    height: 15px;
-    margin: -7.5px 0 0 -1px;
-    border-radius: 1px;
-    background: rgba(255, 255, 255, 0.9);
-    opacity: var(--cursor);
-  }
-
   /*
     Drawn, because the preview only makes sense over something. Its tip is at
-    (5, 2) of the 24-unit box, so the offsets put that point on the track
+    (4.2, 1.8) of the 24-unit box, so the offsets put that point on the track
     rather than the corner of the box it lives in.
   */
   .cursor {
@@ -422,7 +423,7 @@ import Scene from './Scene.astro'
     left: var(--hover);
     width: 19px;
     height: 19px;
-    margin: -1.6px 0 0 -4px;
+    margin: -1.4px 0 0 -3.3px;
     opacity: var(--cursor);
     transform: translate(calc((1 - var(--cursor)) * -4px), calc((1 - var(--cursor)) * 4px));
   }
