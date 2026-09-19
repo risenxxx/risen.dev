@@ -40,7 +40,7 @@
         </svg>
         <span class="batt">
           <b>63</b>
-          <svg viewBox="0 0 24 24"><path d="M13.6 1.8 4.2 14.4h5.8l-1 7.8 9.8-12.8h-6z"></path></svg>
+          <svg viewBox="4.2 1.8 14.6 20.4"><path d="M13.6 1.8 4.2 14.4h5.8l-1 7.8 9.8-12.8h-6z"></path></svg>
         </span>
       </span>
     </div>
@@ -264,11 +264,12 @@
   .batt {
     position: relative;
     height: 13.5px;
-    padding: 0 2.5px;
+    padding: 0 2px;
     border-radius: 5px;
-    background: #4ade5a;
+    background: #5ec984;
     display: inline-flex;
     align-items: center;
+    gap: 0.5px;
     color: #fff;
   }
 
@@ -285,14 +286,15 @@
   }
 
   .batt b {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 1;
   }
 
+  /* Cropped to the glyph, so the width is the bolt and not its margins. */
   .batt svg {
-    width: 10px;
+    width: 7.2px;
     height: 10px;
     fill: currentColor;
   }
