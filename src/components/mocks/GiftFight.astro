@@ -169,6 +169,8 @@
   }
 
   .screen {
+    /* The tab bar's height, which the Place-bet button is anchored above. */
+    --tabs: 65px;
     position: relative;
     height: 100%;
     display: flex;
@@ -184,7 +186,10 @@
     background: linear-gradient(135deg, #0f0f10, #1a1a2e 55%, #16213e);
   }
 
-  .screen > *:not(.backdrop) {
+  /* Everything that is a row. The two that are not — the button floating over
+     the feed and the home indicator — are excluded by name, because this
+     selector outranks their own `position` otherwise. */
+  .screen > *:not(.backdrop):not(.cta):not(.home) {
     position: relative;
     flex: none;
   }
@@ -258,14 +263,13 @@
      and it carries the reading the way iOS puts it inside the body. */
   .batt {
     position: relative;
-    height: 12.5px;
-    padding: 0 3.5px;
-    border-radius: 3.8px;
+    height: 13.5px;
+    padding: 0 2.5px;
+    border-radius: 5px;
     background: #4ade5a;
     display: inline-flex;
     align-items: center;
-    gap: 1px;
-    color: #06230a;
+    color: #fff;
   }
 
   .batt::after {
@@ -274,22 +278,22 @@
     left: 100%;
     top: 50%;
     width: 1.8px;
-    height: 4.4px;
-    margin-top: -2.2px;
+    height: 4.6px;
+    margin-top: -2.3px;
     border-radius: 0 1.2px 1.2px 0;
     background: rgba(255, 255, 255, 0.5);
   }
 
   .batt b {
-    font-size: 8.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
     line-height: 1;
   }
 
   .batt svg {
-    width: 7.5px;
-    height: 7.5px;
+    width: 10px;
+    height: 10px;
     fill: currentColor;
   }
 
@@ -742,8 +746,20 @@
     color: #a8ff35;
   }
 
+  /*
+    The button floats over the feed rather than sitting under it, which is what
+    the real screen does: the bets run on behind it and are cut off by the tab
+    bar. Taking it out of the flow is also what gives the wheel its size back —
+    the wheel is the only row that grows, so every pixel the chrome gives up
+    goes to it.
+  */
   .cta {
-    padding: 12px 14px 10px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--tabs);
+    padding: 34px 14px 12px;
+    background: linear-gradient(to top, rgba(19, 27, 51, 0.97) 46%, rgba(19, 27, 51, 0));
   }
 
   .cta span {
