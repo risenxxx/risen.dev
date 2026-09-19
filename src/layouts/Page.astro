@@ -1,6 +1,7 @@
 ---
 import sora from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url'
 import manrope from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url'
+import dmMono from '@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2?url'
 import { site } from '../data/site.ts'
 import '../styles/tokens.css'
 import '../styles/fonts.css'
@@ -51,9 +52,12 @@ const preview = import.meta.env.SITE_PREVIEW === '1'
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0A0A0C" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <!-- The two faces the first screen is set in; the rest can arrive late. -->
+    <!-- The three faces the first screen is set in: display, body and the mono
+         that carries the availability line and every caption. The previews'
+         Rubik is discovered from the stylesheet and can arrive late. -->
     <link rel="preload" href={sora} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={manrope} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={dmMono} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       document.documentElement.classList.add('js')
     </script>

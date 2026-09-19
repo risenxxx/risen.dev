@@ -40,6 +40,13 @@ reader is never held inside a section. Without JavaScript, or under
 **Brand marks** are the single paths from [simple-icons](https://simple-icons.org)
 (MIT), inlined as one sprite: no icon font, no request per logo.
 
+**Fonts** are latin-only and self-hosted. Three of them — Sora, Manrope and DM
+Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
+because Frame Player and Gift Fight are really drawn in it; it is checked in as
+a subset of printable ASCII over the 400–700 weights those previews use, 12.7 KB
+instead of 35. Rebuild it with `scripts/subset-rubik.sh` after editing a
+preview's copy.
+
 ## Deploying
 
 `.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript

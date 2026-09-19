@@ -273,7 +273,9 @@
   .match b {
     font-family: var(--mono);
     font-size: 14px;
-    font-weight: 500;
+    /* 400: the mono face ships one weight, and a second file for this number
+       alone was 15 KB. */
+    font-weight: 400;
     color: #4ade9b;
   }
 
