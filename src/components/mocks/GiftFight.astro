@@ -19,118 +19,161 @@
 */
 ---
 
-<div class="phone" aria-hidden="true" data-scene data-dur="2200">
-  <span class="backdrop"></span>
+<div class="device" aria-hidden="true" data-scene data-dur="2200">
+  <div class="screen">
+    <span class="backdrop"></span>
 
-  <div class="tg">
-    <svg class="back" viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    <span class="tg-title">Gift Fight</span>
-    <span class="dots"><i></i><i></i><i></i></span>
-  </div>
+    <div class="status">
+      <span class="clock">4:21</span>
+      <span class="island"><i></i></span>
+      <span class="sys">
+        <svg class="cell" viewBox="0 0 18 12">
+          <rect x="0" y="8" width="3" height="4" rx="1"></rect>
+          <rect x="5" y="5.5" width="3" height="6.5" rx="1"></rect>
+          <rect x="10" y="3" width="3" height="9" rx="1"></rect>
+          <rect x="15" y="0" width="3" height="12" rx="1"></rect>
+        </svg>
+        <svg class="wifi" viewBox="0 0 16 12">
+          <path d="M1 4.2a10.5 10.5 0 0 1 14 0M3.6 7a6.8 6.8 0 0 1 8.8 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+          <circle cx="8" cy="9.9" r="1.35"></circle>
+        </svg>
+        <span class="batt">
+          <svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#0f2a10"></path></svg>
+        </span>
+      </span>
+    </div>
+
+    <div class="tg">
+      <span class="close">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+        Close
+      </span>
+      <span class="wordmark"><b>GIFT</b> FIGHT</span>
+      <span class="tgbtns">
+        <svg viewBox="0 0 24 24"><path d="M6 10l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <i class="rule"></i>
+        <span class="dots"><i></i><i></i><i></i></span>
+      </span>
+    </div>
 
   <div class="head">
-    <span class="avatar">RZ</span>
-    <span class="who">
-      <span class="name">risenxx</span>
-      <span class="points">1 240
-        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l4.5 5.2L12 22 7.5 7.2z"></path></svg>
+      <span class="avatar">RZ</span>
+      <span class="who">
+        <span class="name">risenxx</span>
+        <span class="points">1 240
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5 19.5 12 12 21.5 4.5 12z"></path></svg>
+        </span>
       </span>
-    </span>
-    <span class="wallet">
-      <svg class="ton" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"></circle><path d="M7.4 8.2h9.2L12 17.4zM12 8.6v8.4" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg>
-      <span class="ton-value">84.2</span>
-      <span class="wbtns">
-        <i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
-        <i><svg viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
+      <span class="wallet">
+        <svg class="ton" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor"></circle><path d="M7.4 8.2h9.2L12 17.4zM12 8.6v8.4" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+        <span class="ton-value">84.2</span>
+        <span class="wbtns">
+          <i><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
+          <i><svg viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg></i>
+        </span>
       </span>
-    </span>
-  </div>
-
-  <div class="wheelbox">
-    <div class="wheelwrap">
-      <span class="pointer"></span>
-      <svg class="wheel" viewBox="-150 -150 300 300">
-        <circle cx="0" cy="0" r="145" fill="none" stroke="rgba(168,255,53,0.28)" stroke-width="4"></circle>
-        <path d="M 0 -40 L 0 -140 A 140 140 0 0 1 137.5 26.2 L 39.3 7.5 A 40 40 0 0 0 0 -40 Z" fill="rgba(34,85,34,0.8)"></path>
-        <path d="M 39.3 7.5 L 137.5 26.2 A 140 140 0 0 1 8.8 139.7 L 2.5 39.9 A 40 40 0 0 0 39.3 7.5 Z" fill="rgba(21,32,60,0.8)"></path>
-        <path d="M 2.5 39.9 L 8.8 139.7 A 140 140 0 0 1 -118.2 75 L -33.8 21.4 A 40 40 0 0 0 2.5 39.9 Z" fill="rgba(25,25,25,0.8)"></path>
-        <path d="M -33.8 21.4 L -118.2 75 A 140 140 0 0 1 -133.1 -43.3 L -38 -12.4 A 40 40 0 0 0 -33.8 21.4 Z" fill="rgba(34,85,34,0.8)"></path>
-        <path d="M -38 -12.4 L -133.1 -43.3 A 140 140 0 0 1 -75 -118.2 L -21.4 -33.8 A 40 40 0 0 0 -38 -12.4 Z" fill="rgba(21,32,60,0.8)"></path>
-        <path d="M -21.4 -33.8 L -75 -118.2 A 140 140 0 0 1 0 -140 L 0 -40 A 40 40 0 0 0 -21.4 -33.8 Z" fill="rgba(25,25,25,0.8)"></path>
-
-        <g class="seats">
-          <g transform="translate(90.9,-75.2)"><circle r="15" stroke="#a8ff35"></circle><text class="ini" y="3.4">MK</text></g>
-          <g transform="translate(78.1,88.5)"><circle r="15" stroke="#6c8cff"></circle><text class="ini" y="3.4">AI</text></g>
-          <g transform="translate(-53.6,105.2)"><circle r="15" stroke="#e8e8ef"></circle><text class="ini" y="3.4">DV</text></g>
-          <g transform="translate(-117.1,14.8)"><circle r="15" stroke="#3dd6c0"></circle><text class="ini" y="3.4">NK</text></g>
-          <g transform="translate(-93.3,-72.3)"><circle r="15" stroke="#e24a8b"></circle><text class="ini" y="3.4">RZ</text></g>
-          <g transform="translate(-33,-113.3)"><circle r="15" stroke="#ff8a3d"></circle><text class="ini" y="3.4">PL</text></g>
-        </g>
-      </svg>
-      <span class="centre">24</span>
     </div>
-  </div>
 
-  <div class="stats">
-    <span class="players">
-      <span class="faces"><i>MK</i><i>AI</i><i>DV</i><i class="more">+3</i></span>
-      6 players
-    </span>
-    <span class="pot">84.2 TON</span>
-    <span class="fair">
-      <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>
-      Provably fair<i class="sep"></i>verify round
-    </span>
-  </div>
+    <div class="wheelbox">
+      <div class="wheelwrap">
+        <span class="pointer"></span>
+        <svg class="wheel" viewBox="-150 -150 300 300">
+          <circle cx="0" cy="0" r="145" fill="none" stroke="rgba(168,255,53,0.28)" stroke-width="4"></circle>
+          <path d="M 0 -40 L 0 -140 A 140 140 0 0 1 137.5 26.2 L 39.3 7.5 A 40 40 0 0 0 0 -40 Z" fill="rgba(34,85,34,0.8)"></path>
+          <path d="M 39.3 7.5 L 137.5 26.2 A 140 140 0 0 1 8.8 139.7 L 2.5 39.9 A 40 40 0 0 0 39.3 7.5 Z" fill="rgba(21,32,60,0.8)"></path>
+          <path d="M 2.5 39.9 L 8.8 139.7 A 140 140 0 0 1 -118.2 75 L -33.8 21.4 A 40 40 0 0 0 2.5 39.9 Z" fill="rgba(25,25,25,0.8)"></path>
+          <path d="M -33.8 21.4 L -118.2 75 A 140 140 0 0 1 -133.1 -43.3 L -38 -12.4 A 40 40 0 0 0 -33.8 21.4 Z" fill="rgba(34,85,34,0.8)"></path>
+          <path d="M -38 -12.4 L -133.1 -43.3 A 140 140 0 0 1 -75 -118.2 L -21.4 -33.8 A 40 40 0 0 0 -38 -12.4 Z" fill="rgba(21,32,60,0.8)"></path>
+          <path d="M -21.4 -33.8 L -75 -118.2 A 140 140 0 0 1 0 -140 L 0 -40 A 40 40 0 0 0 -21.4 -33.8 Z" fill="rgba(25,25,25,0.8)"></path>
 
-  <div class="feed">
-    <p class="live"><i></i>Bets</p>
-    <div class="bet">
-      <span class="face">NK</span>
-      <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
-      <span class="what"><b>Plush Pepe</b><em>@nikita<i class="sep"></i>2s ago</em></span>
-      <span class="value">21.4</span>
+          <g class="seats">
+            <g transform="translate(90.9,-75.2)"><circle r="15" stroke="#a8ff35"></circle><text class="ini" y="3.4">MK</text></g>
+            <g transform="translate(78.1,88.5)"><circle r="15" stroke="#6c8cff"></circle><text class="ini" y="3.4">AI</text></g>
+            <g transform="translate(-53.6,105.2)"><circle r="15" stroke="#e8e8ef"></circle><text class="ini" y="3.4">DV</text></g>
+            <g transform="translate(-117.1,14.8)"><circle r="15" stroke="#3dd6c0"></circle><text class="ini" y="3.4">NK</text></g>
+            <g transform="translate(-93.3,-72.3)"><circle r="15" stroke="#e24a8b"></circle><text class="ini" y="3.4">RZ</text></g>
+            <g transform="translate(-33,-113.3)"><circle r="15" stroke="#ff8a3d"></circle><text class="ini" y="3.4">PL</text></g>
+          </g>
+        </svg>
+        <span class="centre">24</span>
+      </div>
     </div>
-    <div class="bet drop">
-      <span class="face alt">AI</span>
-      <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
-      <span class="what"><b>Durov’s Cap</b><em>@aiko<i class="sep"></i>9s ago</em></span>
-      <span class="value">18.0</span>
+
+    <div class="stats">
+      <span class="players">
+        <span class="faces"><i>MK</i><i>AI</i><i>DV</i><i class="more">+3</i></span>
+        6 players
+      </span>
+      <span class="pot">84.2 TON</span>
+      <span class="fair">
+        <svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>
+        Provably fair<i class="sep"></i>verify round
+      </span>
     </div>
-  </div>
 
-  <div class="cta"><span>Place bet</span></div>
+    <div class="feed">
+      <p class="live"><i></i>Bets</p>
+      <div class="bet">
+        <span class="face">NK</span>
+        <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
+        <span class="what"><b>Plush Pepe</b><em>@nikita<i class="sep"></i>2s ago</em></span>
+        <span class="value">21.4</span>
+      </div>
+      <div class="bet drop">
+        <span class="face alt">AI</span>
+        <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
+        <span class="what"><b>Durov’s Cap</b><em>@aiko<i class="sep"></i>9s ago</em></span>
+        <span class="value">18.0</span>
+      </div>
+    </div>
 
-  <div class="tabs">
-    <span><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Home</span>
-    <span><svg viewBox="0 0 24 24"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM4 8l2-4h12l2 4M12 4v16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Cases</span>
-    <span class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="12" cy="12" r="2.4" fill="currentColor"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Roulette</span>
-    <span><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Items</span>
-    <span><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Profile</span>
+    <div class="cta"><span>Place bet</span></div>
+
+    <div class="tabs">
+      <span><svg viewBox="0 0 24 24"><path d="M4 11l8-6 8 6v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Home</span>
+      <span><svg viewBox="0 0 24 24"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM4 8l2-4h12l2 4M12 4v16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>Cases</span>
+      <span class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"></circle><circle cx="12" cy="12" r="2.4" fill="currentColor"></circle><path d="M12 4v3M12 17v3M4 12h3M17 12h3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Roulette</span>
+      <span><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"></rect><path d="M8 7V5h8v2M4 12h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Items</span>
+      <span><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"></circle><path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>Profile</span>
+    </div>
+
+    <span class="home"></span>
   </div>
 </div>
-
 <style>
   /*
-    The phone fills the plinth exactly and clips nothing: the wheel is the one
-    flexible row, so whatever height is left after the fixed chrome is what it
-    gets. Before this the phone was laid out at its natural height and could
-    push its own tab bar out through the bottom of the container.
+    A phone, not a rectangle with rounded corners: the app is a Telegram Mini
+    App and is only ever seen inside one, so the frame, the status bar and the
+    home indicator are part of what the product looks like. The bar across the
+    top used to be a back arrow and three dots, which is not what Telegram
+    draws — it draws a Close pill, the app's own wordmark, and a collapse
+    button beside the menu.
+
+    The screen clips nothing: the wheel is the one flexible row, so whatever
+    height is left after the fixed chrome is what it gets.
   */
-  .phone {
-    position: relative;
-    width: 316px;
+  .device {
+    width: 352px;
     height: 100%;
     margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    background: #191623;
-    border: 1px solid #2e304d;
-    border-radius: 26px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.9);
+    padding: 10px;
+    border-radius: 46px;
+    background: #0b0b0d;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 30px 60px -28px rgba(0, 0, 0, 0.9);
     font-family: var(--ui);
     contain: content;
+  }
+
+  .screen {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 36px;
+    overflow: hidden;
+    background: #191623;
   }
 
   .backdrop {
@@ -139,44 +182,184 @@
     background: linear-gradient(135deg, #0f0f10, #1a1a2e 55%, #16213e);
   }
 
-  .phone > *:not(.backdrop) {
+  .screen > *:not(.backdrop) {
     position: relative;
     flex: none;
   }
 
-  .tg {
-    height: 38px;
+  /* ── the phone's own bar ─────────────────────────────────────────────── */
+
+  .status {
+    height: 28px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 0 13px;
-    background: rgba(32, 32, 44, 0.9);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0 20px 0 24px;
+    color: #fff;
   }
 
-  .back {
+  .clock {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  /* The island is a cut-out in the panel, so it is the one black thing here. */
+  .island {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    width: 80px;
+    height: 21px;
+    margin-left: -40px;
+    border-radius: 999px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+  }
+
+  .island i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #121218;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .sys {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .cell {
     width: 15px;
-    height: 15px;
-    color: #8e8ea0;
+    height: 10px;
+    fill: currentColor;
   }
 
-  .tg-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: #e6e6f0;
+  .wifi {
+    width: 14px;
+    height: 10.5px;
+    fill: currentColor;
+  }
+
+  /* Charging, so the cell is full of colour rather than drawn as an outline. */
+  .batt {
+    width: 22px;
+    height: 11.5px;
+    border-radius: 3.4px;
+    background: #4ade5a;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+
+  .batt::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 1.6px;
+    height: 4px;
+    margin-top: -2px;
+    border-radius: 0 1px 1px 0;
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .batt svg {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* ── the Mini App bar Telegram puts over it ──────────────────────────── */
+
+  .tg {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+  }
+
+  .close {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 27px;
+    padding: 0 11px 0 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.11);
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .close svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .wordmark {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+
+  .wordmark b {
+    font-weight: 700;
+    color: #a8ff35;
+  }
+
+  .tgbtns {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 27px;
+    padding: 0 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.11);
+    color: #fff;
+  }
+
+  .tgbtns > svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .rule {
+    width: 1px;
+    height: 13px;
+    background: rgba(255, 255, 255, 0.22);
   }
 
   .dots {
-    margin-left: auto;
     display: flex;
-    gap: 3px;
+    gap: 2.5px;
   }
 
   .dots i {
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: #8e8ea0;
+    background: currentColor;
+  }
+
+  .home {
+    position: absolute;
+    left: 50%;
+    bottom: 7px;
+    width: 108px;
+    height: 4px;
+    margin-left: -54px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.85);
   }
 
   .head {
@@ -278,7 +461,7 @@
 
   .wheelbox {
     flex: 1 1 auto !important;
-    min-height: 0;
+    min-height: 190px;
     padding: 4px 14px 0;
     display: flex;
     justify-content: center;
@@ -358,8 +541,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    padding: 12px 14px 0;
+    gap: 8px;
+    padding: 10px 14px 0;
   }
 
   .players {
@@ -431,11 +614,11 @@
   }
 
   .feed {
-    margin: 12px 14px 0;
+    margin: 10px 14px 0;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid #2e304d;
     border-radius: 16px;
-    padding: 12px;
+    padding: 10px;
   }
 
   .live {
@@ -459,7 +642,7 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    padding: 7px;
+    padding: 6px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -541,7 +724,7 @@
   }
 
   .cta {
-    padding: 14px 14px 12px;
+    padding: 12px 14px 10px;
   }
 
   .cta span {
@@ -565,7 +748,7 @@
 
   .tabs > span {
     flex-grow: 1;
-    padding: 9px 0 11px;
+    padding: 9px 0 19px;
     text-align: center;
     font-size: 9.5px;
     color: #6e6f8a;
