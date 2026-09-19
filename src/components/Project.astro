@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro'
-import Sep from './Sep.astro'
 
 export interface Link {
   label: string
@@ -18,7 +17,12 @@ interface Props {
   /** The product's own accent, taken from its real interface rather than invented here. */
   accent: string
   title: string
-  /** Domain and platform, as a caption under the name. */
+  /**
+   * Two tags under the name, in a fixed order: the field the product is in,
+   * then the shape it takes. Keep to that — the first slot drifted into
+   * business models and job titles ("SaaS", "Systems programming"), and five
+   * products claiming five domains have to name five domains.
+   */
   meta: [string, string]
   blurb: string
   /** Trusted, hand-written copy: emphasis and non-breaking spaces are markup. */
@@ -54,9 +58,8 @@ const {
     <div class="copy" data-reveal style="--dl: 1">
       <h3>{title}</h3>
       <p class="meta">
-        <span class="part"><span class="dot" aria-hidden="true" />{meta[0]}</span>
-        <Sep />
-        <span class="part">{meta[1]}</span>
+        <span class="tag"><span class="dot" aria-hidden="true" />{meta[0]}</span>
+        <span class="tag">{meta[1]}</span>
       </p>
       <p class="lede" set:html={blurb}></p>
 
@@ -145,24 +148,35 @@ const {
     line-height: 1.12;
   }
 
+  /*
+    Two tags rather than one line with a separator between them. The halves are
+    not the same kind of thing — one is the field, the other is the shape the
+    product takes — so a separator was promising a relation that is not always
+    there, and once the column got narrow enough for both to wrap, the 3 px
+    separator read as a bullet beside the 7 px accent dot. A tag wraps whole or
+    not at all, and the gap does the separating.
+  */
   .meta {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0 18px;
-    font-size: 14px;
-    color: var(--fg2);
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 18px;
   }
 
-  .part {
+  .tag {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
+    padding: 5px 11px;
+    border: 1px solid var(--line2);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--fg-soft);
   }
 
   .meta .dot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--accent);
     flex: none;
@@ -206,29 +220,6 @@ const {
 
   .metrics {
     margin: 0 0 22px;
-  }
-
-  /*
-    Narrow enough and both halves wrap, which leaves the 3 px separator sitting
-    on its own beside the 7 px accent dot and reading as a second bullet of a
-    different size. One half per line instead, and the separator goes.
-  */
-  @media (max-width: 460px) {
-    .meta {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 3px;
-    }
-
-    .meta > :global(.sep) {
-      display: none;
-    }
-
-    /* Aligned under the first half's text, past the dot and its gap. The
-       separator still sits between the two, so this is not an adjacent match. */
-    .part ~ .part {
-      padding-left: 17px;
-    }
   }
 
   .note {
