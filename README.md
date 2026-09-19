@@ -44,6 +44,13 @@ reader is never held inside a section. Without JavaScript, or under
 as a text node and some through `set:html`; an entity is only decoded in the
 second, so a single convention avoids a literal `&nbsp;` appearing on the page.
 
+**The link preview** is `src/og/card.html`, rendered to `public/og.png` by
+`npm run og` and committed. It is a standalone document rather than a route, so
+there is no page whose only purpose is to be screenshotted; the script inlines
+the fonts as data URIs because a `file://` page drops a font fetched from a
+sibling path. Needs a Chrome on the machine — set `CHROME_PATH` if it is
+somewhere unusual.
+
 **Fonts** are latin-only and self-hosted. Three of them — Sora, Manrope and DM
 Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
 because Frame Player and Gift Fight are really drawn in it; it is checked in as

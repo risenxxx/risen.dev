@@ -14,14 +14,14 @@ const stages = [
     key: 'SPEC',
     icon: 'u-spec',
     title: 'Acceptance cases first',
-    body: 'The requirements, the constraints and the failing tests are written before implementation, including when an agent does most of the typing.',
+    body: 'Written down before implementation starts. It is what a reviewer checks the work against, and what an agent is held to.',
   },
   {
     n: '02',
     key: 'CONTRACTS',
     icon: 'u-contracts',
     title: 'Types at every seam',
-    body: 'One schema serves validation, types and the generated docs, so a broken state is impossible to express rather than merely unlikely.',
+    body: 'One schema serves validation, types and the generated docs, so both sides of a seam can be built in parallel and a broken state is impossible to express.',
   },
   {
     n: '03',
@@ -42,7 +42,7 @@ const stages = [
     key: 'INFRASTRUCTURE',
     icon: 'u-server',
     title: 'Written down, not clicked',
-    body: 'Kubernetes on Talos Linux across bare metal and cloud, described in one Pulumi program, with secrets that never live in the repository.',
+    body: 'Kubernetes on Talos Linux across bare metal and cloud, described in one Pulumi program that anyone on the team can read and change.',
   },
   {
     n: '06',
@@ -61,7 +61,7 @@ const stages = [
         <h2 class="h-section">From a plan to a running service</h2>
         <p class="lede">
           The same six steps on every product above, whether it ships to a cluster or to an installer. Each
-          one produces an artefact the next one depends on.
+          one produces an artefact the next step depends on, and something the next person can read.
         </p>
       </div>
       <p class="aside">a deploy is a reviewed commit,<br />never a hand on a terminal</p>

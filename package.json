@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "deploy": "npm run build && wrangler deploy",
-    "budget": "node scripts/budget.mjs"
+    "budget": "node scripts/budget.mjs",
+    "og": "node scripts/og.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.5",

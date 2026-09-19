@@ -3,9 +3,9 @@
 export const site = {
   name: 'Evgenii Zakharov',
   domain: 'risen.dev',
-  title: 'Evgenii Zakharov — full-stack and platform engineer',
+  title: 'Evgenii Zakharov — product engineer',
   description:
-    'Five production products across five domains, each specified, built, deployed and monitored by one engineer. React and TypeScript on the front, .NET and Node behind it, Kubernetes underneath.',
+    'Product engineer across every layer: the interface, the services behind it and the infrastructure they run on. Five production products in five domains, and eight years of it inside product teams.',
   email: 'to@risen.dev',
   location: 'Yerevan',
   timezone: 'UTC+4',

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>risen.dev — link preview</title>
+    <!--
+      The source of public/og.png, rendered by scripts/og.mjs.
+
+      It is a standalone document rather than an Astro route on purpose: the
+      card is an image, it ships once, and a page that exists only to be
+      screenshotted would otherwise be crawlable, linkable and indexable.
+
+      Exactly 1200 × 630, the size declared in the page's head. Nothing on it is
+      smaller than 19 px, because the card is usually seen at half this width in
+      a chat or a feed, and anything below that stops being readable there.
+
+      The claim sits on `margin: auto` between the header and the footer, so the
+      space left over is split above and below it rather than piling up at the
+      bottom and crowding the wordmark.
+    -->
+    <style>
+      /*FONTS*/
+
+      :root {
+        --bg: #0a0a0c;
+        --s3: #131317;
+        --fg: #f5f5f7;
+        --fg2: #a3a3ad;
+        --fg3: #75757f;
+        --fg4: #7c7c86;
+        --line: rgba(255, 255, 255, 0.1);
+        --green: #5bd8a6;
+        --display: "Sora Variable", sans-serif;
+        --sans: "Manrope Variable", sans-serif;
+        --mono: "DM Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+
+      body {
+        width: 1200px;
+        height: 630px;
+        padding: 56px 72px;
+        display: flex;
+        flex-direction: column;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--sans);
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .mark {
+        font-family: var(--display);
+        font-weight: 600;
+        font-size: 30px;
+        letter-spacing: -0.02em;
+      }
+
+      .mark span {
+        color: var(--fg4);
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        font-family: var(--mono);
+        font-size: 20px;
+        color: #b6b6c0;
+      }
+
+      .live {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--green);
+      }
+
+      .claim {
+        margin: auto 0;
+      }
+
+      h1 {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 72px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .lede {
+        margin-top: 22px;
+        max-width: 880px;
+        font-size: 24px;
+        line-height: 1.45;
+        color: var(--fg2);
+      }
+
+      /* The five, each in its own product's colour: the only colour on the card
+         besides the availability dot. */
+      .products {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 26px;
+      }
+
+      .product {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 14px 15px;
+        background: var(--s3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        font-size: 19px;
+        white-space: nowrap;
+      }
+
+      .product i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: none;
+      }
+
+      .bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 24px;
+      }
+
+      .name {
+        font-family: var(--display);
+        font-size: 27px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 5px;
+      }
+
+      .role {
+        font-size: 20px;
+        color: var(--fg2);
+      }
+
+      .where {
+        display: flex;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 19px;
+        color: var(--fg3);
+      }
+
+      /* The page's own separator, drawn rather than typed. */
+      .sep {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.7;
+        margin: 0 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <span class="mark">risen<span>.dev</span></span>
+      <span class="chip"><span class="live"></span>Available now</span>
+    </div>
+
+    <div class="claim">
+      <h1>Five products.<br />Five domains. Every layer.</h1>
+      <p class="lede">
+        The interface, the services behind it and the infrastructure they run on. Eight years of it, most
+        of it inside product teams.
+      </p>
+    </div>
+
+    <div class="products">
+      <span class="product"><i style="background: #818cf8"></i>Frame Player</span>
+      <span class="product"><i style="background: #a8ff35"></i>Gift Fight</span>
+      <span class="product"><i style="background: #7c8cff"></i>Tuned</span>
+      <span class="product"><i style="background: #a855f7"></i>dubsync</span>
+      <span class="product"><i style="background: #ffd400"></i>DeskVolt</span>
+    </div>
+
+    <div class="bottom">
+      <div>
+        <p class="name">Evgenii Zakharov</p>
+        <p class="role">Product engineer</p>
+      </div>
+      <p class="where">Yerevan<span class="sep"></span>remote worldwide</p>
+    </div>
+  </body>
+</html>
