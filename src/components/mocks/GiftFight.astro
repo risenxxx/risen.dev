@@ -285,17 +285,21 @@
     background: rgba(255, 255, 255, 0.5);
   }
 
+  /* Digits have no descender, so centring their box leaves them sitting above
+     the middle of the cell. The nudge centres what is actually drawn. */
   .batt b {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 1;
+    transform: translateY(0.5px);
   }
 
-  /* Cropped to the glyph, so the width is the bolt and not its margins. */
+  /* Cropped to the glyph, so the width is the bolt and not its margins, and
+     sized to stand as tall as the digits beside it rather than over them. */
   .batt svg {
-    width: 7.2px;
-    height: 10px;
+    width: 6px;
+    height: 8.4px;
     fill: currentColor;
   }
 
