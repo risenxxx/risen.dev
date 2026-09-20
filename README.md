@@ -37,6 +37,15 @@ means. Nothing reads `scrollY`, so the page scrolls at its normal speed and the
 reader is never held inside a section. Without JavaScript, or under
 `prefers-reduced-motion`, everything renders in its finished state.
 
+**The reference figure is panned, not shrunk.** Below a laptop it would have to
+come down past the width at which its labels stop being letters, so it keeps its
+size and `[data-pan]` gives the overflow the three things that admit it is
+there: a fade on whichever side still has figure under it, a bar sized to the
+slice on screen, and dragging for a mouse, which has no swipe. The media query
+is the guess that holds without JavaScript; once the widths are measured the
+classes on the frame are the truth, and the hint fades out the first time it is
+obeyed.
+
 **Brand marks** are the single paths from [simple-icons](https://simple-icons.org)
 (MIT), inlined as one sprite: no icon font, no request per logo.
 

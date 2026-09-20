@@ -77,7 +77,89 @@ function count(el: HTMLElement): void {
   if (countFrame === 0) countFrame = requestAnimationFrame(countTick)
 }
 
+/*
+  The reference figure is panned, not shrunk: below a laptop it would have to
+  come down past the width at which its labels stop being letters. Overflow
+  already scrolls it — what overflow does not do is admit that it is there. This
+  adds the three things that do: fades that follow the scroll position, a thumb
+  sized to the slice on screen, and dragging for a mouse, which has no swipe.
+
+  It runs whatever the reduced-motion setting says, because none of it is
+  motion — it is the difference between a figure the reader can finish and one
+  that appears to be cut off.
+*/
+function pan(): void {
+  for (const scroller of document.querySelectorAll<HTMLElement>('[data-pan]')) {
+    const frame = scroller.closest<HTMLElement>('[data-pan-frame]')
+    if (!frame) continue
+    const thumb = frame.querySelector<HTMLElement>('[data-pan-bar]')
+
+    const update = (): void => {
+      const slack = scroller.scrollWidth - scroller.clientWidth
+      frame.classList.add('measured')
+      frame.classList.toggle('pannable', slack > 1)
+      frame.classList.toggle('at-start', scroller.scrollLeft <= 1)
+      frame.classList.toggle('at-end', slack - scroller.scrollLeft <= 1)
+      if (!thumb) return
+      // The thumb is the share of the track that the visible slice is of the
+      // figure, and it travels whatever width that leaves.
+      const share = scroller.clientWidth / scroller.scrollWidth
+      const done = slack > 0 ? scroller.scrollLeft / slack : 0
+      thumb.style.setProperty('--w', `${share * 100}%`)
+      thumb.style.setProperty('--x', `${done * (1 - share) * 100}%`)
+    }
+
+    update()
+
+    scroller.addEventListener(
+      'scroll',
+      () => {
+        // Far enough to be a pan rather than a nudge: the hint has done its job.
+        if (scroller.scrollLeft > 8) frame.classList.add('panned')
+        update()
+      },
+      { passive: true },
+    )
+    addEventListener('resize', update)
+
+    // Touch pans the scroller on its own; a mouse has to be handed the grab.
+    let from = -1
+    let at = 0
+
+    scroller.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || !frame.classList.contains('pannable')) return
+      from = e.clientX
+      at = scroller.scrollLeft
+      scroller.setPointerCapture(e.pointerId)
+      frame.classList.add('dragging')
+    })
+
+    scroller.addEventListener('pointermove', (e) => {
+      if (from < 0) return
+      e.preventDefault()
+      scroller.scrollLeft = at - (e.clientX - from)
+    })
+
+    const drop = (): void => {
+      from = -1
+      frame.classList.remove('dragging')
+    }
+
+    scroller.addEventListener('pointerup', drop)
+    scroller.addEventListener('pointercancel', drop)
+  }
+}
+
 export function initMotion(): void {
+  /*
+    First, and outside everything below it: panning is an affordance, not an
+    animation, so it survives both reduced motion and a browser without an
+    IntersectionObserver. If it throws, the caller drops `html.js` and the page
+    renders in its finished state — the figure still scrolls, it just stops
+    saying so.
+  */
+  pan()
+
   // A scene that never runs must not be left blank, so the reduced-motion and
   // no-IntersectionObserver paths both mean "show the finished state", which is
   // what the CSS default already is once `html.js` is not in force.
