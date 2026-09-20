@@ -5,8 +5,8 @@ import Photo from './Photo.astro'
   DeskVolt on a desktop corner.
 
   The widget is what `src/ui/render.rs` actually draws: a #2B2B2B panel with a
-  hairline edge, 42 px rows, 16 px of side padding, the device name in Segoe UI
-  beside its glyph and the reading right-aligned in tabular figures — white when
+  hairline edge, rows twice the height of their text (22 px type in 44 px rows
+  there, drawn smaller here), the device name in Segoe UI beside its glyph and the reading right-aligned in tabular figures — white when
   the battery is fine, gold while charging, red when it is low, and the whole
   row grey with an en dash for a device that is not connected.
 
@@ -118,21 +118,21 @@ const devices = [
     position: absolute;
     right: 22px;
     bottom: 74px;
-    width: 306px;
+    width: 284px;
     background: #2b2b2b;
     border: 1px solid #3a3a3a;
     border-radius: 9px;
     box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.85);
     overflow: hidden;
-    padding: 8px 0;
+    padding: 5px 0;
   }
 
   /* One row per HID answer, arriving in order. */
   .row {
     display: flex;
     align-items: center;
-    height: 42px;
-    padding: 0 16px;
+    height: 32px;
+    padding: 0 14px;
     opacity: calc((var(--p) - var(--i) * 0.16) * 5);
     transform: translateY(calc((1 - clamp(0, (var(--p) - var(--i) * 0.16) * 5, 1)) * 6px));
   }
@@ -148,7 +148,7 @@ const devices = [
   }
 
   .label {
-    margin-left: 14px;
+    margin-left: 12px;
     font-size: 14.5px;
   }
 
