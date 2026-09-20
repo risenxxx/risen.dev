@@ -17,19 +17,23 @@
     --line2: rgba(255, 255, 255, 0.12);
     --line3: rgba(255, 255, 255, 0.16);
 
-    /* #75757f is the floor for 11 px text on --bg: 4.6:1. Anything dimmer is
-       decoration and carries no information. */
+    /*
+      --fg3 is the floor for text that carries information. It has to clear
+      4.5:1 on every surface it is ever set on, and the tightest of those is
+      --s3 rather than --bg — the open-source card is the lightest surface here,
+      so grey text has the least room on it. Measured there, the #75757f this
+      replaces was 4.07:1 and failed, while the comment above it claimed 4.6.
+      #7e7e88 is 4.61:1 on --s3 and 4.92:1 on --bg. Anything dimmer than this
+      is decoration and carries no information.
+    */
     --fg: #f5f5f7;
     --fg2: #a3a3ad;
-    --fg3: #75757f;
+    --fg3: #7e7e88;
     --fg-mid: #c4c4cc;
     /* Body copy below 16 px: the size carries the detail, so the colour steps
        back and lets whatever it sits under stay the brighter of the two. */
     --fg-body: #9c9ca6;
     --fg-soft: #b6b6c0;
-    /* The dimmest text on the page. 4.8:1 on --bg and 4.8:1 on the footer's
-       #08080a; the #6f6f7a it replaces measured 4.0 and failed both. */
-    --fg4: #7c7c86;
 
     --btn: #f5f5f7;
     --btn-fg: #0a0a0c;
