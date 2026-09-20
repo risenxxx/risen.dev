@@ -5,11 +5,8 @@ import FramePlayerMock from './mocks/FramePlayer.astro'
 import GiftFightMock from './mocks/GiftFight.astro'
 import TunedMock from './mocks/Tuned.astro'
 import Project from './Project.astro'
-import Scene from './mocks/Scene.astro'
 import Stage from './Stage.astro'
 ---
-
-<Scene defs />
 
 <section id="work">
   <div class="wrap intro">
@@ -49,6 +46,7 @@ import Stage from './Stage.astro'
       { label: 'Chromecast / DLNA' },
     ]}
     links={[
+      { label: 'frameplayer.app', href: 'https://frameplayer.app', icon: 'u-external' },
       { label: 'Repository', href: 'https://github.com/risenxxx/frame-player', icon: 'b-github' },
       {
         label: 'Download latest release',

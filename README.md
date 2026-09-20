@@ -60,14 +60,12 @@ the fonts as data URIs because a `file://` page drops a font fetched from a
 sibling path. Needs a Chrome on the machine — set `CHROME_PATH` if it is
 somewhere unusual.
 
-**The picture inside the previews** is drawn, not photographed. Frame Player
-needs something on screen and DeskVolt needs a wallpaper, so
-`src/components/mocks/Scene.astro` holds one night landscape as SVG — sky,
-stars, seven ridges and the fog between them — and each preview shows a
-different part of it. It is emitted into the page once and referenced, which
-keeps the page free of bitmaps and makes the two look like two moments of the
-same film. `python3 scripts/scene.py` regenerates the terrain and writes it back
-into the component; every number in it is a seed, so a run reproduces.
+**The pictures inside the previews** are the stills frameplayer.app uses: the
+frame on screen and the hover preview in Frame Player, and the lake under the
+Milky Way as DeskVolt's wallpaper. `public/assets/img` holds them already
+encoded — AVIF, WebP and JPEG at the widths a 660 px preview can ask for — as
+Frame Player's site produced them, so there is no image pipeline here;
+`src/components/mocks/Photo.astro` writes the `<picture>` for each.
 
 **`public/sw.js` unregisters a service worker rather than being one.** The
 Gatsby blog that used to live here shipped `gatsby-plugin-offline`, whose worker

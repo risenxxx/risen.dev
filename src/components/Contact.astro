@@ -1,5 +1,5 @@
 ---
-import { contacts, site } from '../data/site.ts'
+import { contacts, site, cvFileName } from '../data/site.ts'
 import Icon from './Icon.astro'
 import Sep from './Sep.astro'
 
@@ -25,7 +25,7 @@ const social = contacts.filter((c) => c.id !== 'email')
         <Icon name="b-mail" />
         {site.email}
       </a>
-      <a class="btn btn-ghost btn-lg" href={site.cv} download>
+      <a class="btn btn-ghost btn-lg" href={site.cv} download={cvFileName}>
         <Icon name="u-download" />
         Download CV
       </a>

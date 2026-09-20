@@ -14,6 +14,13 @@ export const site = {
 } as const
 
 /*
+  What the file is called once it lands in someone's downloads folder, where it
+  sits among a hundred other CVs and gets forwarded on as an attachment: a name
+  with the person in it, not the URL's slug.
+*/
+export const cvFileName = `${site.name} — Resume.pdf`
+
+/*
   `optical` is how large a mark has to be drawn to look the same size as the
   ones beside it, since they fill the 24-unit grid differently: a square reads
   larger than a disc of the same width, and Telegram's plane is a diagonal with

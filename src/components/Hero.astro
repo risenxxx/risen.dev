@@ -1,5 +1,5 @@
 ---
-import { contacts, site } from '../data/site.ts'
+import { contacts, site, cvFileName } from '../data/site.ts'
 import Icon from './Icon.astro'
 ---
 
@@ -25,7 +25,7 @@ import Icon from './Icon.astro'
 
     <div class="cta" data-reveal style="--dl: 3">
       <a class="btn btn-primary btn-lg" href="#work">See the work</a>
-      <a class="btn btn-ghost btn-lg" href={site.cv} download>
+      <a class="btn btn-ghost btn-lg" href={site.cv} download={cvFileName}>
         <Icon name="u-download" />
         Download CV
       </a>

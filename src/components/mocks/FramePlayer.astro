@@ -1,5 +1,5 @@
 ---
-import Scene from './Scene.astro'
+import Photo from './Photo.astro'
 
 /*
   Frame Player's window, rebuilt in HTML.
@@ -21,7 +21,7 @@ import Scene from './Scene.astro'
 ---
 
 <div class="player" aria-hidden="true" data-scene data-dur="1400">
-  <Scene class="scene" view="150 105 1180 665" />
+  <Photo class="scene" name="orion-moon" w={1600} h={1200} widths={[700, 1120, 1600]} />
 
   <span class="scrim"></span>
 
@@ -68,7 +68,7 @@ import Scene from './Scene.astro'
 
     <div class="seekwrap" style="--hover: 24%">
       <div class="hovertip">
-        <span class="thumb"><Scene class="still" view="560 440 430 242" /></span>
+        <span class="thumb"><Photo class="still" name="earth-aurora" w={600} h={399} widths={[240, 360, 600]} share={184 / 660} /></span>
         <span class="tip-time">13:39</span>
         <span class="tip-chapter">Chapter 02, The Approach</span>
       </div>
@@ -169,14 +169,15 @@ import Scene from './Scene.astro'
     font-family: var(--ui);
   }
 
-  /* The frame on screen, and further down the same scene at another point in
-     it for the hover preview — two moments of one film rather than two
-     unrelated pictures. */
+  /* The frame on screen and the one under the cursor are the same two stills
+     frameplayer.app shows, so the preview here and the product's own page are
+     one picture of one player. */
   .scene {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 
   /* The strip across the top is part of the same overlay as the controls: a
@@ -460,6 +461,7 @@ import Scene from './Scene.astro'
     inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 
   .tip-time {

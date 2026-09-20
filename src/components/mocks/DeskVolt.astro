@@ -1,5 +1,5 @@
 ---
-import Scene from './Scene.astro'
+import Photo from './Photo.astro'
 
 /*
   DeskVolt on a desktop corner.
@@ -23,7 +23,7 @@ const devices = [
 ---
 
 <div class="desk" aria-hidden="true" data-scene data-dur="1500">
-  <Scene class="wall" view="240 210 1180 665" />
+  <Photo class="wall" name="lake-galaxy" w={1120} h={627} widths={[460, 600, 900, 1120]} />
 
   <span class="claim">no G HUB<i class="sep"></i>no iCUE<i class="sep"></i>no SteelSeries GG</span>
 
@@ -95,6 +95,7 @@ const devices = [
     inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 
   .claim {

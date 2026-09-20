@@ -1,0 +1,48 @@
+---
+/*
+  A picture inside a preview, in three formats and the widths it is asked for.
+
+  The files in `public/assets/img` are the ones Frame Player's own site encodes
+  (frameplayer.app, `site/scripts/images.mjs`), copied over as they are rather
+  than run through a pipeline of their own here. Only the widths a 660 px
+  preview can use were kept: it is never drawn wider than that, and on a phone
+  it is scaled to about half, where a 2× or 3× screen still wants the middle of
+  the ladder rather than the bottom of it.
+
+  `sizes` is the width on screen, not the 660 the preview is laid out at — the
+  Stage scales it with a transform, which the browser does not see when it
+  picks a candidate. It follows the column: 660 px from 721 px up, where the
+  gutters leave room for it, and the viewport less two 20 px gutters below.
+*/
+interface Props {
+  name: string
+  /** Intrinsic size of the largest width, for the aspect ratio. */
+  w: number
+  h: number
+  widths: number[]
+  /** The picture's share of the preview's width, 1 for a full-bleed one. */
+  share?: number
+  class?: string
+}
+
+const { name, w, h, widths, share = 1, class: cls } = Astro.props
+
+const sizes = `(min-width: 721px) ${Math.round(660 * share)}px, calc((100vw - 40px) * ${+share.toFixed(3)})`
+const srcset = (ext: string) => widths.map((x) => `/assets/img/${name}-${x}.${ext} ${x}w`).join(', ')
+---
+
+<picture>
+  <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+  <img
+    class={cls}
+    src={`/assets/img/${name}-${widths[widths.length - 1]}.jpg`}
+    srcset={srcset('jpg')}
+    sizes={sizes}
+    width={w}
+    height={h}
+    alt=""
+    loading="lazy"
+    decoding="async"
+  />
+</picture>
