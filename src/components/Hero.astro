@@ -1,29 +1,52 @@
 ---
 import { contacts, site, cvFileName } from '../data/site.ts'
 import Icon from './Icon.astro'
+import Portrait from './Portrait.astro'
+
+/*
+  A person, then what they have built — in that order and on that axis.
+
+  The copy used to be centred, which is the one arrangement that cannot hold a
+  portrait beside it: a centred column has no edge for anything to sit against,
+  so a photograph next to it reads as an ornament rather than as the subject.
+  Everything on the page below now shares this left edge.
+
+  The markup is the narrow layout, in reading order: name the state, the claim,
+  the evidence, then the face, then the two things to do about it. The wide
+  layout is a grid laid over that, which is the only way the portrait can be a
+  column beside the copy at one width and a beat inside it at another without
+  the page carrying two copies of the same heading.
+*/
 ---
 
 <section class="hero" id="top">
   <div class="wrap copy">
-    <p class="pill" data-reveal>
+    <p class="pill" data-reveal style="--dl: 1">
       <span class="live" aria-hidden="true"></span>
       Open to senior engineering roles
     </p>
 
-    <h1 data-reveal style="--dl: 1">
+    <h1 data-reveal style="--dl: 2">
       <!-- The space belongs after the break: at the start of a line it is
            collapsed away, and when the break is hidden it is the word gap. -->
-      Five products. Five domains.<br /> Every layer.
+      One engineer.<br /> Every layer.
     </h1>
 
-    <p class="lede" data-reveal style="--dl: 2">
-      A video player that casts 4K to a television, a real-time multiplayer platform on a cluster I run,
-      a resume SaaS, a tool that syncs dubbed audio to video and a battery widget for wireless
-      peripherals. Eight years of taking products from a blank plan to a running service, most of it
-      inside product teams.
+    <p class="lede" data-reveal style="--dl: 3">
+      I’ve built a video player that casts 4K to a television, a real-time multiplayer platform on
+      a cluster I run, a resume SaaS, a tool that syncs dubbed audio to video and a battery widget
+      for wireless peripherals. Eight years taking products from a blank plan to a running service,
+      most of it inside product teams.
     </p>
 
-    <div class="cta" data-reveal style="--dl: 3">
+    <!-- Revealed first, because on the wide layout it is the leftmost thing on
+         the page and a column that fades in after its own text reads as late. -->
+    <figure class="me" data-reveal>
+      <Portrait />
+      <figcaption class="mono">{site.location} · {site.timezone}</figcaption>
+    </figure>
+
+    <div class="cta" data-reveal style="--dl: 4">
       <a class="btn btn-primary btn-lg" href="#work">See the work</a>
       <a class="btn btn-ghost btn-lg" href={site.cv} download={cvFileName}>
         <Icon name="u-download" />
@@ -31,7 +54,7 @@ import Icon from './Icon.astro'
       </a>
     </div>
 
-    <ul class="ids" data-reveal style="--dl: 4">
+    <ul class="ids" data-reveal style="--dl: 5">
       {
         contacts.map((c) => (
           <li>
@@ -49,46 +72,115 @@ import Icon from './Icon.astro'
 <style>
   .hero {
     position: relative;
-    padding: clamp(56px, 7vw, 92px) 0 clamp(52px, 6vw, 78px);
+    padding: clamp(48px, 6vw, 76px) 0 clamp(48px, 5.5vw, 72px);
   }
 
-
+  /*
+    Narrow first: one column, in the order the markup is written. The portrait
+    sits under the sentence that earns it and above the two buttons, which is
+    where it stops being a decoration in the corner and starts being the thing
+    the page is about.
+  */
   .copy {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* A grid item stretches to its column, and a stretched pill is a capsule the
+     width of the page. Everything else here wants the full column: the headings
+     and the paragraph wrap against it, and the two button rows lay themselves
+     out from the left already. */
+  .pill {
+    justify-self: start;
+  }
+
+  .me {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    /* Wide enough to be a face rather than a thumbnail, and never wider than
+       the gutters leave. */
+    width: min(340px, 78vw);
+    margin: 34px auto 0;
     text-align: center;
   }
 
-  h1 {
-    margin: 26px auto 24px;
-    max-width: 1020px;
-    font-size: clamp(38px, 5.6vw, 70px);
-    font-weight: 700;
-    line-height: 1.04;
-    letter-spacing: -0.037em;
+  .me figcaption {
+    font-size: 11.5px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--fg3);
   }
 
-  .lede {
-    margin-inline: auto;
+  h1 {
+    margin: 22px 0 20px;
+    /*
+      No measure here on purpose: the break in the markup is the line break,
+      and the column the copy sits in is the only other constraint.
+
+      Larger than it was, because the heading is shorter than it was. Counting
+      the products put a number on the page that was always going to be wrong —
+      five is what has a section here, not what has been built — so the claim
+      is the two things that are true however many there turn out to be.
+    */
+    font-size: clamp(40px, 5.2vw, 66px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.037em;
   }
 
   .cta {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    justify-content: center;
-    margin: 36px 0 22px;
+    margin: 32px 0 20px;
   }
 
   .ids {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: center;
   }
 
   @media (max-width: 560px) {
     h1 br {
       display: none;
+    }
+  }
+
+  /*
+    From a laptop up the portrait leaves the flow and becomes the left column,
+    spanning every row of the copy. The copy is the taller of the two at every
+    width this applies at — four lines of lede and two of heading clear the
+    portrait's 375 — so the rows are sized by the text and the figure hangs
+    from the top of them.
+  */
+  @media (min-width: 861px) {
+    .copy {
+      grid-template-columns: 300px minmax(0, 1fr);
+      /*
+        The five rows are the five things in column two, and they are declared
+        rather than implied: `grid-row: 1 / -1` counts lines of the EXPLICIT
+        grid, so against implicit rows `-1` is line 1 and the portrait collapses
+        into the first row — which it then stretches to its own height, drawing
+        the availability pill as a 400 px capsule.
+      */
+      grid-template-rows: repeat(5, auto);
+      column-gap: clamp(32px, 4vw, 52px);
+      align-content: start;
+    }
+
+    .copy > :not(.me) {
+      grid-column: 2;
+    }
+
+    .me {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      align-self: start;
+      width: 300px;
+      margin: 0;
+      text-align: left;
     }
   }
 </style>

@@ -5,7 +5,7 @@ export const site = {
   domain: 'risen.dev',
   title: 'Evgenii Zakharov — product engineer',
   description:
-    'Product engineer across every layer: the interface, the services behind it and the infrastructure they run on. Five production products in five domains, and eight years of it inside product teams.',
+    'Product engineer across every layer: the interface, the services behind it and the infrastructure they run on. Eight years of it inside product teams, and solo products running in production.',
   email: 'to@risen.dev',
   location: 'Yerevan',
   timezone: 'UTC+4',

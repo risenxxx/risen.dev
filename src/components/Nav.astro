@@ -7,7 +7,7 @@ const social = contacts.filter((c) => c.id !== 'email')
 
 <header class="bar">
   <div class="wrap row">
-    <a class="mark" href="#top">risen<span>.dev</span></a>
+    <a class="mark" href="#top">{site.name}</a>
 
     <nav class="tabs" aria-label="Sections">
       {nav.map((item) => <a href={item.href}>{item.label}</a>)}
@@ -54,10 +54,6 @@ const social = contacts.filter((c) => c.id !== 'email')
     font-weight: 600;
     font-size: 17px;
     letter-spacing: -0.02em;
-  }
-
-  .mark span {
-    color: var(--fg3);
   }
 
   .tabs {

@@ -3,8 +3,10 @@ import { contacts, site, cvFileName } from '../data/site.ts'
 import Icon from './Icon.astro'
 import Sep from './Sep.astro'
 
-/* The second ask. The first one is a button in the navigation, before anybody
-   has a reason to press it; this one comes after five products. */
+/* The second ask, and the shortest. The first is a button in the navigation,
+   before anybody has a reason to press it; what I am looking for is written out
+   in `Now`, near the top, where somebody deciding whether to read on needs it.
+   By here the only thing left to say is the address. */
 const social = contacts.filter((c) => c.id !== 'email')
 ---
 
@@ -12,12 +14,11 @@ const social = contacts.filter((c) => c.id !== 'email')
   <div class="wrap inner">
     <p class="pill" data-reveal><span class="live" aria-hidden="true"></span>Available now</p>
 
-    <h2 data-reveal style="--dl: 1">You have seen the work. Let’s talk about yours.</h2>
+    <h2 data-reveal style="--dl: 1">Write to me</h2>
 
     <p class="lede" data-reveal style="--dl: 2">
-      Senior product, full-stack or platform roles. I work best owning a feature end to end, in a team
-      where the work gets reviewed. Remote worldwide as a contractor or through an EOR, or hybrid
-      in {site.location}. Contract work and one-off architecture reviews too.
+      Senior product, full-stack or platform roles, contract work, and one-off architecture reviews.
+      The terms are up at <a href="#now">Looking for the next team</a>.
     </p>
 
     <div class="cta" data-reveal style="--dl: 3">

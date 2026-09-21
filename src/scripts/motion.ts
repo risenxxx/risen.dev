@@ -1,7 +1,7 @@
 /*
   The whole motion system, and deliberately small.
 
-  Three behaviours, one loop:
+  Two behaviours, one loop:
 
   - `[data-reveal]` gets `.in` when it first crosses into view, and CSS does the
     rest with a transition plus a `--dl` stagger.
@@ -9,7 +9,6 @@
     `data-dur` milliseconds while the element is on screen. The previews read it
     for every value that moves — a bar width, a rotation, an opacity — so a
     scene is written in CSS and this file never touches a product's markup.
-  - `[data-count]` counts a figure up to the value already printed in the HTML.
 
   Nothing here reads `scrollY`. Progress comes from the element entering view,
   never from the page's position, which is what keeps the page scrolling at its
@@ -42,39 +41,6 @@ function tick(now: number): void {
 function play(el: HTMLElement, dur: number): void {
   running.push({ el, start: performance.now(), dur })
   if (frame === 0) frame = requestAnimationFrame(tick)
-}
-
-type Counter = { el: HTMLElement; to: number; decimals: number; prefix: string; suffix: string; start: number }
-
-const counting: Counter[] = []
-let countFrame = 0
-
-function countTick(now: number): void {
-  countFrame = 0
-  for (let i = counting.length - 1; i >= 0; i--) {
-    const c = counting[i]
-    if (!c) continue
-    const t = Math.min(1, (now - c.start) / 900)
-    const value = easeOut(t) * c.to
-    c.el.textContent = `${c.prefix}${value.toFixed(c.decimals)}${c.suffix}`
-    if (t >= 1) counting.splice(i, 1)
-  }
-  if (counting.length > 0) countFrame = requestAnimationFrame(countTick)
-}
-
-function count(el: HTMLElement): void {
-  const to = Number(el.dataset.count)
-  if (!Number.isFinite(to)) return
-  const decimals = Number(el.dataset.decimals ?? 0)
-  counting.push({
-    el,
-    to,
-    decimals,
-    prefix: el.dataset.prefix ?? '',
-    suffix: el.dataset.suffix ?? '',
-    start: performance.now(),
-  })
-  if (countFrame === 0) countFrame = requestAnimationFrame(countTick)
 }
 
 /*
@@ -183,7 +149,6 @@ export function initMotion(): void {
 
         if (el.hasAttribute('data-reveal')) el.classList.add('in')
         if (el.hasAttribute('data-scene')) play(el, Number(el.dataset.dur ?? 900))
-        if (el.hasAttribute('data-count')) count(el)
       }
     },
     // Twelve per cent up from the bottom edge: a section starts moving once it
@@ -191,7 +156,7 @@ export function initMotion(): void {
     { rootMargin: '0px 0px -12% 0px', threshold: 0 },
   )
 
-  for (const el of document.querySelectorAll('[data-reveal], [data-scene], [data-count]')) {
+  for (const el of document.querySelectorAll('[data-reveal], [data-scene]')) {
     observer.observe(el)
   }
 
@@ -215,7 +180,6 @@ export function initMotion(): void {
     if (!REDUCED.matches) return
     observer.disconnect()
     running.length = 0
-    counting.length = 0
     document.documentElement.classList.remove('js')
   })
 }

@@ -1,21 +1,61 @@
 ---
-import DeskVoltMock from './mocks/DeskVolt.astro'
 import DubsyncMock from './mocks/Dubsync.astro'
 import FramePlayerMock from './mocks/FramePlayer.astro'
 import GiftFightMock from './mocks/GiftFight.astro'
 import TunedMock from './mocks/Tuned.astro'
 import Project from './Project.astro'
 import Stage from './Stage.astro'
+
+/*
+  DeskVolt is off the page, not deleted: it is the slightest of the five and it
+  was buying the least attention per screen of it. Its block and its preview
+  import are commented below rather than removed, because the product is still
+  shipped and still linked from the log — this is an editing decision about the
+  page, and the day it stops being one the two comments come out again.
+*/
 ---
 
 <section id="work">
   <div class="wrap intro">
     <h2 class="h-section" data-reveal>Selected work</h2>
     <p class="lede">
-      Five products taken from a blank plan to production. Permissive licences, written documentation, real users, and a
-      link to the source of every one that has public source.
+      Taken from a blank plan to production. Permissive licences, written documentation, real users, and a link to the
+      source of every one that has public source.
     </p>
   </div>
+
+  <Project
+    accent="#7c8cff"
+    title="Tuned"
+    meta={['Document tooling', 'Hosted SaaS']}
+    blurb="Resume tailoring where every variant is a patch over one base document rather than a copy, so a hundred applications stay one source of truth, and nothing silently drifts."
+    bullets={[
+      "A provenance check refuses any claim that doesn't trace back to a source node, so the model can rewrite but cannot invent.",
+      'The live preview renders the same react-pdf component inside a Web Worker and rasterises it with pdf.js, so page fitting is measured against a real renderer instead of estimated.',
+      'Anthropic and OpenAI-compatible adapters sit behind a single port; the editor has its own drag-and-drop engine.',
+    ]}
+    stack={[
+      { label: 'TypeScript', icon: 'b-typescript' },
+      { label: 'React 19', icon: 'b-react' },
+      { label: 'TanStack', icon: 'b-tanstack' },
+      { label: 'Tailwind v4', icon: 'b-tailwindcss' },
+      { label: 'Astro', icon: 'b-astro' },
+      { label: 'pdf.js' },
+      { label: 'Bun', icon: 'b-bun' },
+      { label: 'Elysia' },
+      { label: 'oRPC' },
+      { label: 'PostgreSQL', icon: 'b-postgresql' },
+      { label: 'Drizzle', icon: 'b-drizzle' },
+      { label: 'Redis', icon: 'b-redis' },
+      { label: 'BullMQ' },
+      { label: 'Kubernetes', icon: 'b-kubernetes' },
+      { label: 'Pulumi', icon: 'b-pulumi' },
+      { label: 'FluxCD', icon: 'b-fluxcd' },
+    ]}
+    links={[{ label: 'Website', href: 'https://tunedhq.io', icon: 'u-external', primary: true }]}
+  >
+    <Stage bare h={532}><TunedMock /></Stage>
+  </Project>
 
   <Project
     accent="#818cf8"
@@ -46,8 +86,8 @@ import Stage from './Stage.astro'
       { label: 'Chromecast / DLNA' },
     ]}
     links={[
-      { label: 'frameplayer.app', href: 'https://frameplayer.app', icon: 'u-external' },
-      { label: 'Repository', href: 'https://github.com/risenxxx/frame-player', icon: 'b-github' },
+      { label: 'Website', href: 'https://frameplayer.app', icon: 'u-external' },
+      { label: 'Codebase', href: 'https://github.com/risenxxx/frame-player', icon: 'b-github' },
       {
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/frame-player/releases/latest',
@@ -55,6 +95,7 @@ import Stage from './Stage.astro'
         primary: true,
       },
     ]}
+    reverse
   >
     <Stage bare><FramePlayerMock /></Stage>
   </Project>
@@ -90,44 +131,10 @@ import Stage from './Stage.astro'
       { label: 'Codebase', href: 'https://github.com/gift-fight/gift-fight', icon: 'b-github' },
       { label: 'Infrastructure', href: 'https://github.com/gift-fight/gift-fight-infra', icon: 'b-github' },
     ]}
-    reverse
   >
     <Stage bare w={700} h={776}>
       <GiftFightMock />
     </Stage>
-  </Project>
-
-  <Project
-    accent="#7c8cff"
-    title="Tuned"
-    meta={['Document tooling', 'Hosted SaaS']}
-    blurb="Resume tailoring where every variant is a patch over one base document rather than a copy, so a hundred applications stay one source of truth, and nothing silently drifts."
-    bullets={[
-      "A provenance check refuses any claim that doesn't trace back to a source node, so the model can rewrite but cannot invent.",
-      'The live preview renders the same react-pdf component inside a Web Worker and rasterises it with pdf.js, so page fitting is measured against a real renderer instead of estimated.',
-      'Anthropic and OpenAI-compatible adapters sit behind a single port; the editor has its own drag-and-drop engine.',
-    ]}
-    stack={[
-      { label: 'TypeScript', icon: 'b-typescript' },
-      { label: 'React 19', icon: 'b-react' },
-      { label: 'TanStack', icon: 'b-tanstack' },
-      { label: 'Tailwind v4', icon: 'b-tailwindcss' },
-      { label: 'Astro', icon: 'b-astro' },
-      { label: 'pdf.js' },
-      { label: 'Bun', icon: 'b-bun' },
-      { label: 'Elysia' },
-      { label: 'oRPC' },
-      { label: 'PostgreSQL', icon: 'b-postgresql' },
-      { label: 'Drizzle', icon: 'b-drizzle' },
-      { label: 'Redis', icon: 'b-redis' },
-      { label: 'BullMQ' },
-      { label: 'Kubernetes', icon: 'b-kubernetes' },
-      { label: 'Pulumi', icon: 'b-pulumi' },
-      { label: 'FluxCD', icon: 'b-fluxcd' },
-    ]}
-    links={[{ label: 'Visit tunedhq.io', href: 'https://tunedhq.io', icon: 'u-external', primary: true }]}
-  >
-    <Stage bare h={532}><TunedMock /></Stage>
   </Project>
 
   <Project
@@ -153,7 +160,7 @@ import Stage from './Stage.astro'
       { label: 'Matroska' },
     ]}
     links={[
-      { label: 'Repository', href: 'https://github.com/risenxxx/dubsync', icon: 'b-github' },
+      { label: 'Codebase', href: 'https://github.com/risenxxx/dubsync', icon: 'b-github' },
       {
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/dubsync/releases/latest',
@@ -165,6 +172,9 @@ import Stage from './Stage.astro'
   >
     <Stage bare><DubsyncMock /></Stage>
   </Project>
+
+  {
+    /* Hidden, see the note above. Uncomment this and the DeskVoltMock import to bring it back.
 
   <Project
     accent="#ffd400"
@@ -189,7 +199,7 @@ import Stage from './Stage.astro'
       { label: 'hidapi' },
     ]}
     links={[
-      { label: 'Repository', href: 'https://github.com/risenxxx/DeskVolt', icon: 'b-github' },
+      { label: 'Codebase', href: 'https://github.com/risenxxx/DeskVolt', icon: 'b-github' },
       {
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/DeskVolt/releases/latest',
@@ -200,6 +210,8 @@ import Stage from './Stage.astro'
   >
     <Stage bare><DeskVoltMock /></Stage>
   </Project>
+    */
+  }
 </section>
 
 <style>

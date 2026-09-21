@@ -1,8 +1,8 @@
 # risen.dev
 
-One static page: five solo products, the engineering behind them, and the path
-from a plan to running infrastructure. Astro, no framework runtime, deployed to
-Cloudflare by GitHub Actions on every push to `master`.
+One static page: who is writing it, the solo products worth a screen each, the
+engineering behind them, and the path from a plan to running infrastructure. Astro, no framework
+runtime, deployed to Cloudflare by GitHub Actions on every push to `master`.
 
 ## Running it
 
@@ -20,6 +20,7 @@ npm run typecheck  # astro check
 | `src/pages/index.astro` | The page, section by section |
 | `src/components/` | One component per section |
 | `src/components/mocks/` | The five product previews, rebuilt in HTML and CSS |
+| `src/portrait/source.jpg` | The photograph the hero portrait is cut from |
 | `src/components/IconSprite.astro` | Every brand mark, inlined once |
 | `src/scripts/motion.ts` | The whole motion system, about a hundred lines |
 | `src/styles/` | Tokens, then the primitives more than one section uses |
@@ -52,6 +53,26 @@ obeyed.
 **Non-breaking spaces are the character, not `&nbsp;`.** Some copy is rendered
 as a text node and some through `set:html`; an entity is only decoded in the
 second, so a single convention avoids a literal `&nbsp;` appearing on the page.
+
+**The page leads with a person, not a claim.** The heading names one engineer
+before it claims anything, the copy is in the first person, and the mark in the
+bar is a name rather than the domain — the domain is already in the address
+bar and it says nothing about who wrote this. Directly under the hero, where a
+strip of four big figures used to sit, there is a log: what I am on now and what
+I have put down, each line dated and linked. Four figures in a row under a hero
+is what a pricing page does, and a page about a person should be the one kind of
+page that admits time passes. Nothing on the page counts the products either:
+the number would be the number with a section here, which is neither the number
+built nor the number shipped, and a figure that is wrong in both directions is
+worth less than no figure. The figures were not lost — 5.5M is in the log and
+again beside the library it belongs to, the years are in the hero sentence.
+
+**The portrait is the only photograph.** Everything else on the page is drawn,
+so it earns the one crop rule worth writing down: `scripts/portrait.mjs` takes
+the largest 4:5 rectangle out of the square in `src/portrait/`, encodes 300, 380
+and 512 in AVIF, WebP and JPEG, and stops at 512 because that is the most detail
+the source holds. Nothing is ever scaled up; a 2× screen gets the 512 rather
+than a blurred enlargement of it. Replace the source and run `npm run portrait`.
 
 **The link preview** is `src/og/card.html`, rendered to `public/og.png` by
 `npm run og` and committed. It is a standalone document rather than a route, so

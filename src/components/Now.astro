@@ -1,0 +1,204 @@
+---
+/*
+  What replaced the strip of four big numbers that used to sit here.
+
+  That strip was the one element on the page that belonged to a product rather
+  than to a person — four figures in a row under a hero is what a pricing page
+  does. The numbers themselves are not lost: 5.5M is in the log below and again
+  beside the library it belongs to, and the years are in the hero sentence.
+
+  A log admits that time passes, which is the thing a landing page never does
+  and a person's page always should. Every line here is a fact that was already
+  on the page in small print somewhere — a product closed on purpose, a library
+  handed over — brought up to where it can be read.
+*/
+
+/* Bumped by hand when a line below changes. A date that drifts out of step
+   with the list is worse than no date. */
+const updated = '2026-09-21'
+
+/*
+  Newest first, and `now` is a state rather than a date, so it sorts above every
+  year. One line per thing worth knowing — not the CV, which is a download away
+  and is the place for every bullet: a line earns a row here by being something
+  that happened, on a date, that somebody would want the link to.
+
+  The copy is trusted and hand-written, so the links are markup.
+*/
+const entries = [
+  {
+    when: 'now',
+    live: true,
+    body: 'Senior frontend engineer at X5 Group, one of Europe’s largest food retailers — SSR-heavy Next.js for a recipe platform at 7.5M monthly active users, held to Core Web Vitals.',
+  },
+  {
+    when: 'now',
+    live: true,
+    body: 'Building <a href="https://tunedhq.io">Tuned</a> in my free time — resume tailoring where every variant is a patch over one base document rather than a copy.',
+  },
+  {
+    when: 'now',
+    live: true,
+    body: 'Shipping <a href="https://frameplayer.app">Frame Player</a> — a 4K HDR file cast to a television with no re-encode, on Windows and macOS.',
+  },
+  {
+    when: 'now',
+    live: true,
+    body: 'Keeping <a href="https://github.com/risenxxx/dubsync">dubsync</a> and <a href="https://github.com/risenxxx/DeskVolt">DeskVolt</a> alive — an audio-sync tool and a battery widget for wireless peripherals.',
+  },
+  {
+    when: '2025',
+    body: 'Closed <a href="https://github.com/gift-fight/gift-fight">Gift Fight</a> on the funnel data rather than carrying it on. The cluster and the code are still the work.',
+  },
+  {
+    when: '2024',
+    body: 'Handed <a href="https://github.com/BenLorantfy/nestjs-zod">nestjs-zod</a> to a new maintainer. Still the ecosystem default at 5.5M installs a month.',
+  },
+  {
+    when: '2023',
+    body: 'Sole engineer on <a href="https://github.com/sigma-gaming">Sigma Games</a> — an iGaming backend built from scratch as ten ASP.NET Core services: payments, wallets, affiliate, gaming and auth.',
+  },
+  {
+    when: '2022',
+    body: 'Frontend at SberEducation — BFF contracts that stopped upstream changes reaching clients, schema-driven client generation in CI, and an accessibility-first payment widget.',
+  },
+  {
+    when: '2021',
+    body: 'A shared UI kit at Haiku Dev that four product teams adopted, and <a href="https://github.com/cardbox/editor">@cardbox/editor</a> shipped as a published library — a Slate-based WYSIWYG, sole engineer on it.',
+  },
+  {
+    when: '2018',
+    body: 'Went freelance full time and started dealing with the client directly: scope, deploy, and the support after launch. Where the eight years start.',
+  },
+]
+---
+
+<section id="now">
+  <div class="wrap">
+    <h2 class="h-section" data-reveal>Looking for the next team</h2>
+
+    <p class="lede" data-reveal style="--dl: 1">
+      Open to senior engineering roles — remote worldwide as a contractor or through an EOR, or
+      hybrid in Yerevan. I work best owning a feature end to end, in a team where the work gets
+      reviewed. Contract work and one-off architecture reviews too.
+    </p>
+
+    <p class="stamp mono" data-reveal style="--dl: 2">updated {updated}</p>
+
+    <p class="label mono" data-reveal style="--dl: 3">LATELY</p>
+
+    <ul class="log">
+      {
+        entries.map((e, i) => (
+          <li data-reveal style={`--dl: ${i}`}>
+            <span class:list={['when', 'mono', { live: e.live }]}>
+              {e.live && <span class="dot" aria-hidden="true" />}
+              {e.when}
+            </span>
+            <span class="what" set:html={e.body} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  section {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(46px, 5vw, 68px);
+  }
+
+  .lede {
+    margin-top: 18px;
+  }
+
+  .stamp {
+    margin-top: 14px;
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--fg3);
+  }
+
+  .label {
+    margin-top: clamp(30px, 3.4vw, 42px);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: var(--fg3);
+  }
+
+  /*
+    The rules are the width of the list, and the list is a measure: a hairline
+    that runs to 1440 under a line that stops at 800 draws an empty second
+    column and makes the log look like a table with a field missing.
+  */
+  .log {
+    margin-top: 12px;
+    max-width: 920px;
+  }
+
+  .log li {
+    display: flex;
+    align-items: baseline;
+    gap: 26px;
+    padding: 15px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .when {
+    flex: none;
+    /* Wide enough for a four-figure year and for `now` with its dot, so every
+       line below starts on the same column. */
+    width: 66px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg3);
+  }
+
+  .when.live {
+    color: var(--fg-mid);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-radius: 999px;
+    background: var(--green);
+    /* On the baseline the dot sits under the text rather than beside it. */
+    transform: translateY(-2px);
+  }
+
+  .what {
+    flex-grow: 1;
+    min-width: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-soft);
+  }
+
+  .what :global(a) {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.32);
+    transition: text-decoration-color 0.18s;
+  }
+
+  .what :global(a:hover) {
+    text-decoration-color: var(--fg);
+  }
+
+  @media (max-width: 560px) {
+    .log li {
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .when {
+      width: auto;
+    }
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+/*
+  The one photograph on the page.
+
+  Encoded by `scripts/portrait.mjs` rather than copied in already built, because
+  the source is a square that has to be cropped to 4:5 before it is anything
+  here. 512 is the top of the ladder and also the most detail the source holds,
+  so a 2× screen is served the widest file rather than an enlargement of it.
+
+  Not lazy and not low priority: it is the first thing above the fold that is
+  not text, and a portrait that arrives after the heading has already settled
+  is worse than one that arrives with it.
+*/
+const widths = [300, 380, 512]
+const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${ext} ${w}w`).join(', ')
+
+/* The two sizes the hero ever draws it at, either side of the width where the
+   portrait leaves the flow and becomes a column. The narrow one is the larger
+   of the two: with nothing beside it, a small picture just looks stranded. */
+const sizes = '(min-width: 861px) 300px, min(340px, 78vw)'
+---
+
+<picture>
+  <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+  <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
+  <img
+    src="/assets/img/portrait-512.jpg"
+    srcset={srcset('jpg')}
+    sizes={sizes}
+    width="512"
+    height="640"
+    alt="Evgenii Zakharov"
+    decoding="async"
+  />
+</picture>
+
+<style>
+  picture,
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  img {
+    border-radius: 16px;
+    border: 1px solid var(--line2);
+    background: var(--s3);
+  }
+</style>
