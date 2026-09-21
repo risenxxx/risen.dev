@@ -9,6 +9,12 @@
   it is scaled to about half, where a 2× or 3× screen still wants the middle of
   the ladder rather than the bottom of it.
 
+  Two sets were fixed here until the source site catches up. orion-moon's top
+  rung is 1320 — the 660 preview at 2× — made from the 1600 it replaced, which
+  a 2× screen was picking up and nothing needs. lake-galaxy's AVIFs were
+  re-encoded from its 1120 JPEG because they came out heavier than the WebPs
+  beside them, and a browser that prefers AVIF was served the larger file.
+
   `sizes` is the width on screen, not the 660 the preview is laid out at — the
   Stage scales it with a transform, which the browser does not see when it
   picks a candidate. It follows the column: 660 px from 721 px up, where the

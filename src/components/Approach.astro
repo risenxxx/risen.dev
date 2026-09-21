@@ -67,11 +67,12 @@ const stages = [
       <p class="aside">a deploy is a reviewed commit,<br />never a hand on a terminal</p>
     </div>
 
-    <ol class="steps">
+    <ol class="steps" data-scene data-dur="7000" data-ease="linear">
       {
         stages.map((s, i) => (
-          <li data-reveal style={`--dl: ${i}`}>
+          <li data-reveal style={`--dl: ${i}; --i: ${i}`}>
             <span class="marker" aria-hidden="true" />
+            {i === stages.length - 1 && <span class="glint" aria-hidden="true" />}
             <p class="key">
               <Icon name={s.icon} size={14} />
               {s.n}
@@ -128,26 +129,138 @@ const stages = [
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
+  /*
+    A signal runs the sequence once: it leaves a stop, travels that step's own
+    rule, and the next stop lights as it arrives. `--p` is plain time
+    (`data-ease="linear"`); the first tenth is left empty so the steps have
+    finished revealing, then each step gets an equal 15% beat, about a second.
+
+    The signal travels a step's rule rather than a path from stop to stop,
+    which is what makes the wrapped layouts work without a connector: where a
+    row ends, the rule runs out at the edge, the signal fades there, and the
+    next stop lights at the start of the next row, like a line of text wrapping.
+
+    With `--p` at 1 — no script, reduced motion, or the run over — every stop
+    is lit and every rule carries its trail, so the finished state is the page.
+  */
   .steps li {
+    --s: calc(0.1 + var(--i) * 0.15);
+    --t: clamp(0, (var(--p) - var(--s)) / 0.15, 1);
+    --d: calc(var(--t) * var(--t) * (3 - 2 * var(--t)));
+    --on: clamp(0, (var(--p) - var(--s)) * 60, 1);
+    /* The flash as a stop lights: full at arrival, gone a tenth later. */
+    --f: calc(var(--on) * clamp(0, 1 - (var(--p) - var(--s)) / 0.1, 1));
+    --sig: var(--route);
     position: relative;
     border-top: 1px solid var(--line3);
     padding: 26px 26px 0 0;
   }
 
-  .marker {
+  /* The signal is the route colour from the reference figure: the same hue
+     for the one other line on the page that is a path rather than a division.
+     The last stop is the thing actually running, so it is the one that is
+     coloured rather than white, and the signal on its rule turns green. */
+  .steps li:last-child {
+    --sig: var(--green);
+  }
+
+  /* ::before is the trail left lit behind the signal, ::after the signal's
+     head. Both grow from the stop, so neither reaches back past it into the
+     previous step or out of the left edge of a wrapped row. */
+  .steps li::before,
+  .steps li::after {
+    content: '';
     position: absolute;
+    top: -1px;
+    left: 0;
+    width: calc(var(--d) * 100%);
+    height: 1px;
+    pointer-events: none;
+  }
+
+  .steps li::before {
+    background: color-mix(in srgb, var(--sig) 60%, transparent);
+  }
+
+  .steps li::after {
+    background: linear-gradient(90deg, transparent calc(100% - 80px), var(--sig));
+    filter: drop-shadow(0 0 3px var(--sig));
+    opacity: calc(clamp(0, var(--t) * 12, 1) * clamp(0, (1 - var(--t)) * 6, 1));
+  }
+
+  .marker {
+    --c: var(--fg);
+    position: absolute;
+    z-index: 1;
     top: -4px;
     left: 0;
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--fg);
+    background: var(--c);
+    opacity: calc(0.3 + 0.7 * var(--on));
   }
 
-  /* The last stop is the thing actually running, so it is the one that is
-     coloured rather than white. */
   .steps li:last-child .marker {
-    background: var(--green);
+    --c: var(--green);
+  }
+
+  /* The splash: a ring that starts on the dot as it lights and opens out as
+     it fades. */
+  .marker::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 1px solid var(--sig);
+    opacity: calc(var(--f) * 0.8);
+    transform: scale(calc(1 + (1 - var(--f)) * 2.6));
+  }
+
+  /*
+    Once the signal has reached the end, the last rule keeps a glint moving
+    along it: the one thing on the page that is still running. It fades in as
+    the run finishes, and under reduced motion it never moves, which leaves it
+    parked off the rule and invisible.
+  */
+  .glint {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--green), transparent) no-repeat;
+    background-size: 40% 100%;
+    background-position: -70% 0;
+    filter: drop-shadow(0 0 3px var(--green));
+    opacity: clamp(0, (var(--p) - 0.97) / 0.03, 1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .glint {
+      animation: glint-x 3.6s ease-in-out infinite;
+    }
+  }
+
+  @keyframes glint-x {
+    0% {
+      background-position: -70% 0;
+    }
+    70%,
+    100% {
+      background-position: 170% 0;
+    }
+  }
+
+  @keyframes glint-y {
+    0% {
+      background-position: 0 -70%;
+    }
+    70%,
+    100% {
+      background-position: 0 170%;
+    }
   }
 
   .key {
@@ -221,6 +334,31 @@ const stages = [
     .marker {
       top: 4px;
       left: -4px;
+    }
+
+    .steps li::before,
+    .steps li::after {
+      top: 0;
+      left: -1px;
+      width: 1px;
+      height: calc(var(--d) * 100%);
+    }
+
+    .steps li::after {
+      background: linear-gradient(180deg, transparent calc(100% - 80px), var(--sig));
+    }
+
+    .glint {
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      right: auto;
+      width: 1px;
+      height: auto;
+      background-image: linear-gradient(180deg, transparent, var(--green), transparent);
+      background-size: 100% 40%;
+      background-position: 0 -70%;
+      animation-name: glint-y;
     }
   }
 </style>
