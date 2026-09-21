@@ -34,7 +34,8 @@
             class="fig"
             viewBox="0 0 1256 510"
             data-scene
-            data-dur="1100"
+            data-dur="1600"
+            data-ease="linear"
             role="img"
             aria-label="A reference architecture in three bands. Delivery: specification and acceptance cases, typed contracts, CI gates, a signed image, GitOps reconciliation, the cluster. Runtime: clients through the edge and an API gateway into HTTP services, a real-time layer and workers, then durable workflows and the OLTP, OLAP and cache tiers. Beneath both: Kubernetes on Talos across bare metal and cloud, and observability tapping every box."
           >
@@ -112,16 +113,21 @@
               <text x="1136" y="351" class="val2">Redis, S3</text>
             </g>
 
-            <!-- One path, so the dash runs along the whole route in order: the
-                 request traces itself from the clients to storage. -->
-            <path
-              class="flow"
-              d="M175.5 253h30M391.5 253h30M627.5 253h20M648 163v180M648 163h11M648 253h11M648 343h11M883.5 163h20v90M883.5 343h20v-90M883.5 253h30M1079.5 253h20M1100 163v180M1100 163h11M1100 253h11M1100 343h11"
-            ></path>
-            <path
-              class="heads"
-              d="M199 248.5l6 4.5-6 4.5M415 248.5l6 4.5-6 4.5M652.5 158.5l6 4.5-6 4.5M652.5 248.5l6 4.5-6 4.5M652.5 338.5l6 4.5-6 4.5M907 248.5l6 4.5-6 4.5M1104.5 158.5l6 4.5-6 4.5M1104.5 248.5l6 4.5-6 4.5M1104.5 338.5l6 4.5-6 4.5"
-            ></path>
+            <!-- The route in five legs, drawn one after another with some overlap:
+                 clients to the edge, the edge to the gateway, the fan into the
+                 services, the fan back into workflows, the fan out to storage.
+                 Every branch of a leg starts at the same point and --len is its
+                 longest branch, so the fronts of a fan move at one speed. -->
+            <path class="leg" style="--from: 0.30; --len: 30" d="M175.5 253h30"></path>
+            <path class="arrow" style="--from: 0.30" d="M199 248.5l6 4.5-6 4.5"></path>
+            <path class="leg" style="--from: 0.39; --len: 30" d="M391.5 253h30"></path>
+            <path class="arrow" style="--from: 0.39" d="M415 248.5l6 4.5-6 4.5"></path>
+            <path class="leg" style="--from: 0.48; --len: 121" d="M627.5 253h20v-90h11M627.5 253h31M627.5 253h20v90h11"></path>
+            <path class="arrow" style="--from: 0.48" d="M652.5 158.5l6 4.5-6 4.5M652.5 248.5l6 4.5-6 4.5M652.5 338.5l6 4.5-6 4.5"></path>
+            <path class="leg" style="--from: 0.57; --len: 120" d="M883.5 163h20v90h10M883.5 253h30M883.5 343h20v-90h10"></path>
+            <path class="arrow" style="--from: 0.57" d="M907 248.5l6 4.5-6 4.5"></path>
+            <path class="leg" style="--from: 0.66; --len: 121" d="M1079.5 253h20v-90h11M1079.5 253h31M1079.5 253h20v90h11"></path>
+            <path class="arrow" style="--from: 0.66" d="M1104.5 158.5l6 4.5-6 4.5M1104.5 248.5l6 4.5-6 4.5M1104.5 338.5l6 4.5-6 4.5"></path>
 
             <g class="b3">
               <text x="0" y="408" class="idx">03</text>
@@ -400,43 +406,57 @@
   }
 
   /*
-    Three bands arrive in order, then the route draws itself along them and the
-    arrowheads land last. Opacity clamps on its own, so a negative value simply
-    means "not yet" and no clamp() is needed.
+    Three bands arrive in order, then the route draws itself along them, a leg
+    at a time, and each leg's arrowheads land as its line reaches them.
+
+    `--p` is plain time here (`data-ease="linear"`) and every beat eases
+    itself. The route used to be one path with one dash as long as all of it,
+    walked from start to end — but a dash pattern restarts at every subpath,
+    and every leg is its own subpath a few dozen units long, so each one was
+    fully drawn the moment the offset moved at all. On a reload with the figure
+    in view that read as the lines blinking on while the heads faded in.
   */
   .b1 {
-    opacity: calc(var(--p) * 4);
+    --t: clamp(0, var(--p) / 0.22, 1);
+    opacity: calc(1 - (1 - var(--t)) * (1 - var(--t)) * (1 - var(--t)));
   }
 
   .b2 {
-    opacity: calc((var(--p) - 0.18) * 4);
+    --t: clamp(0, (var(--p) - 0.08) / 0.22, 1);
+    opacity: calc(1 - (1 - var(--t)) * (1 - var(--t)) * (1 - var(--t)));
   }
 
   .b3 {
-    opacity: calc((var(--p) - 0.36) * 4);
+    --t: clamp(0, (var(--p) - 0.16) / 0.22, 1);
+    opacity: calc(1 - (1 - var(--t)) * (1 - var(--t)) * (1 - var(--t)));
   }
 
-  .flow {
+  /* Each leg draws over 16% of the scene, about a quarter of a second, on a
+     smoothstep: slow off the mark, slow into the box. Its dash is its own
+     longest branch, so offset 0 is fully drawn and --len is nothing at all.
+     The opacity guard keeps a round cap from leaving a dot at the start of a
+     leg that has not begun yet. */
+  .leg {
+    --t: clamp(0, (var(--p) - var(--from)) / 0.16, 1);
+    --d: calc(var(--t) * var(--t) * (3 - 2 * var(--t)));
     fill: none;
     stroke: var(--route);
     stroke-opacity: 0.75;
     stroke-width: 1.1;
     stroke-linecap: round;
     stroke-linejoin: round;
-    /* One dash as long as the whole route: the offset walks it from start to
-       end, and because every leg lives in the same path the draw runs in
-       document order instead of all at once. */
-    stroke-dasharray: 1120;
-    stroke-dashoffset: calc(1120 * (1 - clamp(0, (var(--p) - 0.45) * 1.9, 1)));
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: calc(var(--len) * (1 - var(--d)));
+    opacity: clamp(0, var(--t) * 1000, 1);
   }
 
-  .heads {
+  .arrow {
     fill: none;
     stroke: var(--route);
     stroke-width: 1.2;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: calc((var(--p) - 0.85) * 7);
+    opacity: clamp(0, (var(--p) - var(--from) - 0.13) / 0.06, 1);
   }
 
 </style>
