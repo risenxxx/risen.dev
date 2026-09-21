@@ -3,15 +3,15 @@
   The one photograph on the page.
 
   Encoded by `scripts/portrait.mjs` rather than copied in already built, because
-  the source is a square that has to be cropped to 4:5 before it is anything
-  here. 512 is the top of the ladder and also the most detail the source holds,
-  so a 2× screen is served the widest file rather than an enlargement of it.
+  the source is framed looser than the hero wants and is cropped there first.
+  The ladder is the two widths `sizes` names, at 1× and at 2×; a 3× screen gets
+  the top of it rather than an enlargement.
 
   Not lazy and not low priority: it is the first thing above the fold that is
   not text, and a portrait that arrives after the heading has already settled
   is worse than one that arrives with it.
 */
-const widths = [300, 380, 512]
+const widths = [300, 380, 600, 680]
 const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${ext} ${w}w`).join(', ')
 
 /* The two sizes the hero ever draws it at, either side of the width where the
@@ -24,11 +24,11 @@ const sizes = '(min-width: 861px) 300px, min(340px, 78vw)'
   <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
   <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
   <img
-    src="/assets/img/portrait-512.jpg"
+    src="/assets/img/portrait-680.jpg"
     srcset={srcset('jpg')}
     sizes={sizes}
-    width="512"
-    height="640"
+    width="680"
+    height="850"
     alt="Evgenii Zakharov"
     decoding="async"
   />
