@@ -46,6 +46,10 @@
     --glow: rgba(150, 158, 200, 0.14);
     --glow2: rgba(150, 158, 200, 0.03);
 
+    /* The same hue at full strength, for the one line on the page that is a
+       route rather than a division: the request through the reference figure. */
+    --route: #969ec8;
+
     --sh-mock: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
     --sh-card: 0 24px 48px -30px rgba(0, 0, 0, 0.8);
 

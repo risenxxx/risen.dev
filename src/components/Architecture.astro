@@ -1,8 +1,16 @@
 ---
 /*
-  The reference figure. Not any one product's diagram — the shape all five are
-  cut from, so the hero can say "I design the system" and then show what that
-  means before the first product appears.
+  The reference figure. Not any one product's diagram — the shape every product
+  here is cut from, so the hero can say "I design the system" and then show what
+  that means before the first product appears.
+
+  Set in the page's own type, not a costume of its own. It used to be all
+  monospace, which the rest of the page keeps for strings a machine would parse
+  — and most of what is written in here is English. So the labels a machine
+  would print (CLIENTS, 01 SPEC) stay monospace, and every sentence is in the
+  body face. It also used to be a filled panel, the one card that size on a page
+  otherwise divided by hairlines; now the boxes are hairlines too, and the only
+  line with a colour in it is the route a request takes.
 
   Laid out in a 1256 × 510 user-space grid and drawn at `width: 100%` with the
   height left to the aspect ratio, so the figure's own edges land exactly on the
@@ -13,10 +21,10 @@
 
 <section class="arch">
   <div class="wrap">
-    <div class="panel" data-reveal>
+    <div data-reveal>
       <div class="head">
-        <h2>How I draw a system before any of it exists</h2>
-        <p class="mono aside">every product below is a subset of this, sized to the problem</p>
+        <h2 class="h-section">How I draw a system before any of it exists</h2>
+        <p class="lede">Every product below is a subset of this, sized to the problem.</p>
       </div>
 
       <div class="figwrap" data-pan-frame>
@@ -41,9 +49,9 @@
                 <text x="646" y="45">04 IMAGE</text><text x="855" y="45">05 GITOPS</text><text x="1065" y="45">06 CLUSTER</text>
               </g>
               <g class="val">
-                <text x="18" y="65">Acceptance Cases First</text><text x="227" y="65">Types at Every Seam</text>
-                <text x="437" y="65">Gates, Not Follow-Ups</text><text x="646" y="65">Signed, Reproducible</text>
-                <text x="855" y="65">Reconcile, Don’t Push</text><text x="1065" y="65">Rollback in Minutes</text>
+                <text x="18" y="65">Acceptance cases first</text><text x="227" y="65">Types at every seam</text>
+                <text x="437" y="65">Gates, not follow-ups</text><text x="646" y="65">Signed, reproducible</text>
+                <text x="855" y="65">Reconcile, don’t push</text><text x="1065" y="65">Rollback in minutes</text>
               </g>
             </g>
 
@@ -56,7 +64,7 @@
               <text x="16" y="148" class="lbl">CLIENTS</text>
               <g class="val2">
                 <text x="16" y="186">Web and SSR</text><text x="16" y="222">Telegram Mini App</text>
-                <text x="16" y="258">Desktop App</text><text x="16" y="294">Bot and CLI</text>
+                <text x="16" y="258">Desktop app</text><text x="16" y="294">Bot and CLI</text>
               </g>
               <path class="hair" d="M16 198h143M16 234h143M16 270h143"></path>
               <text x="16" y="330" class="sub">One typed contract</text>
@@ -65,31 +73,31 @@
               <rect x="216.5" y="203.5" width="175" height="99" rx="10" class="box"></rect>
               <text x="232" y="227" class="lbl">EDGE</text>
               <text x="232" y="250" class="val2 big">Cloudflare</text>
-              <text x="232" y="268" class="sub">WAF, Cache, Bot Rules</text>
-              <text x="232" y="284" class="sub">Per-Route Rate Limits</text>
+              <text x="232" y="268" class="sub">WAF, cache, bot rules</text>
+              <text x="232" y="284" class="sub">Per-route rate limits</text>
 
               <rect x="432.5" y="203.5" width="195" height="99" rx="10" class="box"></rect>
               <text x="448" y="227" class="lbl">API GATEWAY</text>
-              <text x="448" y="250" class="val2 big">Typed Contracts</text>
-              <text x="448" y="268" class="sub">One Schema, Both Sides</text>
-              <text x="448" y="284" class="sub">Authn, Idempotency Keys</text>
+              <text x="448" y="250" class="val2 big">Typed contracts</text>
+              <text x="448" y="268" class="sub">One schema, both sides</text>
+              <text x="448" y="284" class="sub">Authn, idempotency keys</text>
 
               <rect x="668.5" y="124.5" width="215" height="77" rx="10" class="box"></rect>
               <text x="684" y="148" class="lbl">HTTP SERVICES</text>
-              <text x="684" y="172" class="val2">Stateless, Scaled Out</text>
+              <text x="684" y="172" class="val2">Stateless, scaled out</text>
 
               <rect x="668.5" y="214.5" width="215" height="77" rx="10" class="box lit"></rect>
               <text x="684" y="238" class="lbl">REAL-TIME LAYER</text>
-              <text x="684" y="262" class="val2">WebSockets, Reconnect-Safe</text>
+              <text x="684" y="262" class="val2">WebSockets, reconnect-safe</text>
 
               <rect x="668.5" y="304.5" width="215" height="77" rx="10" class="box"></rect>
               <text x="684" y="328" class="lbl">WORKERS</text>
-              <text x="684" y="352" class="val2">Queues, Schedules, Ingest</text>
+              <text x="684" y="352" class="val2">Queues, schedules, ingest</text>
 
               <rect x="924.5" y="214.5" width="155" height="77" rx="10" class="box"></rect>
               <text x="940" y="238" class="lbl">WORKFLOWS</text>
-              <text x="940" y="259" class="val2 big">Durable State</text>
-              <text x="940" y="276" class="sub">Retry, Compensate</text>
+              <text x="940" y="259" class="val2 big">Durable state</text>
+              <text x="940" y="276" class="sub">Retry, compensate</text>
 
               <rect x="1120.5" y="124.5" width="135" height="77" rx="10" class="box"></rect>
               <text x="1136" y="148" class="lbl">OLTP</text>
@@ -149,36 +157,19 @@
 </section>
 
 <style>
+  /* A section like the ones either side of it: a hairline above, the heading
+     on the page's left edge, and nothing drawn around it. */
   .arch {
-    padding-top: clamp(44px, 5vw, 66px);
-  }
-
-  .panel {
-    background: var(--s2);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    padding: clamp(20px, 2.4vw, 30px) clamp(20px, 2.6vw, 32px) clamp(24px, 2.8vw, 34px);
+    border-top: 1px solid var(--line);
+    padding-block: clamp(46px, 5vw, 68px);
   }
 
   .head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 26px;
+    margin-bottom: clamp(28px, 3vw, 38px);
   }
 
-  h2 {
-    font-size: clamp(20px, 2.2vw, 26px);
-    letter-spacing: -0.026em;
-  }
-
-  /* The smallest sentence on the page, and it was 11.5px — under the floor the
-     rest of the page keeps for text somebody is meant to read. */
-  .aside {
-    font-size: 12.5px;
-    color: var(--fg3);
-    text-align: right;
+  .head .lede {
+    margin-top: 14px;
   }
 
   /*
@@ -203,6 +194,21 @@
     overscroll-behavior-x: contain;
   }
 
+  /*
+    One bar under the figure, never two. Without JavaScript the browser's own
+    scrollbar is the only one that tracks anything, so it stays. Once the script
+    has measured, the thin bar below takes over — it is the page's style, and it
+    is the one the fades and the hint are kept in step with — and the native one
+    goes, or the two sit one above the other.
+  */
+  .figwrap.measured .scroller {
+    scrollbar-width: none;
+  }
+
+  .figwrap.measured .scroller::-webkit-scrollbar {
+    display: none;
+  }
+
   /* A mouse has no swipe, so the script makes the figure draggable and the
      cursor is how that is offered. Only once there is somewhere to drag it. */
   .figwrap.pannable .scroller {
@@ -221,8 +227,11 @@
   }
 
   @media (max-width: 1060px) {
-    .edge,
-    .track {
+    .edge {
+      display: block;
+    }
+
+    .figwrap.measured .track {
       display: block;
     }
 
@@ -248,13 +257,13 @@
   /* The figure starts unscrolled, so the right edge is the one covering
      something and the left is the one that has to earn its way in. */
   .edge-left {
-    background: linear-gradient(to left, transparent, var(--s2));
+    background: linear-gradient(to left, transparent, var(--bg));
     opacity: 0;
   }
 
   .edge-right {
     inset: 0 0 0 auto;
-    background: linear-gradient(to right, transparent, var(--s2));
+    background: linear-gradient(to right, transparent, var(--bg));
   }
 
   .figwrap.measured:not(.at-start) .edge-left {
@@ -273,8 +282,8 @@
     background: rgba(255, 255, 255, 0.07);
   }
 
-  /* Full width until the script says otherwise: without JavaScript the bar is
-     then a rule under the figure rather than a thumb parked at one end. */
+  /* Only drawn once the script has measured, so it always has a real width and
+     position; the fallbacks are just what it holds for the frame before. */
   .thumb {
     position: absolute;
     inset: 0 auto;
@@ -311,33 +320,31 @@
     font-family: var(--mono);
   }
 
+  /* Outlines, not cards: nothing in here is filled, the way nothing else on
+     the page is. */
   .strip,
   .box {
-    fill: #101014;
-    stroke: rgba(255, 255, 255, 0.11);
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
   }
 
+  /* The real-time layer is the one box the route passes through that no other
+     box stands in for, so it is the one that takes the route's colour. */
   .box.lit {
-    stroke: rgba(255, 255, 255, 0.2);
+    stroke: var(--route);
+    stroke-opacity: 0.5;
   }
 
-  .box.deep {
-    fill: #0f0f13;
-  }
-
-  .divider {
-    stroke: rgba(255, 255, 255, 0.09);
-    fill: none;
-  }
-
+  .divider,
   .hair {
-    stroke: rgba(255, 255, 255, 0.07);
+    stroke: rgba(255, 255, 255, 0.08);
     fill: none;
   }
 
-  .idx {
-    font-size: 11px;
-    fill: #9b9ba5;
+  .idx,
+  .cap {
+    font-size: 10.5px;
+    fill: var(--fg3);
     letter-spacing: 1.4px;
   }
 
@@ -345,15 +352,9 @@
     fill: var(--fg3);
   }
 
-  .cap {
-    font-size: 11px;
-    fill: var(--fg3);
-    letter-spacing: 1.4px;
-  }
-
   .lbl {
     font-size: 10px;
-    fill: #8a8a94;
+    fill: var(--fg3);
     letter-spacing: 1.1px;
   }
 
@@ -361,28 +362,39 @@
     font-size: 10.5px;
   }
 
+  /*
+    Everything below is a sentence or a name, so it is the body face. Each is a
+    step up on the size it had in monospace, which set wider and so read larger
+    at the same number.
+  */
+  .val,
+  .val2,
+  .sub {
+    font-family: var(--sans);
+  }
+
   .val {
-    font-size: 12px;
-    fill: #e7e7ec;
+    font-size: 13px;
+    fill: var(--fg-mid);
   }
 
   .val2 {
-    font-size: 11.5px;
-    fill: #d6d6de;
+    font-size: 12.5px;
+    fill: var(--fg-mid);
   }
 
   .val2.big {
-    font-size: 12.5px;
+    font-size: 14px;
     fill: var(--fg);
   }
 
   .sub {
-    font-size: 11px;
-    fill: #8a8a94;
+    font-size: 11.5px;
+    fill: var(--fg-body);
   }
 
   .tap {
-    stroke: rgba(255, 255, 255, 0.13);
+    stroke: rgba(255, 255, 255, 0.1);
     stroke-dasharray: 3 5;
     fill: none;
   }
@@ -406,7 +418,8 @@
 
   .flow {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.3);
+    stroke: var(--route);
+    stroke-opacity: 0.75;
     stroke-width: 1.1;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -419,21 +432,11 @@
 
   .heads {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.3);
-    stroke-width: 1.1;
+    stroke: var(--route);
+    stroke-width: 1.2;
     stroke-linecap: round;
     stroke-linejoin: round;
     opacity: calc((var(--p) - 0.85) * 7);
   }
 
-  @media (max-width: 720px) {
-    .head {
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .aside {
-      text-align: left;
-    }
-  }
 </style>

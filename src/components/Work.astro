@@ -215,6 +215,13 @@ import Stage from './Stage.astro'
 </section>
 
 <style>
+  /* The figure above used to be a card, which divided itself from this; now it
+     is a section on the page like the rest, so the rule between them is drawn
+     here the way every other section draws its own. */
+  #work {
+    border-top: 1px solid var(--line);
+  }
+
   .intro {
     padding: clamp(46px, 5.4vw, 70px) var(--gut) clamp(24px, 3vw, 34px);
   }

@@ -9,6 +9,10 @@
     `data-dur` milliseconds while the element is on screen. The previews read it
     for every value that moves — a bar width, a rotation, an opacity — so a
     scene is written in CSS and this file never touches a product's markup.
+    It is eased out by default; `data-ease="linear"` hands over plain time, for
+    a scene cut into beats that each need a curve of their own. Slicing the
+    start of an ease-out gives the steepest part of it — a fade meant to take a
+    third of the scene is over in its first eighth.
 
   Nothing here reads `scrollY`. Progress comes from the element entering view,
   never from the page's position, which is what keeps the page scrolling at its
@@ -21,7 +25,7 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)')
 /** Cubic ease-out: fast to start, settles rather than arrives. */
 const easeOut = (t: number): number => 1 - (1 - t) ** 3
 
-type Scene = { el: HTMLElement; start: number; dur: number }
+type Scene = { el: HTMLElement; start: number; dur: number; linear: boolean }
 
 const running: Scene[] = []
 let frame = 0
@@ -32,14 +36,14 @@ function tick(now: number): void {
     const scene = running[i]
     if (!scene) continue
     const t = Math.min(1, (now - scene.start) / scene.dur)
-    scene.el.style.setProperty('--p', easeOut(t).toFixed(4))
+    scene.el.style.setProperty('--p', (scene.linear ? t : easeOut(t)).toFixed(4))
     if (t >= 1) running.splice(i, 1)
   }
   if (running.length > 0) frame = requestAnimationFrame(tick)
 }
 
 function play(el: HTMLElement, dur: number): void {
-  running.push({ el, start: performance.now(), dur })
+  running.push({ el, start: performance.now(), dur, linear: el.dataset.ease === 'linear' })
   if (frame === 0) frame = requestAnimationFrame(tick)
 }
 
