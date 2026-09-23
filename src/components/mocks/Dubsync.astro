@@ -1,31 +1,61 @@
 ---
 /*
-  dubsync as a timeline: the anchor track, the donor track, and the file that
-  comes out of them.
+  dubsync as a timeline: the master's English track, the donor's English track,
+  and the donor's dub that rides along with it.
 
-  The scene is the tool's actual job — the donor slides the measured offset into
-  place, the regions that do not exist in the master are marked and dropped, and
-  the output resolves underneath once the alignment holds. The readout at the
-  bottom is the part that matters most: a confidence score, so a bad match is
-  reported rather than shipped.
+  The two English tracks are the same soundtrack, which is the whole trick: the
+  donor's copy is the one that can be compared with the master, and wherever it
+  differs — here two ad breaks, three seconds of black and silence each — the
+  donor has material the master does not. The scene removes those regions for
+  real: each break collapses to nothing and the rest of the track slides left
+  until it sits under the master. The dub is on the donor's clock, so the same
+  cuts happen to it in the same frames; it is never compared with anything, it
+  just follows. The readout at the bottom is the part that matters most: a
+  confidence score, so a bad match is reported rather than shipped.
+
+  Everything is drawn in pixels of the 526 px lane, so a segment's viewBox is
+  its own width and nothing is stretched sideways when it moves.
 */
 
-/** One lane of waveform: vertical strokes above and below the centre line. */
-const wave = (mid: number, seed: number, amp: number): string => {
+const W = 526
+const STEP = 9
+
+/** Bar heights for one soundtrack: one per STEP px, across the whole lane. */
+const bars = (seed: number, amp: number): number[] =>
+  Array.from({ length: Math.ceil((W - 5) / STEP) }, (_, i) => amp * (0.35 + 0.65 * Math.abs(Math.sin(i * 1.7 + seed))))
+
+/** The bars that fall in [from, to), as a path measured from `from`. */
+const slice = (hs: number[], from: number, to: number): string => {
   let d = ''
-  for (let i = 0; i < 52; i++) {
-    const x = 8 + i * 10
-    const h = amp * (0.35 + 0.65 * Math.abs(Math.sin(i * 1.7 + seed)))
-    d += `M${x} ${mid - h}V${mid + h}`
-  }
+  hs.forEach((h, i) => {
+    const x = 5 + i * STEP
+    if (x >= from && x < to) d += `M${x - from} ${38 - h}V${38 + h}`
+  })
   return d
 }
 
-const tall = wave(38, 0.6, 28)
-const short = wave(29, 1.4, 21)
+// Where the master's timeline has the donor's two ad breaks, halfway between
+// bars so no stroke is split by a cut, and how wide each break is on the
+// ruler's scale (10.55 px a second).
+const A = 144.5
+const B = 342.5
+const G1 = 32
+const G2 = 33
+
+const eng = bars(0.6, 28)
+const dub = bars(2.3, 24)
+
+/** A donor lane: three pieces of soundtrack with a break between each pair. */
+const donor = (hs: number[]) => [
+  { cls: 's0', left: 0, w: A, d: slice(hs, 0, A) },
+  { cls: 'gap g1', left: A, w: G1, d: '' },
+  { cls: 's1', left: A + G1, w: B - A, d: slice(hs, A, B) },
+  { cls: 'gap g2', left: B + G1, w: G2, d: '' },
+  { cls: 's2', left: B + G1 + G2, w: W - B, d: slice(hs, B, W) },
+]
 ---
 
-<div class="app" aria-hidden="true" data-scene data-dur="1800">
+<div class="app" aria-hidden="true" data-scene data-dur="2600" data-ease="linear" style={`--g1: ${G1}px; --g2: ${G2}px`}>
   <div class="bar">
     <span class="dots"><i></i><i></i><i></i></span>
     <span class="name">dubsync</span>
@@ -51,28 +81,51 @@ const short = wave(29, 1.4, 21)
         <span class="track-name">eac3 5.1<i class="sep"></i>eng</span>
         <em>anchor track</em>
       </span>
-      <span class="wave"><svg viewBox="0 0 528 76" preserveAspectRatio="none"><path class="master" d={tall}></path></svg></span>
+      <span class="wave">
+        <svg class="piece" style={`width: ${W}px`} viewBox={`0 0 ${W} 76`} preserveAspectRatio="none"><path class="master" d={slice(eng, 0, W)}></path></svg>
+      </span>
     </div>
 
     <div class="lane">
       <span class="gutter">
         <b>DONOR</b>
-        <span class="track-name">ac3 2.0<i class="sep"></i>fre dub</span>
-        <em class="shift">shifted −1.284 s</em>
+        <span class="track-name">ac3 2.0<i class="sep"></i>eng</span>
+        <em>2 ad breaks</em>
       </span>
       <span class="wave">
-        <svg class="slide" viewBox="0 0 528 76" preserveAspectRatio="none"><path class="donor" d={tall}></path></svg>
-        <i class="cut c1">cut</i>
-        <i class="cut c2">cut</i>
+        {
+          donor(eng).map((p) =>
+            p.d ? (
+              <svg class:list={['piece', p.cls]} style={`left: ${p.left}px; width: ${p.w}px`} viewBox={`0 0 ${p.w} 76`} preserveAspectRatio="none">
+                <path class="master" d={p.d} />
+              </svg>
+            ) : (
+              <i class={p.cls} style={`left: ${p.left}px; width: ${p.w}px`} />
+            ),
+          )
+        }
       </span>
     </div>
 
-    <div class="lane out">
+    <div class="lane dub">
       <span class="gutter">
-        <b>OUTPUT</b>
-        <span class="track-name">master.synced.mkv</span>
+        <b>DONOR</b>
+        <span class="track-name">ac3 2.0<i class="sep"></i>fre dub</span>
+        <em class="follow">same cuts applied</em>
       </span>
-      <span class="wave"><svg viewBox="0 0 528 58" preserveAspectRatio="none"><path class="result" d={short}></path></svg></span>
+      <span class="wave">
+        {
+          donor(dub).map((p) =>
+            p.d ? (
+              <svg class:list={['piece', p.cls]} style={`left: ${p.left}px; width: ${p.w}px`} viewBox={`0 0 ${p.w} 76`} preserveAspectRatio="none">
+                <path class="donor" d={p.d} />
+              </svg>
+            ) : (
+              <i class={p.cls} style={`left: ${p.left}px; width: ${p.w}px`} />
+            ),
+          )
+        }
+      </span>
     </div>
 
     <span class="playhead"></span>
@@ -80,13 +133,24 @@ const short = wave(29, 1.4, 21)
   </div>
 
   <div class="readout">
-    <span>offset −1.284 s<i class="sep"></i>PSR 9.4<i class="sep"></i>7 / 7 segments aligned</span>
+    <span class="result">3 / 3 segments aligned<i class="sep"></i>2 breaks cut, −6.1 s<i class="sep"></i>PSR 9.4</span>
     <span class="confident">confident</span>
   </div>
 </div>
 
 <style>
+  /*
+    `--p` is plain time (`data-ease="linear"`) and each break eases itself on a
+    smoothstep: the first moment is left still so the breaks are seen before
+    they go, then one closes, and the second starts as the first settles.
+    `--t1` and `--t2` live on the root because both donor lanes read them — the
+    dub is cut in the same frames as the track it depends on.
+  */
   .app {
+    --a1: clamp(0, (var(--p) - 0.16) / 0.3, 1);
+    --t1: calc(var(--a1) * var(--a1) * (3 - 2 * var(--a1)));
+    --a2: clamp(0, (var(--p) - 0.42) / 0.3, 1);
+    --t2: calc(var(--a2) * var(--a2) * (3 - 2 * var(--a2)));
     width: 660px;
     height: 372px;
     border-radius: 12px;
@@ -204,7 +268,7 @@ const short = wave(29, 1.4, 21)
     height: 76px;
   }
 
-  .lane.out {
+  .lane.dub {
     flex: 1 1 auto;
     height: auto;
     border-bottom: 0;
@@ -215,10 +279,6 @@ const short = wave(29, 1.4, 21)
     flex: none;
     border-right: 1px solid rgba(255, 255, 255, 0.07);
     padding: 12px 12px 0;
-  }
-
-  .lane.out .gutter {
-    padding-top: 10px;
   }
 
   .gutter b {
@@ -246,9 +306,9 @@ const short = wave(29, 1.4, 21)
     color: #6e6e75;
   }
 
-  .gutter .shift {
+  .gutter .follow {
     color: #c084fc;
-    opacity: calc((var(--p) - 0.3) * 4);
+    opacity: clamp(0, var(--t1) * 3, 1);
   }
 
   .ticks {
@@ -285,16 +345,15 @@ const short = wave(29, 1.4, 21)
     overflow: hidden;
   }
 
-  .wave svg {
+  .piece {
     position: absolute;
-    inset: 0;
-    width: 100%;
+    top: 0;
+    left: 0;
     height: 100%;
   }
 
   .master,
-  .donor,
-  .result {
+  .donor {
     stroke-width: 5;
     stroke-linecap: round;
     fill: none;
@@ -308,48 +367,39 @@ const short = wave(29, 1.4, 21)
     stroke: #a855f7;
   }
 
-  .result {
-    stroke: #4ade9b;
-  }
-
-  /* The measured offset, applied: the donor walks into place rather than
-     appearing already correct. */
-  .slide {
-    transform: translateX(calc((1 - var(--p)) * 34px));
-  }
-
-  .cut {
+  /*
+    An ad break: black picture, so silence — a flat line through hatching. It
+    is removed rather than marked: it folds to zero width from its left edge
+    while everything after it moves left by exactly what it gives up, so the
+    track closes over the hole instead of a box being drawn on top of it.
+  */
+  .gap {
     position: absolute;
-    top: 4px;
-    bottom: 4px;
-    border: 1px dashed rgba(255, 255, 255, 0.45);
-    border-radius: 4px;
-    background: rgba(10, 10, 12, 0.72);
-    display: grid;
-    place-items: center;
-    font-family: var(--mono);
-    font-size: 9.5px;
-    font-style: normal;
-    color: #c4c4cc;
-    opacity: calc((var(--p) - 0.45) * 5);
+    top: 6px;
+    bottom: 6px;
+    border-radius: 3px;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.28)) center / 100% 1px no-repeat,
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 6px),
+      #0e0e10;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    transform-origin: left center;
   }
 
-  .c1 {
-    left: 22.6%;
-    width: 9.5%;
+  .g1 {
+    transform: scaleX(calc(1 - var(--t1)));
   }
 
-  .c2 {
-    left: 63%;
-    width: 7%;
+  .s1 {
+    transform: translateX(calc(var(--t1) * var(--g1) * -1));
   }
 
-  .lane.out .wave {
-    background: #14211c;
+  .g2 {
+    transform: translateX(calc(var(--t1) * var(--g1) * -1)) scaleX(calc(1 - var(--t2)));
   }
 
-  .lane.out svg {
-    opacity: calc((var(--p) - 0.65) * 4);
+  .s2 {
+    transform: translateX(calc((var(--t1) * var(--g1) + var(--t2) * var(--g2)) * -1));
   }
 
   .playhead {
@@ -384,6 +434,12 @@ const short = wave(29, 1.4, 21)
     color: #9a9aa2;
   }
 
+  /* The verdict is only stated once the run has earned it. */
+  .result,
+  .confident {
+    opacity: clamp(0, (var(--p) - 0.74) / 0.12, 1);
+  }
+
   .confident {
     margin-left: auto;
     display: inline-flex;
@@ -394,7 +450,6 @@ const short = wave(29, 1.4, 21)
     background: rgba(74, 222, 155, 0.12);
     border: 1px solid rgba(74, 222, 155, 0.4);
     color: #4ade9b;
-    opacity: calc((var(--p) - 0.75) * 5);
   }
 
   .sep {
