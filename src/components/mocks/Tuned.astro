@@ -6,6 +6,10 @@
 
   Deliberately not a picture of the Tuned landing page — a landing inside a
   landing says nothing, and this page links to the real one a line below.
+
+  The window is a promise, not an illustration: whoever signs in should find
+  this screen. So every colour, radius and control inside it is the app's own
+  (dark theme), never the site's around it.
 */
 ---
 
@@ -48,17 +52,20 @@
       <div class="doc">
         <p class="sec">EXPERIENCE</p>
         <div class="row pos">
-          <span class="cb"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <span class="tg"></span>
           <span class="pn">Gift Fight<em> · Platform &amp; Full Stack Engineer</em></span>
           <span class="pm">2025</span>
         </div>
         <div class="row bl lit">
+          <span class="tg"></span>
           <span>Architected multi-step rounds as durable Temporal workflows<mark class="d1">, reaching 99.5% completion through deterministic retries and idempotent handlers</mark>.</span>
         </div>
         <div class="row bl">
+          <span class="tg"></span>
           <span>Held p95 state-sync latency at 120 ms over a Socket.IO gameplay layer<mark class="d2">, measured with 300 concurrent sessions</mark>.</span>
         </div>
         <div class="row bl cut">
+          <span class="tg"></span>
           <span><s>Animated the game loop with Motion and Lottie inside the Telegram WebView.</s><em>kept in base</em></span>
         </div>
         <p class="sec">SKILLS</p>
@@ -108,6 +115,12 @@
     display: flex;
     flex-direction: column;
     box-shadow: var(--sh-mock);
+    /* The app's dark-theme accent, oklch(0.694 0.186 264.5). */
+    --app-acc: #6f95ff;
+    --app-acc-soft: rgba(111, 149, 255, 0.16);
+    /* The page sets tabular figures on everything; the app keeps them for
+       numbers that stand in a column or change in place. */
+    font-variant-numeric: normal;
   }
 
   .bar {
@@ -145,7 +158,7 @@
     align-items: center;
     height: 24px;
     padding: 0 9px;
-    border-radius: 999px;
+    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     font-size: 11px;
   }
@@ -173,7 +186,7 @@
     align-items: center;
     gap: 8px;
     padding: 7px 9px;
-    border-radius: 7px;
+    border-radius: 8px;
   }
 
   .item svg {
@@ -182,12 +195,12 @@
   }
 
   .item.on {
-    background: rgba(124, 140, 255, 0.1);
+    background: var(--app-acc-soft);
     color: #f2f4f8;
   }
 
   .item.on svg {
-    color: #7c8cff;
+    color: var(--app-acc);
   }
 
   .item b {
@@ -199,7 +212,7 @@
   }
 
   .item b.acc {
-    color: #7c8cff;
+    color: var(--app-acc);
   }
 
   .rail .sub {
@@ -221,8 +234,9 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    background: rgba(124, 140, 255, 0.2);
-    color: #c7cdff;
+    /* The avatar has a warm pair of its own, not an accent wash. */
+    background: oklch(0.3697 0.0613 47.4);
+    color: oklch(0.8715 0.0779 51.9);
     display: grid;
     place-items: center;
     font-size: 10px;
@@ -233,7 +247,7 @@
   .editor {
     flex-grow: 1;
     min-width: 0;
-    padding: 14px 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
   }
@@ -263,7 +277,7 @@
     gap: 6px;
     height: 28px;
     padding: 0 10px;
-    border-radius: 999px;
+    border-radius: 8px;
     border: 1px solid rgba(74, 222, 155, 0.36);
     font-size: 12px;
     color: #a1a7b3;
@@ -276,25 +290,39 @@
     /* 400: the mono face ships one weight, and a second file for this number
        alone was 15 KB. */
     font-weight: 400;
+    font-variant-numeric: tabular-nums;
     color: #4ade9b;
   }
 
+  /*
+    The app's tabs are labels over a hairline, the active one marked by an
+    accent rule laid over that hairline rather than by a fill.
+  */
   .tabs {
     display: flex;
-    gap: 6px;
-    margin: 12px 0 6px;
+    gap: 16px;
+    margin: 12px 0 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .tabs span {
+    position: relative;
     font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 7px;
+    font-weight: 500;
+    padding: 5px 0;
     color: #7c828e;
   }
 
   .tabs .on {
-    background: rgba(255, 255, 255, 0.07);
     color: #f2f4f8;
+  }
+
+  .tabs .on::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 2px;
+    background: var(--app-acc);
   }
 
   .doc {
@@ -304,7 +332,7 @@
   }
 
   .sec {
-    margin: 10px 0 2px;
+    margin: 8px 0 2px;
     padding-left: 8px;
     font-size: 10.5px;
     font-weight: 500;
@@ -314,25 +342,29 @@
   .row {
     display: flex;
     align-items: flex-start;
-    gap: 11px;
-    padding: 5px 8px;
-    border-radius: 7px;
-  }
-
-  .row.bl {
-    padding-left: 34px;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 8px;
   }
 
   .row.lit {
-    background: rgba(124, 140, 255, 0.07);
+    background: rgba(111, 149, 255, 0.07);
   }
 
+  /*
+    A node switched off stays in the document, struck through and muted, the
+    way the app shows it; fading the whole row instead melts the text into a
+    grey smear. The switch flips during the scene, so `--k` runs 0 to 1.
+  */
   .row.cut {
-    opacity: 0.45;
+    --k: clamp(0, (var(--p) - 0.3) * 5, 1);
+    opacity: calc(1 - 0.3 * var(--k));
   }
 
   .row.cut s {
-    text-decoration-color: rgba(161, 167, 179, 0.6);
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, #7c828e calc(var(--k) * 100%), transparent);
+    color: color-mix(in srgb, #7c828e calc(var(--k) * 100%), #a1a7b3);
   }
 
   .row.cut em {
@@ -342,21 +374,42 @@
     color: #7c828e;
   }
 
-  .cb {
-    width: 13px;
+  /*
+    Every node carries the app's switch: it means "show this in the document",
+    not "tick this off a list". Scaled down from the app's 30 x 18 for the
+    mock's density, keeping its proportions: twice as long as tall, the knob
+    four short of the height.
+  */
+  .tg {
+    position: relative;
+    flex: none;
+    width: 24px;
     height: 13px;
     margin-top: 3px;
-    border-radius: 4px;
-    flex: none;
-    background: #7c8cff;
-    display: grid;
-    place-items: center;
+    border-radius: 999px;
+    background: var(--app-acc);
   }
 
-  .cb svg {
+  .tg::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
     width: 9px;
     height: 9px;
-    color: #0a0b0f;
+    border-radius: 50%;
+    /* The dark theme's knob. */
+    background: oklch(0.957 0.005 260);
+    transform: translateX(11px);
+  }
+
+  /* Off: the dark theme's strong track, knob to the left. */
+  .cut .tg {
+    background: color-mix(in srgb, var(--app-acc) calc((1 - var(--k)) * 100%), oklch(0.366 0.013 260));
+  }
+
+  .cut .tg::after {
+    transform: translateX(calc((1 - var(--k)) * 11px));
   }
 
   .pn {
@@ -409,13 +462,19 @@
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    padding: 2px 8px;
+    padding: 0 8px;
   }
 
+  /* The app's one chip. */
   .s {
-    font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1;
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: #a1a7b3;
   }
@@ -449,6 +508,12 @@
     justify-content: space-between;
     font-size: 11px;
     color: #7c828e;
+  }
+
+  /* The page's `.mono` sets tabular figures; a page count is read, not
+     compared in a column. */
+  .pv-top .mono {
+    font-variant-numeric: normal;
   }
 
   .pages {
@@ -503,6 +568,7 @@
 
   .fit .mono {
     font-size: 10px;
+    font-variant-numeric: tabular-nums;
     color: #7c828e;
   }
 
@@ -512,9 +578,11 @@
     justify-content: center;
     gap: 6px;
     height: 28px;
-    border-radius: 7px;
-    background: #f2f4f8;
-    color: #0a0b0f;
+    border-radius: 8px;
+    /* The app's primary button is filled with the accent, and in the dark
+       theme its label is dark: white on this blue is about 2.8:1. */
+    background: var(--app-acc);
+    color: oklch(0.15 0.009 260);
     font-size: 12px;
     font-weight: 600;
   }
