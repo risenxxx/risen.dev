@@ -2,7 +2,7 @@
 /*
   Tuned's editor, rebuilt from the product's own primitives rather than
   photographed: the window chrome, the rail, the document rows with their
-  word-level diff, the match pill, the page thumbnails and the fitting bar.
+  word-level diff, the match ring, the page thumbnails and the fitting bar.
 
   Deliberately not a picture of the Tuned landing page — a landing inside a
   landing says nothing, and this page links to the real one a line below.
@@ -44,7 +44,16 @@
           <p class="crumb">Variants<i class="sep"></i>Stripe</p>
           <p class="ed-title">Senior Platform Engineer, Payments</p>
         </div>
-        <span class="match">Match <b data-count="92" data-decimals="0">92</b></span>
+        <span class="score">
+          <span class="score-l">Match</span>
+          <span class="ring" style="--v: 92">
+            <svg viewBox="0 0 34 34" aria-hidden="true">
+              <circle class="trk" cx="17" cy="17" r="15.5"></circle>
+              <circle class="arc" cx="17" cy="17" r="15.5" pathLength="100" transform="rotate(-90 17 17)"></circle>
+            </svg>
+            <b>92</b>
+          </span>
+        </span>
       </div>
 
       <div class="tabs"><span class="on">Resume</span><span>Letter</span><span>Posting</span></div>
@@ -254,7 +263,7 @@
 
   .ed-head {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
@@ -271,27 +280,70 @@
     color: #f2f4f8;
   }
 
-  .match {
+  /*
+    The app draws the score as a ring: the arc's colour is the level, its
+    length the size, the number inside the exact value. This is the app's
+    small step (34 / 3 / 11); the editor column here is narrow. No border
+    around it, the ring is its own edge.
+
+    The label sits over the ring in a column as wide as the ring, as
+    tunedhq.io does on narrow screens: beside it, it pushed the title onto a
+    second line. Wider than the ring, it overhangs to the left above the
+    short crumb line instead of taking width from the title.
+  */
+  .score {
     display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 28px;
-    padding: 0 10px;
-    border-radius: 8px;
-    border: 1px solid rgba(74, 222, 155, 0.36);
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+    width: 34px;
     font-size: 12px;
     color: #a1a7b3;
     white-space: nowrap;
   }
 
-  .match b {
-    font-family: var(--mono);
-    font-size: 14px;
-    /* 400: the mono face ships one weight, and a second file for this number
-       alone was 15 KB. */
-    font-weight: 400;
+  .ring {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: none;
+  }
+
+  .ring svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ring circle {
+    fill: none;
+    stroke-width: 3;
+  }
+
+  .ring .trk {
+    stroke: rgba(255, 255, 255, 0.08);
+  }
+
+  /* `pathLength` makes the circumference 100, so the dash is the score
+     itself. It stays still: nothing counts the number up, and an arc growing
+     beside a fixed number would read as two different values. */
+  .ring .arc {
+    stroke: #4ade9b;
+    stroke-linecap: round;
+    stroke-dasharray: var(--v) 100;
+  }
+
+  /* The interface face, not the mono one: the app sets it this way. */
+  .ring b {
+    position: relative;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: #4ade9b;
+    color: #f2f4f8;
   }
 
   /*
