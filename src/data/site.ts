@@ -9,21 +9,13 @@ export const site = {
   email: 'to@risen.dev',
   location: 'Yerevan',
   timezone: 'UTC+4',
-  cv: '/cv/evgenii-zakharov-cv.pdf',
   repo: 'https://github.com/risenxxx/risen.dev',
 } as const
 
 /*
-  What the file is called once it lands in someone's downloads folder, where it
-  sits among a hundred other CVs and gets forwarded on as an attachment: a name
-  with the person in it, not the URL's slug.
-*/
-export const cvFileName = `${site.name} — Resume.pdf`
-
-/*
   The public resumes on Tuned, one per direction. The CV button asks which one
   before it goes anywhere, because the two tell a different story about the same
-  eight years; the PDF stays as the last item for whoever needs an attachment.
+  eight years.
 */
 export const resumes = [
   { id: 'fullstack', label: 'Full Stack Engineer', href: 'https://tunedhq.io/r/risen-fullstack-engineer' },

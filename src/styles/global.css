@@ -238,6 +238,8 @@
     padding: 12px 16px;
     border-radius: 999px;
     border: 1px solid transparent;
+    /* A `<button>` brings the UA's grey fill with it; a ghost has no fill. */
+    background: transparent;
     font: 500 14px / 1 var(--sans);
     white-space: nowrap;
     cursor: pointer;

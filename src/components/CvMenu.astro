@@ -1,10 +1,10 @@
 ---
-import { resumes, site, cvFileName } from '../data/site.ts'
+import { resumes } from '../data/site.ts'
 import Icon from './Icon.astro'
 
 /*
   The CV button, and the menu it opens beside itself: one public resume per
-  direction, each in a new tab, and the PDF under them.
+  direction, each in a new tab.
 
   A native popover rather than a script. The browser already does everything a
   menu needs to — open and close on the button, close on Escape and on a click
@@ -57,11 +57,6 @@ const anchor = `--cv-${id}`
       </a>
     ))
   }
-  <hr />
-  <a role="menuitem" class="pdf" href={site.cv} download={cvFileName}>
-    <span class="label">PDF</span>
-    <Icon name="u-download" size={14} />
-  </a>
 </div>
 
 <script>
@@ -164,15 +159,5 @@ const anchor = `--cv-${id}`
   a:hover :global(.ic),
   a:focus-visible :global(.ic) {
     color: var(--fg);
-  }
-
-  .pdf {
-    color: var(--fg2);
-  }
-
-  hr {
-    margin: 5px 6px;
-    border: 0;
-    border-top: 1px solid var(--line);
   }
 </style>

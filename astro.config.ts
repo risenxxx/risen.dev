@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import type { AstroIntegration } from 'astro'
 import { defineConfig } from 'astro/config'
-import { cvFileName } from './src/data/site.ts'
+import { resumes } from './src/data/site.ts'
 
 /*
   One page, static output, no framework runtime. `SITE_ORIGIN` lets a preview
@@ -12,15 +12,6 @@ const site = new URL(process.env.SITE_ORIGIN ?? 'https://risen.dev')
 
 /** A preview build asks search engines to stay away: the production page is the canonical one. */
 const preview = process.env.SITE_PREVIEW === '1'
-
-/**
- * A `filename` a byte-oriented parser can read: the em dash becomes a hyphen
- * and anything else outside ASCII is dropped, with `filename*` carrying the
- * real spelling for everyone else.
- */
-function asciiFileName(name: string): string {
-  return name.replace(/[\u2012-\u2015]/g, '-').replace(/[^\x20-\x7e]|["\\]/g, '')
-}
 
 /**
  * `_headers` is written after the build rather than kept in `public/`: the
@@ -40,15 +31,6 @@ function pagesHeaders(): AstroIntegration {
           ...(preview ? ['  X-Robots-Tag: noindex, nofollow'] : []),
           '/_astro/*',
           '  Cache-Control: public, max-age=31536000, immutable',
-          '/cv/*',
-          '  Cache-Control: public, max-age=3600',
-          /*
-            The name the browser saves the CV under when the link is opened or
-            saved directly, rather than clicked through the page's own download
-            buttons. `inline` keeps the PDF viewable in the tab; the ASCII
-            spelling is there for clients that predate RFC 5987.
-          */
-          `  Content-Disposition: inline; filename="${asciiFileName(cvFileName)}"; filename*=UTF-8''${encodeURIComponent(cvFileName)}`,
           /*
             The old blog's service worker only goes away if the browser can
             fetch a newer script at this path, so it must never be answered
@@ -66,6 +48,13 @@ function pagesHeaders(): AstroIntegration {
           landing is worth more than five 404s.
         */
         const redirects = ['/posts/* / 301', '/ru/posts/* / 301', '/ru / 301', '/ru/* / 301']
+
+        /*
+          The CV used to be a PDF under /cv/, and that address went out in
+          applications. It now lands on the public resume instead; a 302,
+          because which resume is the default may change.
+        */
+        redirects.push(`/cv/* ${resumes[0].href} 302`)
         await writeFile(new URL('_redirects', dir), `${redirects.join('\n')}\n`)
       },
     },
