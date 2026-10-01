@@ -1,0 +1,178 @@
+---
+import { resumes, site, cvFileName } from '../data/site.ts'
+import Icon from './Icon.astro'
+
+/*
+  The CV button, and the menu it opens beside itself: one public resume per
+  direction, each in a new tab, and the PDF under them.
+
+  A native popover rather than a script. The browser already does everything a
+  menu needs to — open and close on the button, close on Escape and on a click
+  anywhere else, sit above every stacking context on the page — and anchor
+  positioning keeps it next to the button however the page scrolls. Where
+  anchoring is not supported the popover falls back to the centre of the
+  viewport, which is still a working menu.
+
+  `id` is only there to give each instance its own anchor name; there are three
+  of these on the page.
+*/
+interface Props {
+  id: string
+  class?: string
+  primary?: boolean
+  large?: boolean
+  iconSize?: number
+  align?: 'start' | 'center' | 'end'
+}
+
+const { id, class: cls, primary = false, large = false, iconSize, align = 'start' } = Astro.props
+const menu = `cv-menu-${id}`
+const anchor = `--cv-${id}`
+---
+
+<button
+  type="button"
+  class:list={['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg', cls]}
+  popovertarget={menu}
+  aria-haspopup="menu"
+  style={`anchor-name: ${anchor}`}
+>
+  View CV
+  <Icon name="u-chevron-down" size={iconSize} class="chev" />
+</button>
+
+<div
+  id={menu}
+  class:list={['cv-menu', align]}
+  popover
+  role="menu"
+  aria-label="Choose a resume"
+  style={`position-anchor: ${anchor}`}
+>
+  {
+    resumes.map((r) => (
+      <a role="menuitem" href={r.href} target="_blank" rel="noopener">
+        <span class="label">{r.label}</span>
+        <Icon name="u-external" size={14} />
+      </a>
+    ))
+  }
+  <hr />
+  <a role="menuitem" class="pdf" href={site.cv} download={cvFileName}>
+    <span class="label">PDF</span>
+    <Icon name="u-download" size={14} />
+  </a>
+</div>
+
+<script>
+  // A link that opens in a new tab leaves this page as it was, menu included.
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('.cv-menu a')) {
+    link.addEventListener('click', () => link.closest<HTMLElement>('[popover]')?.hidePopover())
+  }
+</script>
+
+<style>
+  .btn :global(.chev) {
+    margin-right: -4px;
+    opacity: 0.6;
+    transition: rotate 0.18s var(--ease);
+  }
+
+  .btn:has(+ .cv-menu:popover-open) :global(.chev) {
+    rotate: 180deg;
+  }
+
+  .cv-menu {
+    /* The UA sheet centres a popover with `inset: 0; margin: auto`; anchored,
+       it is placed by `position-area` instead. */
+    inset: auto;
+    margin: 8px 0;
+    position-area: bottom span-right;
+    position-try-fallbacks: flip-block, flip-inline;
+
+    min-width: 230px;
+    padding: 6px;
+    border: 1px solid var(--line2);
+    border-radius: 14px;
+    background: var(--s3);
+    color: var(--fg);
+    box-shadow: var(--sh-card);
+
+    opacity: 0;
+    translate: 0 -4px;
+    transition:
+      opacity 0.16s,
+      translate 0.16s var(--ease),
+      overlay 0.16s allow-discrete,
+      display 0.16s allow-discrete;
+  }
+
+  .cv-menu.center {
+    position-area: bottom center;
+    position-try-fallbacks: flip-block;
+  }
+
+  .cv-menu.end {
+    position-area: bottom span-left;
+  }
+
+  .cv-menu:popover-open {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .cv-menu:popover-open {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cv-menu,
+    .btn :global(.chev) {
+      transition: none;
+    }
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 12px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: var(--fg);
+    transition:
+      background-color 0.15s,
+      color 0.15s;
+  }
+
+  a :global(.ic) {
+    color: var(--fg3);
+    transition: color 0.15s;
+  }
+
+  a:hover,
+  a:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  a:hover :global(.ic),
+  a:focus-visible :global(.ic) {
+    color: var(--fg);
+  }
+
+  .pdf {
+    color: var(--fg2);
+  }
+
+  hr {
+    margin: 5px 6px;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+</style>

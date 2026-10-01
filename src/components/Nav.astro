@@ -1,6 +1,7 @@
 ---
-import { contacts, nav, site, cvFileName } from '../data/site.ts'
+import { contacts, nav, site } from '../data/site.ts'
 import Icon from './Icon.astro'
+import CvMenu from './CvMenu.astro'
 
 const social = contacts.filter((c) => c.id !== 'email')
 ---
@@ -21,10 +22,7 @@ const social = contacts.filter((c) => c.id !== 'email')
           </a>
         ))
       }
-      <a class="btn btn-primary cv" href={site.cv} download={cvFileName}>
-        <Icon name="u-download" size={15} />
-        Download CV
-      </a>
+      <CvMenu id="nav" class="cv" primary iconSize={15} align="end" />
     </div>
   </div>
 </header>
@@ -107,7 +105,7 @@ const social = contacts.filter((c) => c.id !== 'email')
     color: var(--fg);
   }
 
-  .cv {
+  .right :global(.cv) {
     margin-left: 4px;
   }
 
@@ -129,8 +127,7 @@ const social = contacts.filter((c) => c.id !== 'email')
   }
 
   @media (max-width: 560px) {
-    .cv span,
-    .cv {
+    .right :global(.cv) {
       font-size: 13px;
       padding: 0 14px;
     }

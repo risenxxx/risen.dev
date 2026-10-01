@@ -21,6 +21,16 @@ export const site = {
 export const cvFileName = `${site.name} — Resume.pdf`
 
 /*
+  The public resumes on Tuned, one per direction. The CV button asks which one
+  before it goes anywhere, because the two tell a different story about the same
+  eight years; the PDF stays as the last item for whoever needs an attachment.
+*/
+export const resumes = [
+  { id: 'fullstack', label: 'Full Stack Engineer', href: 'https://tunedhq.io/r/risen-fullstack-engineer' },
+  { id: 'devops', label: 'DevOps Engineer', href: 'https://tunedhq.io/r/risen-devops-engineer' },
+] as const
+
+/*
   `optical` is how large a mark has to be drawn to look the same size as the
   ones beside it, since they fill the 24-unit grid differently: a square reads
   larger than a disc of the same width, and Telegram's plane is a diagonal with

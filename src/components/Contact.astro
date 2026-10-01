@@ -1,6 +1,7 @@
 ---
-import { contacts, site, cvFileName } from '../data/site.ts'
+import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
+import CvMenu from './CvMenu.astro'
 import Sep from './Sep.astro'
 
 /* The second ask, and the shortest. The first is a button in the navigation,
@@ -26,10 +27,7 @@ const social = contacts.filter((c) => c.id !== 'email')
         <Icon name="b-mail" />
         {site.email}
       </a>
-      <a class="btn btn-ghost btn-lg" href={site.cv} download={cvFileName}>
-        <Icon name="u-download" />
-        Download CV
-      </a>
+      <CvMenu id="contact" large align="center" />
     </div>
 
     <ul class="ids" data-reveal style="--dl: 4">

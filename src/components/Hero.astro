@@ -1,6 +1,7 @@
 ---
-import { contacts, site, cvFileName } from '../data/site.ts'
+import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
+import CvMenu from './CvMenu.astro'
 import Portrait from './Portrait.astro'
 
 /*
@@ -48,10 +49,7 @@ import Portrait from './Portrait.astro'
 
     <div class="cta" data-reveal style="--dl: 4">
       <a class="btn btn-primary btn-lg" href="#work">See the work</a>
-      <a class="btn btn-ghost btn-lg" href={site.cv} download={cvFileName}>
-        <Icon name="u-download" />
-        Download CV
-      </a>
+      <CvMenu id="hero" large />
     </div>
 
     <ul class="ids" data-reveal style="--dl: 5">
