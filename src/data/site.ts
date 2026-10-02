@@ -14,11 +14,12 @@ export const site = {
 
 /*
   The public resumes on Tuned, one per direction. The CV button asks which one
-  before it goes anywhere, because the two tell a different story about the same
+  before it goes anywhere, because each tells a different story about the same
   eight years.
 */
 export const resumes = [
   { id: 'fullstack', label: 'Full Stack Engineer', href: 'https://tunedhq.io/r/risen-fullstack-engineer' },
+  { id: 'frontend', label: 'Frontend Engineer', href: 'https://tunedhq.io/r/risen-frontend-engineer' },
   { id: 'devops', label: 'DevOps Engineer', href: 'https://tunedhq.io/r/risen-devops-engineer' },
 ] as const
 
