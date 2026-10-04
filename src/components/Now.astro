@@ -15,7 +15,7 @@
 
 /* Bumped by hand when a line below changes. A date that drifts out of step
    with the list is worse than no date. */
-const updated = '2026-09-21'
+const updated = '2026-10-04'
 
 /*
   Newest first, and `now` is a state rather than a date, so it sorts above every
@@ -29,12 +29,7 @@ const entries = [
   {
     when: 'now',
     live: true,
-    body: 'Senior frontend engineer at X5 Group, one of Europe’s largest food retailers — SSR-heavy Next.js for a recipe platform at 7.5M monthly active users, held to Core Web Vitals.',
-  },
-  {
-    when: 'now',
-    live: true,
-    body: 'Building <a href="https://tunedhq.io">Tuned</a> in my free time — resume tailoring where every variant is a patch over one base document rather than a copy.',
+    body: 'Building <a href="https://tunedhq.io">Tuned</a>, my own product, live with payments — resume tailoring where every variant is a patch over one base document rather than a copy.',
   },
   {
     when: 'now',
@@ -47,6 +42,10 @@ const entries = [
     body: 'Keeping <a href="https://github.com/risenxxx/dubsync">dubsync</a> and <a href="https://github.com/risenxxx/DeskVolt">DeskVolt</a> alive — an audio-sync tool and a battery widget for wireless peripherals.',
   },
   {
+    when: '2024–2026',
+    body: 'Senior frontend engineer at X5 Group, Russia’s largest food retailer — SSR-heavy Next.js for a recipe platform at 7.5M monthly active users, held to Core Web Vitals.',
+  },
+  {
     when: '2025',
     body: 'Closed <a href="https://github.com/gift-fight/gift-fight">Gift Fight</a> on the funnel data rather than carrying it on. The cluster and the code are still the work.',
   },
@@ -56,7 +55,7 @@ const entries = [
   },
   {
     when: '2023',
-    body: 'Sole engineer on <a href="https://github.com/sigma-gaming">Sigma Games</a> — an iGaming backend built from scratch as ten ASP.NET Core services: payments, wallets, affiliate, gaming and auth.',
+    body: 'Sole engineer on <a href="https://github.com/sigma-gaming">Sigma Games</a>, built with a business partner — an iGaming backend built from scratch as ten ASP.NET Core services: payments, wallets, affiliate, gaming and auth.',
   },
   {
     when: '2022',
@@ -147,9 +146,9 @@ const entries = [
 
   .when {
     flex: none;
-    /* Wide enough for a four-figure year and for `now` with its dot, so every
+    /* Wide enough for a range of two years and for `now` with its dot, so every
        line below starts on the same column. */
-    width: 66px;
+    width: 80px;
     display: flex;
     align-items: baseline;
     gap: 8px;

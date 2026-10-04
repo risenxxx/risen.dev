@@ -19,8 +19,7 @@ import Stage from './Stage.astro'
   <div class="wrap intro">
     <h2 class="h-section" data-reveal>Selected work</h2>
     <p class="lede">
-      Taken from a blank plan to production. Permissive licences, written documentation, real users, and a link to the
-      source of every one that has public source.
+      Each taken from a blank plan to production, with a link to the source wherever the source is public.
     </p>
   </div>
 
@@ -109,10 +108,11 @@ import Stage from './Stage.astro'
       "A round in progress lives in a Temporal workflow rather than in a server's memory, so a restart or a release never drops it.",
       'Live play runs over Socket.IO beside ordinary HTTP, with blockchain payments isolated behind transfer services and idempotent settlement.',
       'Talos Linux and Kubernetes across bare metal and cloud, described in Pulumi, delivered by FluxCD, with secrets that never touch the repository.',
+      'The infrastructure went through four generations: Ansible and kubeadm on VPS hosts with no provider API, Terraform with Talos on DigitalOcean, Terragrunt for templating, then Pulumi, with values like registry credentials built in code.',
     ]}
     metrics={[
       { value: '120 ms', note: 'p95 state sync, 300 sessions' },
-      { value: '99.5%', note: 'workflow completion' },
+      { value: 'every round', note: 'survives a deploy' },
       { value: '&lt; 3 min', note: 'release and rollback' },
       { value: '~1,500', note: 'players at launch' },
     ]}
