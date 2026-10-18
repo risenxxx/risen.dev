@@ -7,9 +7,11 @@
   The ladder is the two widths `sizes` names, at 1× and at 2×; a 3× screen gets
   the top of it rather than an enlargement.
 
-  Not lazy and not low priority: it is the first thing above the fold that is
-  not text, and a portrait that arrives after the heading has already settled
-  is worse than one that arrives with it.
+  Not lazy, and fetched at high priority from the start: it is the first thing
+  above the fold that is not text, and a portrait that arrives after the
+  heading has already settled is worse than one that arrives with it. Without
+  the hint an image starts low and is only promoted once layout has found it
+  in the viewport; with it the request leaves with the fonts.
 */
 const widths = [300, 380, 600, 680]
 const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${ext} ${w}w`).join(', ')
@@ -31,6 +33,7 @@ const sizes = '(min-width: 861px) 300px, min(340px, 78vw)'
     height="850"
     alt="Evgenii Zakharov"
     decoding="async"
+    fetchpriority="high"
   />
 </picture>
 

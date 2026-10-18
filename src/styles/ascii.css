@@ -63,11 +63,25 @@ html.ascii .stage picture:not(.ascii-host) img {
 
 /* ── a heading decoded ──────────────────────────────────────────────── */
 
+/* The layer sits over the heading's own text, which is transparent while
+   it runs; each box is pinned to one character's rectangle. Letter-spacing
+   is off because a box holds a single glyph and its width already includes
+   the spacing the real character carries. */
+.ascii-dc-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  letter-spacing: 0;
+  white-space: pre;
+}
+
 .ascii-dc {
-  display: inline-block;
-  text-align: center;
+  position: absolute;
+  display: block;
+  text-align: left;
 }
 
 .ascii-dc-rnd {
   color: var(--route);
+  text-align: center;
 }
