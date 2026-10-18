@@ -28,24 +28,39 @@ function compile(gl: GL, type: number, src: string): WebGLShader {
   if (!s) throw new Error('createShader failed')
   gl.shaderSource(s, src)
   gl.compileShader(s)
-  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    const log = gl.getShaderInfoLog(s) ?? ''
-    gl.deleteShader(s)
-    throw new Error(`shader failed to compile:\n${log}`)
-  }
   return s
 }
 
+/*
+  Linked but not waited for. Asking a program whether it linked makes the
+  driver finish compiling it there and then, on the main thread; with
+  KHR_parallel_shader_compile the work goes on in the background instead and
+  `ready` asks, frame by frame, whether it is done. A failure surfaces there
+  too, as a throw, so a caller that draws must be ready to take its canvas
+  down. Without the extension `ready` waits once, as a status query always did.
+*/
 export function program(gl: GL, frag: string): WebGLProgram {
   const p = gl.createProgram()
   if (!p) throw new Error('createProgram failed')
   gl.attachShader(p, compile(gl, gl.VERTEX_SHADER, VERT))
   gl.attachShader(p, compile(gl, gl.FRAGMENT_SHADER, frag))
   gl.linkProgram(p)
-  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
-    throw new Error(`program failed to link:\n${gl.getProgramInfoLog(p) ?? ''}`)
-  }
   return p
+}
+
+const parallel = new WeakMap<GL, { COMPLETION_STATUS_KHR: number } | null>()
+
+export function ready(gl: GL, prog: WebGLProgram): boolean {
+  let ext = parallel.get(gl)
+  if (ext === undefined) {
+    ext = gl.getExtension('KHR_parallel_shader_compile') as { COMPLETION_STATUS_KHR: number } | null
+    parallel.set(gl, ext)
+  }
+  if (ext && !gl.getProgramParameter(prog, ext.COMPLETION_STATUS_KHR)) return false
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+    throw new Error(`program failed to link:\n${gl.getProgramInfoLog(prog) ?? ''}`)
+  }
+  return true
 }
 
 export function uniforms<const N extends readonly string[]>(

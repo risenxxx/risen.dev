@@ -13,6 +13,15 @@
   the hint an image starts low and is only promoted once layout has found it
   in the viewport; with it the request leaves with the fonts.
 */
+/*
+  The mosaic is the picture at 24 cells across, made by the same script and
+  carried here as a data URI (about 2 KB): with the ASCII layer on, the style
+  shows it, scaled up blocky and dimmed under a grid of cells, in the
+  photograph's place until the layer's canvas is over it. See
+  src/styles/ascii.css.
+*/
+import mosaic from '../portrait/mosaic.png?inline'
+
 const widths = [300, 380, 600, 680]
 const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${ext} ${w}w`).join(', ')
 
@@ -22,7 +31,7 @@ const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${e
 const sizes = '(min-width: 861px) 300px, min(340px, 78vw)'
 ---
 
-<picture>
+<picture style={`--mosaic: url(${mosaic})`}>
   <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
   <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
   <img

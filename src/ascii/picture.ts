@@ -16,7 +16,10 @@
   which is how the pictures inside the product previews are drawn.
 */
 import { buildAtlas } from './atlas'
-import { dpr, fit, getGL, program, REDUCED, texture, uniforms } from './gl'
+import { dpr, fit, getGL, program, ready, REDUCED, texture, uniforms } from './gl'
+
+/** The most one frame may advance the run's clock, ms: a stall pauses the run, it does not fast-forward it. */
+const STEP = 50
 
 export interface AsciiOptions {
   /** Finest glyph cell height, CSS px. */
@@ -223,6 +226,8 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     for (const a of img.attributes) if (a.name.startsWith('data-astro-cid')) canvas.setAttribute(a.name, a.value)
     img.after(canvas)
   }
+  // The canvas is over the image from here on: the style may let the image show.
+  picture.classList.add('ascii-covered')
 
   const gl = getGL(canvas)
   if (!gl) {
@@ -230,7 +235,7 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     return null
   }
   const prog = program(gl, FRAG)
-  const u = uniforms(gl, prog, [
+  const NAMES = [
     'u_img',
     'u_atlas',
     'u_res',
@@ -247,11 +252,17 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     'u_mouse',
     'u_bg',
     'u_fit',
-  ] as const)
+  ] as const
+  type Uniforms = Record<(typeof NAMES)[number], WebGLUniformLocation | null>
+  // Looked up once the program has linked (gl.ts): asking earlier would wait for it.
+  let locs: Uniforms | null = null
   const tImg = texture(gl, img, { mipmap: true })
   const tAtlas = texture(gl, atlas.canvas, { mipmap: true })
 
-  let start = -1
+  // The run's clock: milliseconds of frames actually drawn, so a stall
+  // pauses the run where it is instead of its skipping ahead afterwards.
+  let elapsed = 0
+  let last = -1
   let p = 0
   let raf = 0
   // Only a run moves `p`; a static mount sits at 1 and must not be reset
@@ -261,7 +272,7 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
   let mouse: [number, number] = [-10, -10]
   let alive = true
 
-  const draw = (now: number): void => {
+  const draw = (now: number, u: Uniforms): void => {
     const ratio = dpr()
     const box = img.getBoundingClientRect()
     fit(canvas, box, ratio)
@@ -297,16 +308,30 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
   const frame = (now: number): void => {
     raf = 0
     if (!alive) return
-    if (running) {
-      if (start < 0) start = now
-      p = Math.min(1, Math.max(0, (now - start - o.delay) / o.duration))
+    // Not before the program has linked; the run's clock starts with the
+    // first frame that is drawn. A program that cannot link takes the canvas
+    // down, and the photograph shows.
+    try {
+      if (!ready(gl, prog)) {
+        raf = requestAnimationFrame(frame)
+        return
+      }
+    } catch {
+      destroy()
+      return
     }
+    if (!locs) locs = uniforms(gl, prog, NAMES)
+    if (running && last >= 0) {
+      elapsed += Math.min(STEP, Math.max(0, now - last))
+      p = Math.min(1, Math.max(0, (elapsed - o.delay) / o.duration))
+    }
+    last = now
     if (p >= 1 && !done) {
       done = true
       // Every cell is showing the photograph by now: hand over to the real image.
       if (o.end === 'photo') canvas.classList.add('ascii-out')
     }
-    draw(now)
+    draw(now, locs)
     // Keep drawing while something still moves: the run, or the pointer
     // uncovering the photograph. A finished ASCII frame is static.
     if (!done || (o.hover && o.end === 'ascii' && mouse[0] > -5)) raf = requestAnimationFrame(frame)
@@ -317,7 +342,8 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
   }
 
   const begin = (): void => {
-    start = -1
+    elapsed = 0
+    last = -1
     p = 0
     running = true
     done = false
@@ -329,11 +355,11 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     // Finished at once: the ASCII as it ends up, and only the pointer moves it.
     p = 1
     done = true
-    draw(performance.now())
+    kick()
   } else if (o.trigger === 'view') {
     // The unresolved state is on screen before the run starts, so a picture
     // waiting for the viewport shows noise rather than the photograph.
-    draw(performance.now())
+    kick()
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return
@@ -362,20 +388,25 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
   const ro = new ResizeObserver(() => kick())
   ro.observe(img)
 
+  // The picture keeps `ascii-covered`: the style hides the image until the
+  // canvas is over it, and a canvas that has gone must not hide it again.
+  const destroy = (): void => {
+    alive = false
+    if (raf) cancelAnimationFrame(raf)
+    raf = 0
+    ro.disconnect()
+    canvas.removeEventListener('pointermove', onMove)
+    canvas.removeEventListener('pointerleave', onLeave)
+    picture.classList.remove('ascii-host')
+    canvas.remove()
+  }
+
   return {
     replay: begin,
     set(next) {
       Object.assign(o, next)
       kick()
     },
-    destroy() {
-      alive = false
-      if (raf) cancelAnimationFrame(raf)
-      ro.disconnect()
-      canvas.removeEventListener('pointermove', onMove)
-      canvas.removeEventListener('pointerleave', onLeave)
-      picture.classList.remove('ascii-host')
-      canvas.remove()
-    },
+    destroy,
   }
 }

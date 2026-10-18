@@ -41,9 +41,20 @@ inside a section: the one thing that reads `scrollY` — the ASCII object, below
 `prefers-reduced-motion`, everything renders in its finished state.
 
 **The ASCII layer** is `src/ascii/`, and it is the one thing on the page that
-is not small, so it is a deferred module: the page's own script fetches it
+is not small, so it is a deferred module: the page's own script imports it
 after the first paint, and only where the layout has signed it off — WebGL2
-present, motion not reduced. It does four things. The hero portrait
+present, motion not reduced. An inline hint asks for the chunk at low priority
+as soon as the page knows it will want it, so it travels with the fonts rather
+than one round trip behind the script (the build fills its hashed path in).
+The page is painted without it and must stand on its own: the portrait's box
+carries a 24-cell mosaic of the photograph in its own markup, dimmed under a
+grid, as the unresolved state the run will open from; if the layer has not
+come after a moment the photograph shows itself, and a layer that arrives
+later leaves alone whatever the reader has already seen — a heading on
+screen, a photograph let through — and takes only what is still to come. When
+it does come, the headings go first, the portrait next and the object last, in
+idle time; its shader programs link in the background and a frame before they
+are done draws nothing. It does four things. The hero portrait
 materialises out of coloured glyphs, every cell on its own clock, the glyphs
 halving until each is a pixel of the photograph; a solid, ray-marched in a
 shader and set in DM Mono's glyphs on a grid fixed to the screen, lives beside

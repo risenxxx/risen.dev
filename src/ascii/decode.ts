@@ -16,12 +16,22 @@
 
   The pins are in pixels, so a heading that changes size mid-way (a resize, a
   font arriving late) ends its decode at once rather than animating over a
-  layout that has moved from under it.
+  layout that has moved from under it. The clock only counts frames that were
+  drawn: a frame the page could not get to pauses the decode rather than
+  having it skip ahead when the thread is free again.
 */
 const GLYPHS = '<>-_/\\|[]{}=+*^~:;'
 
+/** The most one frame may advance the clock, ms: a stall pauses, it does not fast-forward. */
+const STEP = 50
+
 export interface DecodeOptions {
   duration?: number
+}
+
+export interface ViewOptions extends DecodeOptions {
+  /** Leave alone the headings already on screen: the page has shown them as they are. */
+  skipVisible?: boolean
 }
 
 interface Cell {
@@ -102,11 +112,13 @@ export function decode(el: HTMLElement, opts: DecodeOptions = {}): () => void {
     ro.observe(el)
   }
 
-  const start = performance.now()
+  let t = 0
+  let last = -1
   let tick = 0
   const frame = (now: number): void => {
     raf = 0
-    const t = now - start
+    if (last >= 0) t += Math.min(STEP, Math.max(0, now - last))
+    last = now
     let pending = 0
     const roll = Math.floor(t / 45) !== tick
     tick = Math.floor(t / 45)
@@ -129,30 +141,38 @@ export function decode(el: HTMLElement, opts: DecodeOptions = {}): () => void {
   return finish
 }
 
+/** Whether any of the element is in the band of the viewport a decode is triggered in. */
+const onScreen = (el: Element): boolean => {
+  const r = el.getBoundingClientRect()
+  return r.width > 0 && r.bottom > 0 && r.top < innerHeight * 0.88
+}
+
 /**
- * Decodes each matching heading the first time it comes into view. Waits for
- * the page's fonts first: the pins are measured from the type as it is.
+ * Decodes each matching heading the first time it comes into view, once the
+ * heading's own face has loaded: the pins are measured from the type as it
+ * will stay.
  */
-export function decodeOnView(selector: string, opts: DecodeOptions = {}): () => void {
-  let io: IntersectionObserver | undefined
-  let off = false
-  const ready = 'fonts' in document ? document.fonts.ready : Promise.resolve()
-  void ready.then(() => {
-    if (off) return
-    io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue
-          io?.unobserve(e.target)
-          decode(e.target as HTMLElement, opts)
-        }
-      },
-      { rootMargin: '0px 0px -12% 0px' },
-    )
-    for (const el of document.querySelectorAll<HTMLElement>(selector)) io.observe(el)
-  })
-  return () => {
-    off = true
-    io?.disconnect()
+export function decodeOnView(selector: string, opts: ViewOptions = {}): () => void {
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue
+        io.unobserve(e.target)
+        const el = e.target as HTMLElement
+        const s = getComputedStyle(el)
+        const face = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`
+        const ready = 'fonts' in document ? document.fonts.load(face).then(() => {}, () => {}) : Promise.resolve()
+        void ready.then(() => decode(el, opts))
+      }
+    },
+    { rootMargin: '0px 0px -12% 0px' },
+  )
+  for (const el of document.querySelectorAll<HTMLElement>(selector)) {
+    if (opts.skipVisible && onScreen(el)) {
+      el.dataset.decoded = '1'
+      continue
+    }
+    io.observe(el)
   }
+  return () => io.disconnect()
 }

@@ -55,3 +55,19 @@ for (const w of WIDTHS) {
   ])
   console.log(`portrait-${w}: avif, webp, jpg`)
 }
+
+/*
+  The mosaic the page carries in its own markup while the ASCII layer is on
+  its way: the picture at 24 cells across — the glyph cell the run starts
+  at, over the 300 px the hero draws it at — which the style scales up
+  blocky in the photograph's place (Portrait.astro, ascii.css). A palette
+  PNG, because at this size it is the smallest lossless thing there is:
+  about 1.5 KB, 2 KB as a data URI.
+*/
+const MOSAIC = fileURLToPath(new URL('../src/portrait/mosaic.png', import.meta.url))
+await base
+  .clone()
+  .resize({ width: 24, height: 30 })
+  .png({ palette: true, colours: 64, compressionLevel: 9 })
+  .toFile(MOSAIC)
+console.log('mosaic: 24 × 30')

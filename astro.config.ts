@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import type { AstroIntegration } from 'astro'
 import { defineConfig } from 'astro/config'
 import { resumes } from './src/data/site.ts'
@@ -61,10 +61,31 @@ function pagesHeaders(): AstroIntegration {
   }
 }
 
+/**
+ * The ASCII layer is a dynamic import, so its chunk's hashed name is only
+ * known once the build is done. The page's inline hint (index.astro) carries a
+ * placeholder for it; this fills the path in, so the chunk is fetched
+ * alongside the fonts rather than one round trip after the page's own script.
+ */
+function asciiPreload(): AstroIntegration {
+  return {
+    name: 'risen-ascii-preload',
+    hooks: {
+      'astro:build:done': async ({ dir }) => {
+        const chunk = (await readdir(new URL('_astro/', dir))).find((f) => /^ascii\..+\.js$/.test(f))
+        if (!chunk) return
+        const page = new URL('index.html', dir)
+        const html = await readFile(page, 'utf8')
+        await writeFile(page, html.replaceAll('__ASCII_CHUNK__', `/_astro/${chunk}`))
+      },
+    },
+  }
+}
+
 export default defineConfig({
   output: 'static',
   site: site.origin,
-  integrations: [pagesHeaders()],
+  integrations: [pagesHeaders(), asciiPreload()],
   // The whole stylesheet is one page's worth and compresses to a few kilobytes;
   // a separate request for it only delays the first paint.
   build: { inlineStylesheets: 'always', format: 'preserve' },

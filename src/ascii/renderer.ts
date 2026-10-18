@@ -16,7 +16,7 @@
   that thins as it goes, nothing to do with the solid's shape.
 */
 import type { Atlas } from './atlas'
-import { dpr, fit, framebuffer, program, texture, uniforms, type GL } from './gl'
+import { dpr, fit, framebuffer, program, ready, texture, uniforms, type GL } from './gl'
 import { SHAPES_GLSL } from './shapes'
 
 export type RGB = [number, number, number]
@@ -232,13 +232,31 @@ void main() {
 
 export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas): Renderer {
   const objProg = program(gl, OBJ_FRAG)
-  const ou = uniforms(gl, objProg, ['u_n', 'u_t', 'u_morph', 'u_a', 'u_b', 'u_spin', 'u_tilt'] as const)
   const glyphProg = program(gl, GLYPH_FRAG)
-  const gu = uniforms(gl, glyphProg, ['u_obj', 'u_atlas', 'u_res', 'u_glyphs', 'u_cell', 'u_box', 'u_accent', 'u_alpha', 'u_t', 'u_scatter'] as const)
   const ageProg = program(gl, AGE_FRAG)
-  const au = uniforms(gl, ageProg, ['u_prev', 'u_grid', 'u_cell', 'u_box', 'u_strength', 'u_decay', 'u_t'] as const)
   const dustProg = program(gl, DUST_FRAG)
-  const du = uniforms(gl, dustProg, ['u_age', 'u_atlas', 'u_res', 'u_cell', 'u_grid', 'u_glyphs', 'u_accent', 'u_alpha'] as const)
+  const locate = () => ({
+    ou: uniforms(gl, objProg, ['u_n', 'u_t', 'u_morph', 'u_a', 'u_b', 'u_spin', 'u_tilt'] as const),
+    gu: uniforms(gl, glyphProg, ['u_obj', 'u_atlas', 'u_res', 'u_glyphs', 'u_cell', 'u_box', 'u_accent', 'u_alpha', 'u_t', 'u_scatter'] as const),
+    au: uniforms(gl, ageProg, ['u_prev', 'u_grid', 'u_cell', 'u_box', 'u_strength', 'u_decay', 'u_t'] as const),
+    du: uniforms(gl, dustProg, ['u_age', 'u_atlas', 'u_res', 'u_cell', 'u_grid', 'u_glyphs', 'u_accent', 'u_alpha'] as const),
+  })
+  // The locations are looked up once every program has linked (gl.ts); a
+  // frame before that draws nothing, and a program that fails to link leaves
+  // the canvas blank for good rather than throwing from inside a frame.
+  let locs: ReturnType<typeof locate> | null = null
+  let dead = false
+  const linked = (): ReturnType<typeof locate> | null => {
+    if (locs || dead) return locs
+    try {
+      for (const p of [objProg, glyphProg, ageProg, dustProg]) if (!ready(gl, p)) return null
+    } catch {
+      dead = true
+      return null
+    }
+    locs = locate()
+    return locs
+  }
   const tAtlas = texture(gl, atlas.canvas, { mipmap: true })
   const obj = framebuffer(gl, OBJ_N, OBJ_N)
 
@@ -271,6 +289,9 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
   const renderer: Renderer = {
     trail: { life: 0.6, alpha: 0.6, cell: 10 },
     draw(items, t, dt = 1 / 60) {
+      const l = linked()
+      if (!l) return
+      const { ou, gu, au, du } = l
       const ratio = dpr()
       fit(canvas, { width: innerWidth, height: innerHeight }, ratio)
       gl.bindFramebuffer(gl.FRAMEBUFFER, null)

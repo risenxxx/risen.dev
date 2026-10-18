@@ -38,12 +38,16 @@ html.ascii-object footer {
   position: relative;
 }
 
+/* Opaque from the moment it is in the tree: the frame before its first
+   draw must not show the photograph through it. The fill is the shader's
+   own background. */
 .ascii-picture {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  background: #131317;
   transition: opacity 0.8s var(--ease);
 }
 
@@ -52,13 +56,55 @@ html.ascii-object footer {
   pointer-events: none;
 }
 
-/* Until the glyphs are over it the photograph stays out of sight: a
-   photograph that shows, turns to noise and comes back would be the one
-   sequence that makes no sense. The box keeps its size; the reveal brings
-   it in dark. */
-html.ascii .me picture:not(.ascii-host) img,
-html.ascii .stage picture:not(.ascii-host) img {
+/*
+  Until the glyphs are over it the photograph stays out of sight: a
+  photograph that shows, turns to noise and comes back would be the one
+  sequence that makes no sense. The box is not left empty, though: the
+  picture carries a coarse mosaic of the photograph in its own markup
+  (`--mosaic`, a few hundred bytes), scaled up blocky, which is the
+  unresolved state the run starts from — drawn by the style alone, in the
+  first paint, before any script has arrived.
+
+  And it does not wait for ever: if no canvas has come after a moment the
+  photograph lets itself through on its own, and a layer arriving after that
+  leaves it be (ascii.ts checks). The previews are below the fold and get
+  longer.
+*/
+html.ascii .me picture:not(.ascii-covered) {
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px var(--line2);
+  /* The mosaic under a dimming and a grid at the run's starting cell
+     (12 px tall, 0.6 as wide), so it reads as the glyph field the canvas
+     opens with rather than as a blurred photograph. */
+  background:
+    repeating-linear-gradient(90deg, rgba(19, 19, 23, 0.7) 0 1.5px, transparent 1.5px 7.2px),
+    repeating-linear-gradient(0deg, rgba(19, 19, 23, 0.7) 0 2px, transparent 2px 12px),
+    linear-gradient(rgba(19, 19, 23, 0.55), rgba(19, 19, 23, 0.55)),
+    var(--s3) var(--mosaic, none) center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+}
+
+html.ascii .me picture:not(.ascii-covered) img,
+html.ascii .stage picture:not(.ascii-covered) img {
   opacity: 0;
+  animation: ascii-late 0.5s var(--ease) 1.5s forwards;
+}
+
+html.ascii .stage picture:not(.ascii-covered) img {
+  animation-delay: 4s;
+}
+
+/* The layer has arrived and taken the picture on (ascii.ts): the image waits
+   for the canvas, however long its own load takes, and the fallback stands
+   down. */
+html.ascii picture.ascii-pending:not(.ascii-covered) img {
+  animation: none;
+}
+
+@keyframes ascii-late {
+  to {
+    opacity: 1;
+  }
 }
 
 /* ── a heading decoded ──────────────────────────────────────────────── */
