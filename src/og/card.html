@@ -17,6 +17,16 @@
       The claim sits on `margin: auto` between the header and the footer, so the
       space left over is split above and below it rather than piling up at the
       bottom and crowding the wordmark.
+
+      The piece on the right is text, not a picture: the puzzle piece the page's
+      ASCII object becomes in the "Looking for the next team" section, set in
+      the page's own mono with the page's own glyph ramp and shading. It was
+      produced once by src/ascii/export.ts (`sampleShape` and `cellsToHtml`,
+      from the console of any page in dev) at 89 × 53 cells, angle
+      0.25, tilt 0.25, and pasted in; regenerate it the same way if the shape
+      or the pose changes. The cell is 9 px so the piece is about 300 px on
+      the card, sitting a little below the claim's centre, and the lede is
+      narrowed to 620 px to leave it room.
     -->
     <style>
       /*FONTS*/
@@ -100,10 +110,27 @@
 
       .lede {
         margin-top: 22px;
-        max-width: 880px;
-        font-size: 24px;
+        max-width: 620px;
+        font-size: 23px;
         line-height: 1.45;
         color: var(--fg2);
+      }
+
+      body {
+        position: relative;
+      }
+
+      /* The object as text, in the band between the header and the footer. */
+      .ascii {
+        position: absolute;
+        right: 72px;
+        top: 104px;
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 9px;
+        line-height: 9px;
+        white-space: pre;
+        -webkit-text-stroke: 0.3px;
       }
 
 
@@ -156,11 +183,65 @@
     <div class="claim">
       <h1>One engineer.<br />Every layer.</h1>
       <p class="lede">
-        The interface, the services behind it and the infrastructure they run on.<br />
-        Eight years of it, most of it inside product teams.
+        The interface, the services behind it and the infrastructure they run on. Eight years of it,
+        most of it inside product teams.
       </p>
     </div>
 
+
+    <pre class="ascii" aria-hidden="true">
+
+
+
+
+
+
+                                        <i style="color:#b1b4c3">OOOOOOOOO</i>
+                                       <i style="color:#b1b4c3">OOOOOOOOOOOO</i>
+                                      <i style="color:#b1b4c3">OOOOOOOOOOOOOO</i>
+                                     <i style="color:#e0e2ee">@</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOK</i>
+                                     <i style="color:#c0c3d2">#</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOO</i>
+                                     <i style="color:#b1b4c3">O</i><i style="color:#a1a4b5">2</i><i style="color:#b1b4c3">OOOOOOOOOOOOO</i>
+                        <i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#828598">|</i>
+                        <i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                       <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                       <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                       <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                       <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                       <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#828598">7</i>
+                       <i style="color:#828598">|||</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#a1a4b5">2</i>
+                       <i style="color:#828598">||||||</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                          <i style="color:#828598">||7</i><i style="color:#9195a7">]</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>   <i style="color:#d0d2e0">0</i><i style="color:#b1b4c3">&amp;</i>
+                             <i style="color:#a1a4b5">2</i><i style="color:#b1b4c3">KOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                              <i style="color:#b1b4c3">&amp;</i><i style="color:#c0c3d2">#</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                              <i style="color:#c0c3d2">#</i><i style="color:#d0d2e0">@</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                              <i style="color:#d0d2e0">@</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                              <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                             <i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                           <i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i>
+                      <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#72768a">=</i><i style="color:#a1a4b5">2</i><i style="color:#b1b4c3">OOOOOOOO</i>
+                      <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#828598">||||7</i><i style="color:#9195a7">]</i>
+                      <i style="color:#e0e2ee">W</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#828598">|</i>
+                      <i style="color:#d0d2e0">0</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</i><i style="color:#a1a4b5">K</i>
+                      <i style="color:#c0c3d2">#</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOOO</i><i style="color:#72768a">"</i><i style="color:#9195a7">]]]</i><i style="color:#828598">77</i><i style="color:#b1b4c3">KOOOOOOOOOOOOOOOOOO</i>
+                      <i style="color:#b1b4c3">OOOOOOOOOOOOOOOOOO</i>       <i style="color:#828598">7||7</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOOO</i>
+                      <i style="color:#b1b4c3">OOOOOOOOOOOOOOOO</i><i style="color:#a1a4b5">2</i>          <i style="color:#9195a7">]kk</i><i style="color:#b1b4c3">OOOOOOOOOOOOOOO</i>
+                      <i style="color:#b1b4c3">OOOOOOOOOOOOOOOO</i>            <i style="color:#a1a4b5">KK</i><i style="color:#b1b4c3">KOOOOOOOOOOOOOO</i>
+                      <i style="color:#a1a4b5">K</i><i style="color:#b1b4c3">OOOOOOOOOOOOOO</i><i style="color:#72768a">=</i>             <i style="color:#b1b4c3">&amp;&amp;&amp;OOOOOOOOOOOOO</i>
+                                 <i style="color:#9195a7">kkk</i>               <i style="color:#c0c3d2">#</i><i style="color:#9195a7">kkkkkkkkkkkk</i>
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
 
     <div class="bottom">
       <div>

@@ -87,7 +87,7 @@ const groups = [
 ]
 ---
 
-<section id="stack">
+<section id="stack" data-object="stack">
   <div class="wrap">
     <h2 class="h-section" data-reveal>Production-proven stack</h2>
     <p class="lede">
@@ -162,6 +162,19 @@ const groups = [
 
   @media (max-width: 1180px) {
     .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* On a tablet the cards keep two thirds of the width and the ASCII
+     object rides the right third. */
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .lede,
+    :global(html.ascii-object) .grid {
+      width: calc(100% - 272px);
+    }
+
+    :global(html.ascii-object) .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }

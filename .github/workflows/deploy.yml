@@ -43,8 +43,8 @@ jobs:
           SITE_PREVIEW: ${{ github.event_name == 'pull_request' && '1' || '' }}
         run: npm run build
 
-      # The page claims a JavaScript budget in its own footer. A gate is the only
-      # thing that keeps such a claim true six months from now.
+      # The page keeps a JavaScript budget (scripts/budget.mjs). A gate is the
+      # only thing that keeps it six months from now.
       - name: JavaScript budget
         run: npm run budget
 

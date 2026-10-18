@@ -27,7 +27,7 @@ const libraries = [
 ]
 ---
 
-<section class="oss">
+<section class="oss" data-object="oss">
   <div class="wrap">
     <h2 class="h-section" data-reveal>Open source</h2>
     <p class="lede">
@@ -75,6 +75,26 @@ const libraries = [
     border-top: 1px solid var(--line);
     background: var(--s1);
     padding-block: clamp(44px, 5vw, 58px);
+  }
+
+  /* With the ASCII object the fill would hide it; the cards are in front
+     of it on their own. On a tablet they keep two thirds of the width and
+     the object rides the right third. */
+  :global(html.ascii-object) .oss {
+    background: transparent;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .lede,
+    :global(html.ascii-object) .grid {
+      width: calc(100% - 272px);
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    :global(html.ascii-object) .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   h2 {

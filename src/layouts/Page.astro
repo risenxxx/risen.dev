@@ -6,6 +6,7 @@ import { site } from '../data/site.ts'
 import '../styles/tokens.css'
 import '../styles/fonts.css'
 import '../styles/global.css'
+import '../styles/ascii.css'
 
 interface Props {
   title?: string
@@ -25,6 +26,13 @@ const preview = import.meta.env.SITE_PREVIEW === '1'
   from the module instead would render the page in its finished state and then
   blank it out, which is a flash of exactly the content the animation is meant
   to introduce.
+
+  `.ascii` and `.ascii-object` are decided here for the same reason: the ASCII
+  layer is a deferred module, and the room the sections make for its object
+  has to be there from the first paint, not appear when the module lands. The
+  checks are the cheap ones — the API exists, motion is not reduced, the
+  viewport is wide enough for an object beside the copy — and the module
+  takes the classes back if a context cannot actually be had.
 */
 ---
 
@@ -62,6 +70,10 @@ const preview = import.meta.env.SITE_PREVIEW === '1'
     <link rel="preload" href={dmMono} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       document.documentElement.classList.add('js')
+      if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('ascii')
+        if (innerWidth >= 1000) document.documentElement.classList.add('ascii-object')
+      }
     </script>
   </head>
   <body>

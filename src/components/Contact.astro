@@ -11,7 +11,7 @@ import Sep from './Sep.astro'
 const social = contacts.filter((c) => c.id !== 'email')
 ---
 
-<section id="contact">
+<section id="contact" data-object="contact">
   <div class="wrap inner">
     <p class="pill" data-reveal><span class="live" aria-hidden="true"></span>Available now</p>
 
@@ -79,6 +79,24 @@ const social = contacts.filter((c) => c.id !== 'email')
     margin-inline: auto;
   }
 
+  /* The one link in the copy, drawn the way the log draws its links: an
+     underline a shade quieter than the text, which comes up on hover. It
+     was bare, and a bare phrase in a sentence says nothing about being a
+     place to go. */
+  .lede a {
+    color: var(--fg-soft);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.32);
+    transition:
+      color 0.18s,
+      text-decoration-color 0.18s;
+  }
+
+  .lede a:hover {
+    color: var(--fg);
+    text-decoration-color: var(--fg);
+  }
+
   .cta {
     display: flex;
     flex-wrap: wrap;
@@ -93,6 +111,13 @@ const social = contacts.filter((c) => c.id !== 'email')
     gap: 10px;
     justify-content: center;
     margin-bottom: 26px;
+  }
+
+  /* The ASCII globe stands to the right of the copy on a tablet. */
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .lede {
+      max-width: 48ch;
+    }
   }
 
   .fine {

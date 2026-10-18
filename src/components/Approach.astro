@@ -54,7 +54,7 @@ const stages = [
 ]
 ---
 
-<section id="approach">
+<section id="approach" data-object="approach">
   <div class="wrap">
     <div class="head" data-reveal>
       <div>
@@ -93,6 +93,38 @@ const stages = [
     border-top: 1px solid var(--line);
     background: var(--s1);
     padding-block: clamp(44px, 5vw, 62px);
+  }
+
+  /* With the ASCII object: the fill would hide it, and the aside gives up
+     its corner to it. On a tablet the steps keep two thirds of the width
+     and the object rides the right third. */
+  :global(html.ascii-object) section {
+    background: transparent;
+  }
+
+  :global(html.ascii-object) .aside {
+    display: none;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .head,
+    :global(html.ascii-object) .steps {
+      width: calc(100% - 272px);
+    }
+
+    :global(html.ascii-object) .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    :global(html.ascii-object) .steps li {
+      padding-bottom: 28px;
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    :global(html.ascii-object) .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .head {

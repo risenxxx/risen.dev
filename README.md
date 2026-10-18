@@ -24,6 +24,7 @@ npm run typecheck  # astro check
 | `src/components/IconSprite.astro` | Every brand mark, inlined once |
 | `src/scripts/motion.ts` | The whole motion system, about a hundred lines |
 | `src/styles/` | Tokens, then the primitives more than one section uses |
+| `src/ascii/` | The ASCII layer: the portrait that materialises, the object beside the content, the decoded headings |
 
 **Product previews are drawn, not captured.** Each one is rebuilt from that
 product's own source — Frame Player's control glyphs are the paths out of
@@ -31,12 +32,39 @@ product's own source — Frame Player's control glyphs are the paths out of
 wheel is its real sector arithmetic. A screenshot would go stale and would say
 nothing about how the page itself is built.
 
-**Motion never touches the scroll.** `[data-reveal]` fades a block in when it
+**Motion never takes the scroll.** `[data-reveal]` fades a block in when it
 first crosses into view; `[data-scene]` animates a custom property from 0 to 1
 once while a preview is on screen, and the preview's CSS decides what that
-means. Nothing reads `scrollY`, so the page scrolls at its normal speed and the
-reader is never held inside a section. Without JavaScript, or under
+means. The page scrolls at its normal speed and the reader is never held
+inside a section: the one thing that reads `scrollY` — the ASCII object, below
+— follows the page, it never drives it. Without JavaScript, or under
 `prefers-reduced-motion`, everything renders in its finished state.
+
+**The ASCII layer** is `src/ascii/`, and it is the one thing on the page that
+is not small, so it is a deferred module: the page's own script fetches it
+after the first paint, and only where the layout has signed it off — WebGL2
+present, motion not reduced. It does four things. The hero portrait
+materialises out of coloured glyphs, every cell on its own clock, the glyphs
+halving until each is a pixel of the photograph; a solid, ray-marched in a
+shader and set in DM Mono's glyphs on a grid fixed to the screen, lives beside
+the content and takes a shape, a colour and a place from each section
+(`sections.ts`: a stack of layers for the hero, a puzzle piece for the log,
+each product its own mark), flying between them and raising a little dust on
+the way; the headings decode out of random glyphs as they come into view; and
+the stills inside the previews are set as glyphs the pointer uncovers.
+
+The object needs room, and the sections make it under `html.ascii-object`,
+each in its own component: Approach and Open source give up their fills,
+the reference figure's boxes take the page's surface so the object ends behind
+the cluster cell, Approach's aside gives up its corner, Tuned's and Gift
+Fight's copy wraps round a column the object rides inside, and from 1400 px
+down every project row stacks with a column free down the right. Below 1000 px
+there is no room beside the copy, and the object stays away. The classes are
+set by the inline script before the first paint, so nothing reflows when the
+module lands; the page without them is the page as it was.
+
+The puzzle piece on the link preview is the same solid as text, produced once
+by `src/ascii/export.ts` from the console in dev and pasted into the card.
 
 **The reference figure is panned, not shrunk.** Below a laptop it would have to
 come down past the width at which its labels stop being letters, so it keeps its
@@ -109,8 +137,9 @@ preview's copy.
 
 ## Deploying
 
-`.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript
-budget and then runs `wrangler deploy`. A pull request builds the same way,
+`.github/workflows/deploy.yml` builds, type-checks, enforces the two JavaScript
+budgets (`scripts/budget.mjs`: 6 KB for the page's own script, 48 KB for the
+deferred ASCII module, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
 uploads a preview version and comments the address on the PR.
 
 ### Repository secrets

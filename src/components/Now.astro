@@ -72,7 +72,7 @@ const entries = [
 ]
 ---
 
-<section id="now">
+<section id="now" data-object="now">
   <div class="wrap">
     <h2 class="h-section" data-reveal>Looking for the next team</h2>
 
@@ -188,6 +188,14 @@ const entries = [
 
   .what :global(a:hover) {
     text-decoration-color: var(--fg);
+  }
+
+  /* The ASCII object rides a column down the right on a tablet. */
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .lede,
+    :global(html.ascii-object) .log {
+      max-width: calc(100% - 272px);
+    }
   }
 
   @media (max-width: 560px) {

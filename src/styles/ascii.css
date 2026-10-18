@@ -1,0 +1,73 @@
+/*
+  The ASCII layer's own primitives: the canvas under the page, the canvas
+  over a photograph, the float a column of copy wraps round, the spans a
+  heading is decoded through. What a section does to make room for the
+  object lives in that section's component, under `html.ascii-object`.
+  Nothing here applies without the class the layout sets before first
+  paint, so the page without WebGL, or under reduced motion, is the page
+  as it was.
+*/
+
+/* ── the object ─────────────────────────────────────────────────────── */
+
+.ascii-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+html.ascii-object main,
+html.ascii-object footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* The float a column of copy wraps round, where the object sits. Put in by
+   object.ts; sized there to the object and to the column. */
+.ascii-float {
+  float: right;
+  margin: 0 0 10px 20px;
+}
+
+/* ── a photograph as glyphs ─────────────────────────────────────────── */
+
+.ascii-host {
+  position: relative;
+}
+
+.ascii-picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.8s var(--ease);
+}
+
+.ascii-picture.ascii-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Until the glyphs are over it the photograph stays out of sight: a
+   photograph that shows, turns to noise and comes back would be the one
+   sequence that makes no sense. The box keeps its size; the reveal brings
+   it in dark. */
+html.ascii .me picture:not(.ascii-host) img,
+html.ascii .stage picture:not(.ascii-host) img {
+  opacity: 0;
+}
+
+/* ── a heading decoded ──────────────────────────────────────────────── */
+
+.ascii-dc {
+  display: inline-block;
+  text-align: center;
+}
+
+.ascii-dc-rnd {
+  color: var(--route);
+}

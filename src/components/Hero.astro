@@ -20,7 +20,7 @@ import Portrait from './Portrait.astro'
 */
 ---
 
-<section class="hero" id="top">
+<section class="hero" id="top" data-object="top">
   <div class="wrap copy">
     <p class="pill" data-reveal style="--dl: 1">
       <span class="live" aria-hidden="true"></span>
@@ -143,6 +143,14 @@ import Portrait from './Portrait.astro'
   @media (max-width: 560px) {
     h1 br {
       display: none;
+    }
+  }
+
+  /* With the ASCII object beside it, and the page's own layout still the
+     desktop one, the lede gives up some measure so the two do not meet. */
+  @media (min-width: 1181px) and (max-width: 1400px) {
+    :global(html.ascii-object) .lede {
+      max-width: 460px;
     }
   }
 

@@ -19,7 +19,7 @@
 */
 ---
 
-<section class="arch">
+<section class="arch" data-object="arch">
   <div class="wrap">
     <div data-reveal>
       <div class="head">
@@ -332,6 +332,22 @@
   .box {
     fill: none;
     stroke: rgba(255, 255, 255, 0.1);
+  }
+
+  /* With the ASCII object behind the figure, the boxes and the strip take
+     the page's surface so they sit in front of it the way the cards do,
+     while the lines between them stay open. */
+  :global(html.ascii-object) .strip,
+  :global(html.ascii-object) .box {
+    fill: var(--bg);
+  }
+
+  /* The one long heading on the page breaks into two lines beside the
+     object, which gives the object the height of both. */
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) h2 {
+      max-width: 13em;
+    }
   }
 
   /* The real-time layer is the one box the route passes through that no other

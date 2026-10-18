@@ -44,4 +44,17 @@ import StructuredData from '../components/StructuredData.astro'
   } catch {
     document.documentElement.classList.remove('js')
   }
+
+  /*
+    The ASCII layer is the one thing on the page that is not small, so it is
+    a separate module, fetched once the page has painted and only where the
+    layout has signed it off. If it fails to load or to start, the classes
+    come off and the page is the page without it.
+  */
+  const html = document.documentElement
+  if (html.classList.contains('ascii')) {
+    import('../ascii/ascii.ts')
+      .then((m) => m.mount())
+      .catch(() => html.classList.remove('ascii', 'ascii-object'))
+  }
 </script>

@@ -33,6 +33,8 @@ interface Props {
   links: Link[]
   /** false puts the preview on the left; the sections alternate down the page. */
   reverse?: boolean
+  /** The section's key for the ASCII object (src/ascii/sections.ts). */
+  object?: string
 }
 
 const {
@@ -46,10 +48,11 @@ const {
   stack,
   links,
   reverse = false,
+  object,
 } = Astro.props
 ---
 
-<section class:list={['project', { reverse }]} style={`--accent: ${accent}`}>
+<section class:list={['project', { reverse }]} style={`--accent: ${accent}`} data-object={object}>
   <div class="wrap row">
     <div class="shot" data-reveal>
       <slot />
@@ -245,6 +248,52 @@ const {
 
   /* One column once the preview can no longer hold its own width: the preview
      goes first either way, because it is what makes somebody read the text. */
+  /*
+    With the ASCII object. On a desktop a row whose preview is on the right
+    puts the preview at the top of the row and the object under it, beside
+    the metrics and chips; a row whose copy wraps round the object narrows
+    its preview a little so the copy has room. From 1400 px down every row
+    stacks for the object (the page's own stacking starts at 1180): the
+    preview goes to the left and the copy leaves a column free down the
+    right for the object to ride in.
+  */
+  @media (min-width: 1401px) {
+    :global(html.ascii-object) .reverse .row {
+      align-items: flex-start;
+    }
+
+    /* The heading's line box starts above its letters; the preview comes
+       down to where the letters start. */
+    :global(html.ascii-object) .reverse .shot {
+      margin-top: 7px;
+    }
+
+    :global(html.ascii-object) .project:global(.ascii-wide) .shot {
+      width: 620px;
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1400px) {
+    :global(html.ascii-object) .row,
+    :global(html.ascii-object) .reverse .row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    :global(html.ascii-object) .shot :global(.frame) {
+      justify-content: flex-start;
+    }
+
+    /* The phone is centred inside its own stage; left with the rest. */
+    :global(html.ascii-object) .shot :global(.device) {
+      margin-inline: 0;
+    }
+
+    :global(html.ascii-object) .copy {
+      padding-right: 272px;
+    }
+  }
+
   @media (max-width: 1180px) {
     .row,
     .reverse .row {
