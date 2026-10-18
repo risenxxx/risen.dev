@@ -13,21 +13,39 @@ export interface Box {
   h: number
 }
 
-/** Document-space boxes of the ink inside every element the selector matches. */
+/**
+ * Document-space boxes of the ink inside every element the selector matches.
+ *
+ * A heading being decoded carries a layer of boxes over its own text
+ * (`.ascii-dc-layer`, decode.ts), and that layer spans the heading's whole
+ * block: as ink it would read as a line of text the full column wide. The
+ * ranges go round it, so a decode changes nothing about where the ink is.
+ */
 export function inkBoxes(selector: string): Box[] {
   const out: Box[] = []
-  const range = document.createRange()
   for (const el of document.querySelectorAll<HTMLElement>(selector)) {
     const outer = el.getBoundingClientRect()
     if (outer.width < 2 || outer.height < 2) continue
-    range.selectNodeContents(el)
-    for (const r of range.getClientRects()) {
-      const x1 = Math.max(r.left, outer.left)
-      const y1 = Math.max(r.top, outer.top)
-      const x2 = Math.min(r.right, outer.right)
-      const y2 = Math.min(r.bottom, outer.bottom)
-      if (x2 - x1 < 2 || y2 - y1 < 2) continue
-      out.push({ x: x1 + scrollX, y: y1 + scrollY, w: x2 - x1, h: y2 - y1 })
+    const parts: Range[] = []
+    let range = document.createRange()
+    range.setStart(el, 0)
+    for (const layer of el.querySelectorAll('.ascii-dc-layer')) {
+      range.setEndBefore(layer)
+      parts.push(range)
+      range = document.createRange()
+      range.setStartAfter(layer)
+    }
+    range.setEnd(el, el.childNodes.length)
+    parts.push(range)
+    for (const part of parts) {
+      for (const r of part.getClientRects()) {
+        const x1 = Math.max(r.left, outer.left)
+        const y1 = Math.max(r.top, outer.top)
+        const x2 = Math.min(r.right, outer.right)
+        const y2 = Math.min(r.bottom, outer.bottom)
+        if (x2 - x1 < 2 || y2 - y1 < 2) continue
+        out.push({ x: x1 + scrollX, y: y1 + scrollY, w: x2 - x1, h: y2 - y1 })
+      }
     }
   }
   return out
