@@ -1,22 +1,20 @@
 ---
-import Icon from './Icon.astro'
 
 /** Tools shipped and operated, not read about. An entry without a mark is a
     practice or a platform API that has no logo to borrow. */
 const groups = [
   {
     title: 'Frontend',
-    icon: 'u-monitor',
     items: [
-      { label: 'TypeScript', icon: 'b-typescript' },
-      { label: 'React', icon: 'b-react' },
-      { label: 'Next.js', icon: 'b-nextdotjs' },
-      { label: 'Svelte 5', icon: 'b-svelte' },
-      { label: 'Astro', icon: 'b-astro' },
-      { label: 'Tailwind', icon: 'b-tailwindcss' },
+      { label: 'TypeScript' },
+      { label: 'React' },
+      { label: 'Next.js' },
+      { label: 'Svelte 5' },
+      { label: 'Astro' },
+      { label: 'Tailwind' },
       { label: 'SSR' },
       { label: 'Effector' },
-      { label: 'TanStack', icon: 'b-tanstack' },
+      { label: 'TanStack' },
       { label: 'Core Web Vitals' },
       { label: 'Web Workers' },
       { label: 'Canvas 2D' },
@@ -26,21 +24,21 @@ const groups = [
   },
   {
     title: 'Backend & data',
-    icon: 'u-database',
     items: [
-      { label: '.NET 9', icon: 'b-dotnet' },
-      { label: 'Node.js', icon: 'b-nodedotjs' },
-      { label: 'Bun', icon: 'b-bun' },
-      { label: 'Hono', icon: 'b-hono' },
+      { label: '.NET 9' },
+      { label: 'Node.js' },
+      { label: 'Bun' },
+      { label: 'Hono' },
       { label: 'Elysia' },
       { label: 'oRPC' },
-      { label: 'PostgreSQL', icon: 'b-postgresql' },
-      { label: 'Drizzle', icon: 'b-drizzle' },
-      { label: 'ClickHouse', icon: 'b-clickhouse' },
-      { label: 'Redis', icon: 'b-redis' },
-      { label: 'NATS', icon: 'b-natsdotio' },
-      { label: 'Temporal', icon: 'b-temporal' },
-      { label: 'Socket.IO', icon: 'b-socketdotio' },
+      { label: 'PostgreSQL' },
+      { label: 'Drizzle' },
+      { label: 'ClickHouse' },
+      { label: 'Redis' },
+      { label: 'NATS' },
+      { label: 'RabbitMQ' },
+      { label: 'Temporal' },
+      { label: 'Socket.IO' },
       { label: 'BullMQ' },
       { label: 'EF Core' },
       { label: 'OpenAPI' },
@@ -48,33 +46,31 @@ const groups = [
   },
   {
     title: 'Platform & ops',
-    icon: 'u-cloud',
     items: [
-      { label: 'Kubernetes', icon: 'b-kubernetes' },
+      { label: 'Kubernetes' },
       { label: 'Talos Linux' },
-      { label: 'Docker', icon: 'b-docker' },
-      { label: 'Pulumi', icon: 'b-pulumi' },
-      { label: 'Terraform', icon: 'b-terraform' },
+      { label: 'Docker' },
+      { label: 'Pulumi' },
+      { label: 'Terraform' },
       { label: 'Ansible' },
-      { label: 'FluxCD', icon: 'b-fluxcd' },
-      { label: 'Cloudflare', icon: 'b-cloudflare' },
-      { label: 'Hetzner', icon: 'b-hetzner' },
+      { label: 'FluxCD' },
+      { label: 'Cloudflare' },
+      { label: 'Hetzner' },
       { label: 'DigitalOcean' },
-      { label: 'GCP', icon: 'b-googlecloud' },
-      { label: 'Prometheus', icon: 'b-prometheus' },
-      { label: 'Grafana', icon: 'b-grafana' },
-      { label: 'Sentry', icon: 'b-sentry' },
-      { label: 'Actions', icon: 'b-githubactions' },
+      { label: 'GCP' },
+      { label: 'Prometheus' },
+      { label: 'Grafana' },
+      { label: 'Sentry' },
+      { label: 'Actions' },
     ],
   },
   {
     title: 'Further afield',
-    icon: 'u-star',
     items: [
-      { label: 'Rust', icon: 'b-rust' },
-      { label: 'Tauri 2', icon: 'b-tauri' },
-      { label: 'FFmpeg', icon: 'b-ffmpeg' },
-      { label: 'WebAssembly', icon: 'b-webassembly' },
+      { label: 'Rust' },
+      { label: 'Tauri 2' },
+      { label: 'FFmpeg' },
+      { label: 'WebAssembly' },
       { label: 'Win32 / Direct2D' },
       { label: 'USB HID' },
       { label: 'libmpv' },
@@ -89,37 +85,44 @@ const groups = [
 
 <section id="stack" data-object="stack">
   <div class="wrap">
-    <h2 class="h-section" data-reveal>Production-proven stack</h2>
+    <h2 class="h-section" data-path="~/stack" data-reveal>Production-proven stack</h2>
     <p class="lede">
       Tools I have shipped and operated, not ones I have read about.<br class="br-wide" /> Chosen per
       constraint rather than per fashion.
     </p>
 
-    <div class="grid" data-reveal style="--dl: 1">
+    <!--
+      One list of lists, drawn two ways. On a desktop it is `ls -1 stack/*`:
+      four columns, a directory each, a tool a line. Narrower it is `tree
+      stack/`, in the ASCII the command prints without a Unicode locale —
+      `|--` and `` `-- `` rather than box-drawing characters, which the page's
+      mono does not have — with the tools wrapped a few to a line beside the
+      trunk. Either way a reader without eyes gets the groups, not the lines.
+    -->
+    <p class="cmd cmd-tree mono" aria-hidden="true">$ tree stack/</p>
+    <p class="cmd cmd-cols mono" aria-hidden="true">$ ls -1 stack/*</p>
+    <ul class="groups mono" data-reveal style="--dl: 1">
       {
-        groups.map((g) => (
-          <section class="card">
+        groups.map((g, gi) => (
+          <li class:list={['group', { last: gi === groups.length - 1 }]}>
             <h3>
-              <Icon name={g.icon} size={17} />
-              {g.title}
+              <span class="br" aria-hidden="true">{gi === groups.length - 1 ? '`-- ' : '|-- '}</span>
+              {g.title.toLowerCase().replace(/ & /g, '-and-').replace(/\s+/g, '-')}/
             </h3>
-            <ul>
+            <ul class="items">
               {g.items.map((item) => (
-                <li class="chip chip-lg">
-                  {item.icon && <Icon name={item.icon} size={14} />}
-                  {item.label}
-                </li>
+                <li class="chip chip-lg">{item.label}</li>
               ))}
             </ul>
-          </section>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </div>
 </section>
 
 <style>
-  section[id] {
+section[id] {
     border-top: 1px solid var(--line);
     padding-block: clamp(44px, 5vw, 62px);
   }
@@ -132,56 +135,141 @@ const groups = [
     margin-bottom: 30px;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
+  .cmd {
+    font-size: 12.5px;
+    color: var(--fg4);
+    margin-bottom: 10px;
   }
 
-  .card {
-    padding: 22px 20px;
+  .cmd-cols {
+    display: none;
+  }
+
+  .groups,
+  .items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .groups {
+    font-size: 13px;
+    line-height: 1.9;
+    max-width: 820px;
+  }
+
+  .group + .group {
+    margin-top: 10px;
   }
 
   h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    margin-bottom: 16px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--fg);
+    white-space: pre;
   }
 
-  h3 :global(.ic) {
-    color: var(--fg3);
+  .br {
+    color: var(--fg4);
+    font-weight: 400;
   }
 
-  ul {
+  /*
+    The tools, a few to a line, beside the trunk that runs on down from the
+    branch. The trunk is the same `|` the branch is drawn with — a column of
+    them in a pseudo-element, one per line at the list's own line height, so
+    it sits in the branch's column at the branch's weight and colour, the
+    way `tree` prints it. Rows have no gap between them so the bars keep
+    step with the lines. The last directory has no trunk below it.
+  */
+  .items {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
+    gap: 0 2ch;
+    margin: 10px 0 18px;
+    padding: 0 0 0 3ch;
+    overflow: hidden;
+    color: var(--fg-body);
   }
 
-  @media (max-width: 1180px) {
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .items::before {
+    content: "|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A|\A";
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: pre;
+    font-weight: 400;
+    color: var(--fg4);
   }
 
-  /* On a tablet the cards keep two thirds of the width and the ASCII
-     object rides the right third. */
+  .last .items::before {
+    content: none;
+  }
+
+  .items :global(.chip::after) {
+    content: none;
+    margin: 0;
+  }
+
+  /* On a tablet the listing keeps two thirds of the width and the object
+     rides the right third. */
   @media (min-width: 1000px) and (max-width: 1400px) {
-    :global(html.ascii-object) .lede,
-    :global(html.ascii-object) .grid {
-      width: calc(100% - 272px);
+    :global(html.ascii-object) .groups,
+    :global(html.ascii-object) .lede {
+      max-width: calc(100% - 272px);
+    }
+  }
+
+  /* A desktop lists the directories side by side, a tool a line. */
+  @media (min-width: 1401px) {
+    .cmd-tree {
+      display: none;
     }
 
-    :global(html.ascii-object) .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .cmd-cols {
+      display: block;
+    }
+
+    .groups {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 28px;
+      max-width: none;
+    }
+
+    :global(html.ascii-object) .groups {
+      width: calc(100% - 300px);
+    }
+
+    .group + .group {
+      margin-top: 0;
+    }
+
+    .br {
+      display: none;
+    }
+
+    .items {
+      display: grid;
+      gap: 0;
+      margin: 16px 0 0;
+      padding: 0;
+    }
+
+    .items::before {
+      content: none;
     }
   }
 
   @media (max-width: 620px) {
-    .grid {
-      grid-template-columns: minmax(0, 1fr);
+    .groups {
+      font-size: 12.5px;
+    }
+
+    .items {
+      gap: 0 1.6ch;
     }
   }
 </style>

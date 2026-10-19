@@ -10,7 +10,7 @@
   syncing tracks move on it.
 */
 export const SHAPES = [
-  { id: 'layers', label: 'Stack of layers', sway: false, tilt: 0.4, detail: 1 },
+  { id: 'dyson', label: 'Dyson sphere', sway: false, tilt: 0.4, detail: 0.72 },
   { id: 'puzzle', label: 'Puzzle piece', sway: true, tilt: 0.25, detail: 0.9 },
   { id: 'lattice', label: 'Lattice', sway: false, tilt: 0.5, detail: 0.72 },
   { id: 'tunedlogo', label: 'Tuned mark', sway: true, tilt: 0.25, detail: 0.9 },
@@ -20,7 +20,10 @@ export const SHAPES = [
   { id: 'stairs', label: 'Six steps', sway: false, tilt: 0.5, detail: 0.9 },
   { id: 'wrench', label: 'Wrench', sway: true, tilt: 0.25, detail: 0.72 },
   { id: 'star', label: 'Star', sway: true, tilt: 0.2, detail: 0.9 },
-  { id: 'globe', label: 'Globe', sway: false, tilt: 0.45, detail: 0.78 },
+  { id: 'globe', label: 'Globe', sway: false, tilt: 0.45, detail: 0.73 },
+  // negative: the renderer's tilt looks up from below, and a saucer is seen from above
+  { id: 'ufo', label: 'Flying saucer', sway: false, tilt: -0.45, detail: 0.9 },
+  { id: 'beam', label: 'Beam', sway: false, tilt: 0.6, detail: 1 },
 ] as const
 
 export type ShapeId = (typeof SHAPES)[number]['id']
@@ -73,16 +76,6 @@ float sdStar5(vec2 p, float r, float rf) {
   return length(p - ba * h) * sign(p.y * ba.x - p.x * ba.y);
 }
 
-// five slabs, each a little smaller than the one under it
-float shLayers(vec3 p) {
-  float d = 1e9;
-  for (int i = -2; i <= 2; i++) {
-    vec3 q = p - vec3(0.0, float(i) * 0.42, 0.0);
-    float s = 1.0 - 0.1 * float(i + 2);
-    d = min(d, sdBox(q, vec3(0.95 * s, 0.04, 0.95 * s), 0.04));
-  }
-  return d;
-}
 // a jigsaw piece: two knobs, two sockets
 float shPuzzle(vec3 p) {
   p /= 1.15;
@@ -202,8 +195,65 @@ float shGlobe(vec3 p) {
   return max(shell, min(lat, mer));
 }
 
+// a saucer: a thin disc, a ball set in its centre, a rim just under the midline
+float shUfo(vec3 p) {
+  vec3 q = p / vec3(1.0, 0.16, 1.0);
+  float disc = (length(q) - 1.0) * 0.16;
+  // sunk into the disc, a dome above it, a little below
+  float ball = length(p - vec3(0.0, 0.12, 0.0)) - 0.48;
+  float rim = length(vec2(length(p.xz) - 0.8, p.y + 0.04)) - 0.06;
+  return min(min(disc, ball), rim);
+}
+float bhash(vec3 p3) {
+  p3 = fract(p3 * 0.1031);
+  p3 += dot(p3, p3.zyx + 31.32);
+  return fract((p3.x + p3.y) * p3.z);
+}
+float bnoise(vec3 p) {
+  vec3 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(
+    mix(mix(bhash(i), bhash(i + vec3(1, 0, 0)), f.x), mix(bhash(i + vec3(0, 1, 0)), bhash(i + vec3(1, 1, 0)), f.x), f.y),
+    mix(mix(bhash(i + vec3(0, 0, 1)), bhash(i + vec3(1, 0, 1)), f.x), mix(bhash(i + vec3(0, 1, 1)), bhash(i + vec3(1, 1, 1)), f.x), f.y),
+    f.z);
+}
+// the beam under it: a cone opening downwards, its surface streaked by noise
+// stretched along it and running upwards, so it reads as static flowing up
+float shBeam(vec3 p) {
+  float k = clamp((1.0 - p.y) * 0.5, 0.0, 1.0);
+  float r = mix(0.1, 0.92, k);
+  float cone = max(length(p.xz) - r, abs(p.y) - 1.0);
+  vec3 q = p - vec3(0.0, u_t * 2.4, 0.0);
+  float n = bnoise(vec3(q.x * 7.0, q.y * 2.5, q.z * 7.0)) * 0.6 + bnoise(vec3(q.x * 13.0, q.y * 5.0, q.z * 13.0) + 3.7) * 0.4;
+  return cone + (n - 0.5) * 0.28;
+}
+
+
+
+// a Dyson sphere under construction: a bright core, and round it a shell of panels, a
+// few of them still missing, turning slowly
+float shDyson(vec3 p) {
+  float d = sdSphere(p, 0.36);
+  vec3 q = p; q.xz *= rot(u_t * 0.15);
+  float r = 0.92;
+  float shell = abs(length(q) - r) - 0.045;
+  float lon = atan(q.z, q.x);
+  float lat = asin(clamp(q.y / max(length(q), 1e-4), -1.0, 1.0)) + 1.5708;
+  float dl = 0.5236, db = 0.3927;
+  vec2 id = floor(vec2(lon, lat) / vec2(dl, db));
+  vec2 f = vec2(mod(lon, dl), mod(lat, db));
+  // distance to the panel's edges, along the shell: positive inside the panel
+  float ex = (dl * 0.5 - abs(f.x - dl * 0.5)) * length(q.xz);
+  float ey = (db * 0.5 - abs(f.y - db * 0.5)) * r;
+  float edge = min(ex, ey) - 0.05;
+  float panel = max(shell, -edge);
+  float missing = step(bhash(vec3(id, 1.0)), 0.42);
+  panel = mix(panel, max(shell, 0.06), missing);
+  return min(d, panel);
+}
+
 float shape(vec3 p, int s) {
-  if (s == 0) return shLayers(p);
+  if (s == 0) return shDyson(p);
   if (s == 1) return shPuzzle(p);
   if (s == 2) return shLattice(p);
   if (s == 3) return shTunedLogo(p);
@@ -213,6 +263,8 @@ float shape(vec3 p, int s) {
   if (s == 7) return shStairs(p);
   if (s == 8) return shWrench(p);
   if (s == 9) return shStar(p);
-  return shGlobe(p);
+  if (s == 10) return shGlobe(p);
+  if (s == 11) return shUfo(p);
+  return shBeam(p);
 }
 `

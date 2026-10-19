@@ -20,7 +20,7 @@ import { buildAtlas } from './atlas'
 import { getGL, REDUCED } from './gl'
 import { box, covered, inkBoxes, type Box } from './layout'
 import { createRenderer, type Item, type RGB } from './renderer'
-import { hexToRgb, sectionByKey, type Section } from './sections'
+import { hexToRgb, OBJECT_SIZE, sectionByKey, type Section } from './sections'
 import { SHAPES, shapeIndex } from './shapes'
 
 export interface ObjectOptions {
@@ -49,7 +49,10 @@ const TABLET = 1400
 const PAGE_TABLET = 1180
 
 
-const DEFAULTS: Required<ObjectOptions> = { cell: 6, alpha: 1, size: 0.4, spin: 0.08 }
+const DEFAULTS: Required<ObjectOptions> = { cell: 6, alpha: 1, size: OBJECT_SIZE, spin: 0.08 }
+
+const UFO = shapeIndex('ufo')
+const BEAM = shapeIndex('beam')
 
 /** The reference size a shape's glyph cell is tuned at, px. */
 const USUAL = 260
@@ -98,32 +101,27 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     ink = inkBoxes('main :is(h1, h2, h3, h4, p, li, dd, dt, figcaption, .btn, .pill, picture, .stage .inner > *, figure, [data-pan-frame])')
   }
 
-  // Where a section's copy has to make room for the object, a float goes in
-  // at the top of the copy and the text wraps round it; the object then
-  // takes the float's box as its place. The float is a column down to the
-  // limit element's edge, measured with the float first made very tall so
-  // everything above the limit is already wrapped beside it.
+  // Where a section's copy leaves a lane for the object down its right
+  // (Project.astro pads the copy above the limit element from the first
+  // paint, so nothing moves when this runs), a marker goes over the lane:
+  // absolutely positioned, out of the flow, from a little above the copy's
+  // top down to the limit element's edge. The object takes its box as its
+  // place and rides it with the scroll.
   for (const el of document.querySelectorAll<HTMLElement>('[data-object]')) {
     const section = sectionByKey(el.dataset.object ?? '')
     const g = section ? glideOf(section) : undefined
     const copy = el.querySelector<HTMLElement>('.copy')
     if (!g?.column || !copy || copy.querySelector('.ascii-float')) continue
-    // The row gives the copy more room (the mock narrows a little).
-    el.classList.add('ascii-wide')
     const f = document.createElement('span')
     f.className = 'ascii-float'
     f.setAttribute('aria-hidden', 'true')
     const w = Math.round(innerHeight * o.size * g.size)
     f.style.width = `${w}px`
-    f.style.height = '4000px'
-    // The column may start above the copy, so the object's first place is
-    // a little higher than the heading.
-    if (g.lift) f.style.marginTop = `${-g.lift}px`
+    if (g.lift) f.style.top = `${-g.lift}px`
+    // Centred where the object stands everywhere, 0.875 of the viewport,
+    // whatever the copy's right edge: past it the marker hangs into the margin.
+    f.style.right = `${Math.round(copy.getBoundingClientRect().right - innerWidth * 0.875 - w / 2)}px`
     copy.prepend(f)
-    // Centred on the same vertical as everywhere else, whatever the copy's
-    // right edge is: the float may lean a few pixels into the gutter.
-    const right = copy.getBoundingClientRect().right
-    f.style.marginRight = `${Math.round(right - innerWidth * 0.875 - w / 2)}px`
     const lim = el.querySelector<HTMLElement>(g.column.sel)
     const top = f.getBoundingClientRect().top
     const edge = lim ? (g.column.edge === 'bottom' ? lim.getBoundingClientRect().bottom : lim.getBoundingClientRect().top - 16) : top
@@ -192,6 +190,61 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
   let last = performance.now()
   let raf = 0
   let alive = true
+
+  /*
+    The easter egg. A click on the solid: the real cursor goes out of sight
+    and a drawn copy stands where it was; the solid becomes a saucer over
+    it, lowers a beam, and the copy rises into it. Then the saucer shudders
+    and bursts into dust, the copy drops back to wherever the pointer is
+    now, the real cursor comes back in that same frame, and the section's
+    own solid forms again out of the noise where the saucer was, then flies
+    home. Mouse only: a finger has no cursor to take.
+  */
+  // `ax, ay` is the click, where the saucer works; `px, py` follows the pointer, where the cursor comes back to.
+  // `ex, ey, es` is where the solid is and how big, eased from where the click found it.
+  let egg: { t0: number; ax: number; ay: number; px: number; py: number; ex: number; ey: number; es: number; burst: boolean; done: boolean } | null = null
+  let cursorEl: HTMLElement | null = null
+  const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
+  const makeCursor = (): HTMLElement => {
+    const el = document.createElement('div')
+    el.className = 'ascii-cursor'
+    el.setAttribute('aria-hidden', 'true')
+    const fill = mac ? '#000' : '#fff'
+    const line = mac ? '#fff' : '#000'
+    el.innerHTML = `<svg viewBox="0 0 13 20" width="13" height="20"><path d="M1 1v15.5l3.6-3.3 2.6 5.8 2.4-1-2.6-5.7H12z" fill="${fill}" stroke="${line}" stroke-width="1.2" stroke-linejoin="round"/></svg>`
+    return el
+  }
+  const placeCursor = (cx: number, cy: number, scale: number, opacity: number): void => {
+    if (!cursorEl) return
+    cursorEl.style.transform = `translate(${cx - 1}px, ${cy - 1}px) scale(${scale})`
+    cursorEl.style.opacity = String(opacity)
+  }
+  const endEgg = (): void => {
+    document.documentElement.classList.remove('ascii-abduct')
+    cursorEl?.remove()
+    cursorEl = null
+  }
+  const onDown = (e: PointerEvent): void => {
+    if (egg || e.pointerType !== 'mouse' || e.button !== 0 || alpha < 0.5) return
+    if ((e.target as Element | null)?.closest('a, button, [popover]')) return
+    if (Math.hypot(e.clientX - x, e.clientY - y) > size * 0.5) return
+    egg = { t0: performance.now(), ax: e.clientX, ay: e.clientY, px: e.clientX, py: e.clientY, ex: x, ey: y, es: size, burst: false, done: false }
+    a = b
+    b = UFO
+    morph = 0
+    pendingShape = -1
+    cursorEl = makeCursor()
+    document.body.append(cursorEl)
+    placeCursor(e.clientX, e.clientY, 1, 1)
+    document.documentElement.classList.add('ascii-abduct')
+    e.preventDefault()
+  }
+  const onMove = (e: PointerEvent): void => {
+    if (egg && e.pointerType === 'mouse') {
+      egg.px = e.clientX
+      egg.py = e.clientY
+    }
+  }
 
   const frame = (now: number): void => {
     raf = 0
@@ -307,30 +360,39 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     // Colour and size from the section; eased, except on the first frame.
     // The opacity always eases: the object fades in.
     const target = hexToRgb(stop.section.hex)
-    const wantSize = Math.min(g.size, g.maxPx ? g.maxPx / (innerHeight * o.size) : Infinity)
+    let wantSize = Math.min(g.size, g.maxPx ? g.maxPx / (innerHeight * o.size) : Infinity)
+    // Hung under a mock, it must still clear the section's bottom padding:
+    // where the copy beside the mock is short, it hangs smaller.
+    if (underEl) {
+      const room = stop.box.y + stop.box.h - 40 - (underEl.getBoundingClientRect().bottom + sy + 34)
+      wantSize = Math.min(wantSize, Math.max(0.3, room / (innerHeight * o.size)))
+    }
     const k = first ? 1 : 1 - Math.exp(-dt * 3)
     accent = accent.map((v, i) => lerp(v, target[i] ?? v, k)) as RGB
     sizeFactor = lerp(sizeFactor, wantSize, k)
     size = lerp(size, S * (parked ? 0.6 : 1), k)
     alpha = lerp(alpha, o.alpha * (parked ? 0.5 : 1), 1 - Math.exp(-dt * 3))
 
-    // The shape. A change in the middle of a morph waits for it, so nothing jumps.
-    const wi = shapeIndex(stop.section.shape)
-    if (wi !== b) {
-      if (morph >= 1) {
-        a = b
-        b = wi
-        morph = 0
-      } else {
-        pendingShape = wi
+    // The shape. A change in the middle of a morph waits for it, so nothing
+    // jumps. Not while the saucer is out: that is a shape of its own.
+    if (!egg) {
+      const wi = shapeIndex(stop.section.shape)
+      if (wi !== b) {
+        if (morph >= 1) {
+          a = b
+          b = wi
+          morph = 0
+        } else {
+          pendingShape = wi
+        }
       }
+      if (morph >= 1 && pendingShape >= 0 && pendingShape !== b) {
+        a = b
+        b = pendingShape
+        morph = 0
+      }
+      if (pendingShape === b) pendingShape = -1
     }
-    if (morph >= 1 && pendingShape >= 0 && pendingShape !== b) {
-      a = b
-      b = pendingShape
-      morph = 0
-    }
-    if (pendingShape === b) pendingShape = -1
     morph = Math.min(1, morph + dt / 1.1)
 
     // Turning, faster when the page is scrolled; a mark sways instead, and
@@ -359,7 +421,7 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     lastDocY = docY
     lastScreenY = y
     const gate = (v: number): number => Math.min(1, Math.max(0, (v - 40) / 500))
-    const trail = Math.max(Math.min(gate(own), gate(across)), Math.sin(Math.PI * morph) * 0.35)
+    let trail = Math.max(Math.min(gate(own), gate(across)), Math.sin(Math.PI * morph) * 0.35)
 
     if (first) {
       // Everything above was worked out before the section was known. Now
@@ -371,12 +433,81 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
       flightStart = -1e9
       lastDocY = Number.NaN
       lastScreenY = Number.NaN
+      // The shape too: a page opened part-way down starts as that section's
+      // solid, not as the first one on its way to it.
+      a = b = shapeIndex(stop.section.shape)
+      pendingShape = -1
+      morph = 1
       frame(now)
       return
     }
 
-    const item: Item = { x, y, size, a, b, morph, accent, angle, tilt, alpha, cell, trail }
-    renderer.draw([item], t, dt)
+    // The saucer, over everything above: where it is, what it draws, the
+    // copy of the cursor, the burst, and the solid forming again.
+    let beam: Item | undefined
+    let scatter = 0
+    if (egg) {
+      const e = egg
+      const et = (now - e.t0) / 1000
+      const R = innerHeight * o.size * 0.7
+      const hover = Math.max(R * 0.55, e.ay - R * 0.95)
+      if (et < 4.05) {
+        // Eased from where the click found it, and held there until the burst.
+        const k = 1 - Math.exp(-dt * 4)
+        e.ex = lerp(e.ex, e.ax, k)
+        e.ey = lerp(e.ey, hover, k)
+        e.es = lerp(e.es, R, k)
+        const shake = et >= 2.8 && et < 3.6 ? Math.sin(now * 0.09) * (et - 2.8) * 16 : 0
+        x = e.ex + shake
+        y = e.ey + Math.sin(t * 2.2) * 5
+        size = e.es
+        const beamA = et < 0.9 ? 0 : et < 1.2 ? (et - 0.9) / 0.3 : et < 2.2 ? 1 : et < 2.6 ? 1 - (et - 2.2) / 0.4 : 0
+        if (beamA > 0) {
+          const topY = y + size * 0.06
+          const bh = Math.max(40, e.ay + 12 - topY)
+          beam = { x: e.ax, y: topY + bh / 2, size: bh, a: BEAM, b: BEAM, morph: 1, accent, angle: 0, tilt: -0.06, alpha: 0.5 * beamA * (0.85 + 0.15 * Math.sin(t * 9)), cell, scatter: 0.5 }
+        }
+        if (et < 1.0) placeCursor(e.ax, e.ay, 1, 1)
+        else if (et < 2.0) {
+          const u = ease((et - 1.0) / 1.0)
+          placeCursor(e.ax, lerp(e.ay, y + size * 0.12, u), 1 - 0.7 * u, 1 - u * u)
+        } else if (et < 3.6) placeCursor(e.ax, e.ay, 1, 0)
+        else if (et < 4.05) {
+          // Dropped back to wherever the pointer is now, so the real cursor
+          // takes over from it in place.
+          const u = 1 - (1 - (et - 3.6) / 0.45) ** 2
+          placeCursor(lerp(e.ax, e.px, u), lerp(y, e.py, u), lerp(0.3, 1, u), 1)
+        }
+        if (et >= 3.6) {
+          if (!e.burst) {
+            e.burst = true
+            trail = 1
+            size *= 1.8
+          }
+          alpha = Math.max(0, 1 - (et - 3.6) / 0.15)
+        }
+      }
+      // After the burst the section's own solid forms out of the noise where
+      // it belongs for the scroll as it is now — `x`, `y` are the frame's own
+      // place again — at its own size, with no flight from the saucer's spot.
+      if (et >= 4.05) {
+        if (!e.done) {
+          e.done = true
+          endEgg()
+          a = b = shapeIndex(stop.section.shape)
+          pendingShape = -1
+          morph = 1
+          size = S * (parked ? 0.6 : 1)
+        }
+        const u = Math.min(1, (et - 4.05) / 0.9)
+        scatter = 0.6 * (1 - u)
+        alpha = u
+      }
+      if (et >= 5.0) egg = null
+    }
+
+    const item: Item = { x, y, size, a, b, morph, accent, angle, tilt, alpha, cell, trail, scatter }
+    renderer.draw(beam ? [beam, item] : [item], t, dt)
     raf = requestAnimationFrame(frame)
   }
 
@@ -390,6 +521,8 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     }
   }
   document.addEventListener('visibilitychange', onVisible)
+  addEventListener('pointerdown', onDown)
+  addEventListener('pointermove', onMove)
   raf = requestAnimationFrame(frame)
 
   return {
@@ -404,6 +537,9 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
       clearInterval(remeasure)
       removeEventListener('resize', measure)
       document.removeEventListener('visibilitychange', onVisible)
+      removeEventListener('pointerdown', onDown)
+      removeEventListener('pointermove', onMove)
+      endEgg()
       canvas.remove()
     },
   }

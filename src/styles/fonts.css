@@ -10,9 +10,9 @@
 */
 @layer base {
   @font-face {
-    font-family: "Sora Variable";
-    src: url("../../node_modules/@fontsource-variable/sora/files/sora-latin-wght-normal.woff2") format("woff2-variations");
-    font-weight: 100 800;
+    font-family: "Instrument Sans Variable";
+    src: url("../../node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2") format("woff2-variations");
+    font-weight: 400 700;
     font-style: normal;
     font-display: swap;
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
@@ -20,9 +20,9 @@
   }
 
   @font-face {
-    font-family: "Public Sans Variable";
-    src: url("../../node_modules/@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2") format("woff2-variations");
-    font-weight: 100 900;
+    font-family: "Martian Mono Variable";
+    src: url("../../node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2") format("woff2-variations");
+    font-weight: 100 800;
     font-style: normal;
     font-display: swap;
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,

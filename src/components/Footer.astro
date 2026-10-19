@@ -15,7 +15,7 @@ const year = new Date().getFullYear()
     <p class="colophon">
       Built with Astro
       <Sep />
-      <a href={site.repo}>source</a>
+      <a href={site.repo} target="_blank" rel="noopener">source</a>
     </p>
 
     <p class="rights">© {year} {site.name}</p>
@@ -37,10 +37,14 @@ const year = new Date().getFullYear()
   }
 
   .mark {
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: -0.02em;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .mark::before {
+    content: "~/";
+    color: var(--amber);
   }
 
   .mark span {

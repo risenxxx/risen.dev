@@ -4,61 +4,60 @@
   either lie about them or need a second set of mocks. `color-scheme` is set so
   form controls and scrollbars follow, and the values below are the only place
   a colour is written down.
+
+  The palette is a terminal's: a near-black with a touch of green in it, ink
+  that is not quite white, two greys, and one amber for the cursor, the live
+  marks and the primary action. Nothing else is coloured.
 */
 @layer base {
   :root {
     /* surfaces, darkest first */
-    --bg: #0a0a0c;
-    --s1: #0c0c0f;
-    --s2: #0e0e11;
-    --s3: #131317;
+    --bg: #0b0d0b;
+    --s1: #0b0d0b;
+    --s2: #0d0f0d;
+    --s3: #0f120f;
 
-    --line: rgba(255, 255, 255, 0.08);
-    --line2: rgba(255, 255, 255, 0.12);
-    --line3: rgba(255, 255, 255, 0.16);
+    --line: #1d211c;
+    --line2: #2b302a;
+    --line3: #3a3f38;
 
     /*
-      --fg3 is the floor for text that carries information. It has to clear
-      4.5:1 on every surface it is ever set on, and the tightest of those is
-      --s3 rather than --bg — the open-source card is the lightest surface here,
-      so grey text has the least room on it. Measured there, the #75757f this
-      replaces was 4.07:1 and failed, while the comment above it claimed 4.6.
-      #7e7e88 is 4.61:1 on --s3 and 4.92:1 on --bg. Anything dimmer than this
-      is decoration and carries no information.
+      --fg3 is the floor for text that carries information: 5.3:1 on --bg and
+      5.0:1 on --s3. Anything dimmer than this (--fg4) is decoration and
+      carries no information.
     */
-    --fg: #f5f5f7;
-    --fg2: #a3a3ad;
-    --fg3: #7e7e88;
-    --fg-mid: #c4c4cc;
+    --fg: #e6e8e3;
+    --fg2: #b4b8b0;
+    --fg3: #8a8f87;
+    --fg4: #55594f;
+    --fg-mid: #c9ccc6;
     /* Body copy below 16 px: the size carries the detail, so the colour steps
        back and lets whatever it sits under stay the brighter of the two. */
-    --fg-body: #9c9ca6;
-    --fg-soft: #b6b6c0;
+    --fg-body: #a9aea6;
+    --fg-soft: #b4b8b0;
 
-    --btn: #f5f5f7;
-    --btn-fg: #0a0a0c;
-    --btn-hover: #ffffff;
+    --amber: #f2b63d;
+    --btn: var(--amber);
+    --btn-fg: #0b0d0b;
+    --btn-hover: #ffc75a;
 
-    --green: #5bd8a6;
+    /* The live mark and the availability line: the amber, not a green. */
+    --green: var(--amber);
 
-    /* The hero and the closing section share one cool bloom. Not a brand
-       colour: the colour on this page comes out of the products themselves. */
-    --glow: rgba(150, 158, 200, 0.14);
-    --glow2: rgba(150, 158, 200, 0.03);
-
-    /* The same hue at full strength, for the one line on the page that is a
-       route rather than a division: the request through the reference figure. */
-    --route: #969ec8;
+    /* The one line on the page that is a route rather than a division: the
+       request through the reference figure. Also the tint of a heading's
+       glyphs while they are still being decoded. */
+    --route: var(--amber);
 
     --sh-mock: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
-    --sh-card: 0 24px 48px -30px rgba(0, 0, 0, 0.8);
 
-    --display: "Sora Variable", "Sora", ui-sans-serif, system-ui, sans-serif;
-    --sans: "Public Sans Variable", "Public Sans", ui-sans-serif, system-ui, sans-serif;
-    /* Only for strings a machine produced or would parse: a URL, a handle, a
-       step code, a label on the figure. English sentences are set in --sans,
-       whatever their size. */
-    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --display: "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    --sans: "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    /* For everything a terminal would print: paths, labels, handles, figures,
+       the log, the buttons. English sentences stay in --sans. The ASCII layer
+       draws its glyphs in DM Mono (atlas.ts), which is a different face on
+       purpose: a narrower, lighter one for a texture. */
+    --mono: "Martian Mono Variable", "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     /* Frame Player and Gift Fight are both drawn in Rubik. The previews use it
        so their chrome matches the real applications rather than this page. */
     --ui: "Rubik Variable", "Rubik", ui-sans-serif, system-ui, sans-serif;

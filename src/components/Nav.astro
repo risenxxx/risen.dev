@@ -17,12 +17,12 @@ const social = contacts.filter((c) => c.id !== 'email')
     <div class="right">
       {
         social.map((c) => (
-          <a class="social" href={c.href} aria-label={c.label} rel="me">
+          <a class="social" href={c.href} aria-label={c.label} rel="me noopener" target="_blank">
             <Icon name={c.icon} size={Math.round(20 * c.optical)} />
           </a>
         ))
       }
-      <CvMenu id="nav" class="cv" primary iconSize={15} align="end" />
+      <CvMenu id="nav" class="cv" iconSize={15} align="end" />
     </div>
   </div>
 </header>
@@ -47,37 +47,36 @@ const social = contacts.filter((c) => c.id !== 'email')
     gap: 24px;
   }
 
+  /* The prompt: a tilde, then the name. */
   .mark {
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: 17px;
-    letter-spacing: -0.02em;
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 13px;
   }
 
+  .mark::before {
+    content: "~ ";
+    color: var(--amber);
+  }
+
+  /* The sections, as a terminal would list them: lowercase, spaced, nothing
+     drawn round them. */
   .tabs {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.03);
+    gap: 26px;
   }
 
   .tabs a {
-    padding: 7px 15px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--fg2);
-    transition:
-      color 0.18s,
-      background-color 0.18s;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-transform: lowercase;
+    color: var(--fg3);
+    transition: color 0.18s;
   }
 
   .tabs a:hover {
     color: var(--fg);
-    background: rgba(255, 255, 255, 0.07);
   }
 
   .right {

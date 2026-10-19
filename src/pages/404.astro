@@ -1,15 +1,31 @@
 ---
 import Page from '../layouts/Page.astro'
 import { site } from '../data/site.ts'
+
+/*
+  The page that is not there. The saucer hovers over the copy — the one place
+  it lives permanently rather than as the easter egg — at every width, since
+  there is no copy beside it to make room for.
+*/
 ---
 
-<Page title={`Not found — ${site.domain}`} noindex>
-  <main class="missing">
-    <p class="mono code">404</p>
-    <h1>There is nothing at this address.</h1>
-    <p class="lede">The page you were looking for has either moved or never existed.</p>
-    <a class="btn btn-primary btn-lg" href="/">Back to the landing</a>
+<Page title={`Not found — ${site.domain}`} noindex objectAlways>
+  <main class="missing" data-object="missing">
+    <div class="copy">
+      <h1 class="h-section" data-path="~/404">There is nothing at this address.</h1>
+      <p class="lede">The page you were looking for has either moved or never existed.</p>
+      <a class="btn btn-primary btn-lg" href="/">Back to the landing</a>
+    </div>
   </main>
+
+  <script>
+    const html = document.documentElement
+    if (html.classList.contains('ascii')) {
+      import('../ascii/ascii.ts')
+        .then((m) => m.mount())
+        .catch(() => html.classList.remove('ascii', 'ascii-object'))
+    }
+  </script>
 </Page>
 
 <style>
@@ -19,20 +35,17 @@ import { site } from '../data/site.ts'
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
     padding: var(--gut);
     text-align: center;
   }
 
-  .code {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    color: var(--fg3);
-  }
-
-  h1 {
-    font-size: clamp(28px, 4vw, 44px);
-    letter-spacing: -0.03em;
+  /* The room above the copy is the saucer's. */
+  .copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 300px;
   }
 
   .lede {

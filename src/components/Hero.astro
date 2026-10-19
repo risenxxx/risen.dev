@@ -3,6 +3,7 @@ import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
 import CvMenu from './CvMenu.astro'
 import Portrait from './Portrait.astro'
+import Sep from './Sep.astro'
 
 /*
   A person, then what they have built — in that order and on that axis.
@@ -44,7 +45,7 @@ import Portrait from './Portrait.astro'
          the page and a column that fades in after its own text reads as late. -->
     <figure class="me" data-reveal>
       <Portrait />
-      <figcaption class="mono">{site.location} · {site.timezone}</figcaption>
+      <figcaption class="mono">{site.location}<Sep tight />{site.timezone}</figcaption>
     </figure>
 
     <div class="cta" data-reveal style="--dl: 4">
@@ -56,7 +57,12 @@ import Portrait from './Portrait.astro'
       {
         contacts.map((c) => (
           <li>
-            <a class="btn btn-id" href={c.href} rel={c.id === 'email' ? undefined : 'me'}>
+            <a
+              class="btn btn-id"
+              href={c.href}
+              rel={c.id === 'email' ? undefined : 'me noopener'}
+              target={c.id === 'email' ? undefined : '_blank'}
+            >
               <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}
             </a>
@@ -151,6 +157,12 @@ import Portrait from './Portrait.astro'
   @media (min-width: 1181px) and (max-width: 1400px) {
     :global(html.ascii-object) .lede {
       max-width: 460px;
+    }
+  }
+
+  @media (min-width: 1401px) {
+    :global(html.ascii-object) .lede {
+      max-width: 56ch;
     }
   }
 

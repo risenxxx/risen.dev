@@ -21,7 +21,7 @@
 
   html {
     background: var(--bg);
-    scrollbar-color: #2a2a30 var(--bg);
+    scrollbar-color: var(--line2) var(--bg);
     -webkit-text-size-adjust: 100%;
   }
 
@@ -42,7 +42,7 @@
   }
 
   ::selection {
-    background: rgba(150, 158, 200, 0.32);
+    background: rgba(242, 182, 61, 0.28);
     color: var(--fg);
   }
 
@@ -56,7 +56,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2a30;
+    background: var(--line2);
     border-radius: 10px;
     border: 2px solid var(--bg);
   }
@@ -148,51 +148,30 @@
     user-select: none;
   }
 
-  .vh {
-    position: absolute !important;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    border: 0;
-  }
-
   /*
-    Separator. A middle dot at 11 px is almost invisible and a bullet reads as a
-    list marker, which none of these rows are. A 3 px circle in currentColor
-    stays visible at every size the page uses, and screen readers skip it —
-    the parts around it are separated by real spaces in the markup.
+    Separator: a slash, the way a path separates its parts. Dimmer than the
+    text either side of it, and hidden from assistive tech — the parts around
+    it are separated by real spaces in the markup.
   */
   .sep {
     display: inline-block;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: 0.55;
-    vertical-align: middle;
-    margin-inline: 9px;
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--fg4);
+    margin-inline: 8px;
     flex: none;
   }
 
+  .sep::before {
+    content: "/";
+  }
+
   .sep-tight {
-    margin-inline: 7px;
+    margin-inline: 6px;
   }
 
   /* ── type ───────────────────────────────────────────────────────────── */
 
-
-  .eyebrow .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-    margin-right: 10px;
-    flex: none;
-  }
 
   .lede,
   p {
@@ -212,6 +191,17 @@
     letter-spacing: -0.03em;
   }
 
+  /* A section is a path. The label stands above the heading on its own line,
+     in the amber, with nothing drawn round it. */
+  .h-section[data-path]::before {
+    content: attr(data-path);
+    display: block;
+    margin-bottom: 12px;
+    font: 400 12.5px / 1 var(--mono);
+    letter-spacing: 0;
+    color: var(--amber);
+  }
+
   /*
     A break placed so a two-sentence lede puts one sentence per line instead of
     turning over mid-thought. Wide only: once the measure is short enough that
@@ -229,18 +219,23 @@
 
   /* ── controls ───────────────────────────────────────────────────────── */
 
+  /*
+    Buttons are set in the mono, square, and carry no capsule. The primary one
+    is the amber; the ghost is a hairline. On hover a ghost gets a cursor after
+    its label — the one thing a terminal does to say "this takes input".
+  */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     min-height: 40px;
-    padding: 12px 16px;
-    border-radius: 999px;
+    padding: 11px 16px;
+    border-radius: 0;
     border: 1px solid transparent;
     /* A `<button>` brings the UA's grey fill with it; a ghost has no fill. */
     background: transparent;
-    font: 500 14px / 1 var(--sans);
+    font: 500 13px / 1 var(--mono);
     white-space: nowrap;
     cursor: pointer;
     transition:
@@ -270,45 +265,56 @@
     color: var(--fg);
   }
 
+  .btn-ghost::after {
+    content: "_";
+    margin-left: -6px;
+    color: var(--amber);
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+
   .btn-ghost:hover {
-    border-color: rgba(255, 255, 255, 0.34);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--fg3);
+  }
+
+  .btn-ghost:hover::after {
+    opacity: 1;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
   }
 
   .btn-lg {
-    min-height: 50px;
-    padding: 16px 26px;
-    font-size: 16px;
+    min-height: 48px;
+    padding: 15px 22px;
+    font-size: 14px;
   }
 
-  /* A contact address: monospace, because it is an identifier and not a phrase. */
+  /* A contact address: a line of output, with the prompt's own mark before it. */
   .btn-id {
     font-family: var(--mono);
-    font-size: 14px;
-    border-color: var(--line2);
-    color: var(--fg-mid);
-    min-height: 42px;
-    padding: 13px 18px;
+    font-size: 13px;
+    min-height: 0;
+    padding: 6px 0;
+    gap: 9px;
+    color: var(--fg2);
+  }
+
+  .btn-id::before {
+    content: ">";
+    color: var(--fg4);
   }
 
   .btn-id:hover {
-    border-color: var(--line3);
     color: var(--fg);
-    background: rgba(255, 255, 255, 0.03);
   }
 
-  .btn-icon {
-    width: 38px;
-    height: 38px;
-    min-height: 0;
-    padding: 0;
-    border-color: var(--line2);
-    color: var(--fg-mid);
-  }
-
-  .btn-icon:hover {
-    border-color: var(--line3);
-    color: var(--fg);
+  .btn-id:hover::before {
+    color: var(--amber);
   }
 
   .btn .ic {
@@ -324,108 +330,105 @@
 
   /* ── surfaces ───────────────────────────────────────────────────────── */
 
+  /* The availability line: a line of the prompt, in the amber, with the
+     cursor still blinking at its head. No capsule round it. */
   .pill {
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
     gap: 9px;
-    padding: 7px 15px;
-    border: 1px solid var(--line2);
-    border-radius: 999px;
-    font-size: 12.5px;
-    color: var(--fg-soft);
+    padding: 0;
+    font: 400 12.5px / 1.4 var(--mono);
+    text-transform: lowercase;
+    color: var(--amber);
   }
 
   .pill .live {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
+    width: 7px;
+    height: 13px;
+    background: var(--amber);
     flex: none;
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill .live,
+    .btn-ghost:hover::after {
+      animation: none;
+    }
   }
 
   /*
-    The availability line is 32 monospaced characters, which at 12 px comes to
-    within five pixels of the content width on a 320 px screen. Below that it
-    would touch both gutters, so the pill gives back a little size and padding
-    rather than wrapping — 11.5 px is still above the floor for functional text.
+    The availability line is 32 monospaced characters, which at 12.5 px of a
+    wide mono comes close to the content width on a 320 px screen, so below
+    that it gives back a little size rather than wrapping — 11 px is still
+    above the floor for functional text.
   */
   @media (max-width: 355px) {
     .pill {
-      font-size: 11.5px;
-      padding: 7px 12px;
+      font-size: 11px;
     }
   }
 
 
-  /* Thumbs, not cursors: the icon-only buttons grow to the 44 px floor. */
-  @media (max-width: 720px) {
-    .btn-icon {
-      width: 44px;
-      height: 44px;
-    }
-  }
-
+  /* A card is a block of text with air round it: no fill, no frame. */
   .card {
-    background: var(--s3);
-    border: 1px solid var(--line);
-    border-radius: 16px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
   }
 
+  /* A chip is a word in a list; the list's separators are its only chrome. */
   .chip {
-    display: inline-flex;
-    align-items: center;
+    display: inline;
     white-space: nowrap;
-    gap: 7px;
-    font-size: 12px;
-    padding: 5px 10px;
-    border: 1px solid var(--line2);
-    border-radius: 7px;
-    color: var(--fg-soft);
+    font: 400 12.5px / 1.9 var(--mono);
+    color: var(--fg-body);
   }
 
-  .chip .ic {
-    width: 13px;
-    height: 13px;
-    flex: none;
+  .chip:not(:last-child)::after {
+    content: "/";
+    margin-inline: 9px;
+    color: var(--fg4);
   }
 
-  /* The stack section says the same thing at reading size. */
   .chip-lg {
-    font-family: var(--sans);
-    font-size: 12.5px;
-    padding: 6px 11px;
-    border-radius: 8px;
-    border-color: rgba(255, 255, 255, 0.1);
+    font-size: 13px;
     color: var(--fg-mid);
   }
 
-  .chip-lg .ic {
-    width: 14px;
-    height: 14px;
+  /* One product's numbers: the note on the left, the figure on the right,
+     each pair a line of output. */
+  .metrics {
+    display: grid;
+    gap: 4px;
+    max-width: 520px;
+    font-family: var(--mono);
   }
 
-  /* One product's numbers, banded between two hairlines. */
-  .metrics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 26px;
-    padding: 14px 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
+  .metrics > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: baseline;
   }
 
   .metrics dt {
-    font-family: var(--display);
-    font-size: 17px;
-    font-weight: 600;
+    order: 1;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg);
+    text-align: right;
+    white-space: nowrap;
     display: flex;
     align-items: center;
     gap: 8px;
+    justify-content: flex-end;
   }
 
   .metrics dd {
-    margin: 3px 0 0;
+    order: 0;
+    margin: 0;
     font-size: 12.5px;
     color: var(--fg3);
   }

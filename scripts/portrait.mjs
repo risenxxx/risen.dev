@@ -20,7 +20,7 @@
   at a matching quality it has to come out smaller, or a browser that prefers
   it is served the heavier file of the two.
 */
-import { mkdir, readdir, rm } from 'node:fs/promises'
+import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
@@ -57,17 +57,43 @@ for (const w of WIDTHS) {
 }
 
 /*
-  The mosaic the page carries in its own markup while the ASCII layer is on
-  its way: the picture at 24 cells across — the glyph cell the run starts
-  at, over the 300 px the hero draws it at — which the style scales up
-  blocky in the photograph's place (Portrait.astro, ascii.css). A palette
-  PNG, because at this size it is the smallest lossless thing there is:
-  about 1.5 KB, 2 KB as a data URI.
+  What the page carries in its own markup while the ASCII layer is on its way:
+  the portrait as the glyph field the run opens with, so the box is never empty
+  and the first frame the canvas draws continues what the style already shows.
+
+  Two files, from the same 42 × 31 grid — the shader's cell at the start of
+  the run (12 px tall, 0.6 as wide) over the 300 px the hero draws the
+  portrait at; the style scales the grid to the box, whatever its width:
+
+    glyphs.txt   one character per cell, drawn by chance — the run opens
+                 on random glyphs, and the photograph is in their colour;
+    mosaic.png   the photograph at one pixel per cell, which the style puts
+                 behind the glyphs and clips to their ink — the colour of each
+                 glyph is the colour of its cell, as the shader colours them.
+
+  The grid is not square: a cell is 7.1 × 12.1 px, so the resize ignores the
+  aspect and maps one pixel onto one cell. A palette PNG: about 2 KB as a
+  data URI; the glyphs are 1.3 KB of text.
 */
-const MOSAIC = fileURLToPath(new URL('../src/portrait/mosaic.png', import.meta.url))
-await base
+const COLS = 42
+const ROWS = 31
+const cells = base.clone().resize({ width: COLS, height: ROWS, fit: 'fill' })
+await cells
   .clone()
-  .resize({ width: 24, height: 30 })
   .png({ palette: true, colours: 64, compressionLevel: 9 })
-  .toFile(MOSAIC)
-console.log('mosaic: 24 × 30')
+  .toFile(fileURLToPath(new URL('../src/portrait/mosaic.png', import.meta.url)))
+
+// The glyphs the run opens with are random — the photograph is in their
+// colour, not their shape — so these are drawn by chance from the denser
+// half of DM Mono, the way the shader's first frame looks.
+const GLYPHS = '=+^~<>/()[]{}7]|kzoTUKSO0W#&@GMNeUz'
+let seed = 11
+const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 2 ** 32)
+const lines = []
+for (let y = 0; y < ROWS; y++) {
+  let line = ''
+  for (let x = 0; x < COLS; x++) line += GLYPHS[Math.floor(rnd() * GLYPHS.length)]
+  lines.push(line)
+}
+await writeFile(fileURLToPath(new URL('../src/portrait/glyphs.txt', import.meta.url)), lines.join('\n'))
+console.log(`placeholder: ${COLS} × ${ROWS} glyphs and mosaic`)

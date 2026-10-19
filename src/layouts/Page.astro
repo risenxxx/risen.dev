@@ -1,6 +1,6 @@
 ---
-import sora from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url'
-import publicSans from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url'
+import sans from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url'
+import mono from '@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2?url'
 import dmMono from '@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2?url'
 import { site } from '../data/site.ts'
 import '../styles/tokens.css'
@@ -12,9 +12,11 @@ interface Props {
   title?: string
   description?: string
   noindex?: boolean
+  /** Keep the ASCII object at every width, not only where the landing has room beside its copy. */
+  objectAlways?: boolean
 }
 
-const { title = site.title, description = site.description, noindex = false } = Astro.props
+const { title = site.title, description = site.description, noindex = false, objectAlways = false } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site)
 const ogImage = new URL('/og.png', Astro.site)
@@ -33,7 +35,27 @@ const preview = import.meta.env.SITE_PREVIEW === '1'
   checks are the cheap ones — the API exists, motion is not reduced, the
   viewport is wide enough for an object beside the copy — and the module
   takes the classes back if a context cannot actually be had.
+
+  The ASCII module is wanted the moment the page knows it can run it, not
+  after the page's own script has arrived and asked for it: the hint fetches
+  it alongside the fonts, one round trip sooner. At low priority, though —
+  the page's own script and the fonts show the page, and on a thin
+  connection the layer must not take their bandwidth. The path is put in by
+  the build (astro.config.ts); in dev the placeholder stays and nothing is
+  fetched ahead.
 */
+const boot = `document.documentElement.classList.add('js')
+if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('ascii')
+  if (${objectAlways ? 'true' : 'innerWidth >= 1000'}) document.documentElement.classList.add('ascii-object')
+  if (!'__ASCII_CHUNK__'.startsWith('__')) {
+    const l = document.createElement('link')
+    l.rel = 'modulepreload'
+    l.href = '__ASCII_CHUNK__'
+    l.fetchPriority = 'low'
+    document.head.append(l)
+  }
+}`
 ---
 
 <!doctype html>
@@ -65,16 +87,10 @@ const preview = import.meta.env.SITE_PREVIEW === '1'
     <!-- The three faces the first screen is set in: display, body and the mono
          that carries the availability line and every caption. The previews'
          Rubik is discovered from the stylesheet and can arrive late. -->
-    <link rel="preload" href={sora} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={publicSans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sans} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={mono} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={dmMono} as="font" type="font/woff2" crossorigin />
-    <script is:inline>
-      document.documentElement.classList.add('js')
-      if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.classList.add('ascii')
-        if (innerWidth >= 1000) document.documentElement.classList.add('ascii-object')
-      }
-    </script>
+    <script is:inline set:html={boot} />
   </head>
   <body>
     <slot />

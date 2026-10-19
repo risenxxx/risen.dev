@@ -59,7 +59,7 @@ materialises out of coloured glyphs, every cell on its own clock, the glyphs
 halving until each is a pixel of the photograph; a solid, ray-marched in a
 shader and set in DM Mono's glyphs on a grid fixed to the screen, lives beside
 the content and takes a shape, a colour and a place from each section
-(`sections.ts`: a stack of layers for the hero, a puzzle piece for the log,
+(`sections.ts`: a Dyson sphere for the hero, a puzzle piece for the log,
 each product its own mark), flying between them and raising a little dust on
 the way; the headings decode out of random glyphs as they come into view; and
 the stills inside the previews are set as glyphs the pointer uncovers.
@@ -139,12 +139,12 @@ who has not visited since the blog is still carrying the old one.
 handle, a step code, a label on the figure. English sentences are set in the
 body face whatever their size, because monospace on prose is a costume.
 
-**Fonts** are latin-only and self-hosted. Three of them — Sora, Public Sans and
-DM Mono — set the first screen and are preloaded. The fourth, Rubik, exists only
-because Frame Player and Gift Fight are really drawn in it; it is checked in as
-a subset of printable ASCII over the 400–700 weights those previews use, 12.7 KB
-instead of 35. Rebuild it with `scripts/subset-rubik.sh` after editing a
-preview's copy.
+**Fonts** are latin-only and self-hosted. Three of them — Instrument Sans,
+Martian Mono and DM Mono — set the first screen and are preloaded: the sans for
+headings and prose, Martian Mono for everything a terminal would print (paths,
+labels, the log, the buttons), DM Mono for the ASCII layer's glyphs only. Rubik
+exists only inside two product previews and arrives when they do; Sora and
+Public Sans remain only for the link-preview card (`src/og/`).
 
 ## Deploying
 

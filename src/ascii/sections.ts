@@ -61,8 +61,6 @@ export interface Section {
   glide: Place & { tablet?: Partial<Place> & { wide?: Partial<Place> } }
 }
 
-const ROUTE = '#969ec8'
-const GREEN = '#5bd8a6'
 
 /* On a tablet every project row stacks and the object rides a column down
    the right of the copy, from the top of the mock to the row's bottom
@@ -94,70 +92,83 @@ const CARDS_TABLET = (size: number, maxPx: number): Partial<Place> => ({
   front: false,
 })
 
+/** The object's colour: the page's ink, in every section. */
+const INK = '#e6e8e3'
+
+/** The object's size as a share of the viewport's height; a place's `size` scales it. */
+export const OBJECT_SIZE = 0.4
+
 export const SECTIONS: readonly Section[] = [
   {
+    // The 404: the saucer hovers over the copy, centred, at every width.
+    key: 'missing',
+    hex: INK,
+    shape: 'ufo',
+    glide: { y: 0.3, size: 0.8, x: 0.5, front: true, from: { sel: '.copy', dy: -120 } },
+  },
+  {
     key: 'top',
-    hex: ROUTE,
-    shape: 'layers',
+    hex: INK,
+    shape: 'dyson',
     glide: { y: 0.5, size: 1, tablet: { y: 0.24, size: 0.62, maxPx: 192, x: 0.86, wide: { y: 0.5, size: 0.82, maxPx: 260, x: 0.87 } } },
   },
   {
     key: 'now',
-    hex: GREEN,
+    hex: INK,
     shape: 'puzzle',
-    glide: { y: 'pin', size: 0.9, top: 69, bottom: 68, tablet: { size: 0.8, maxPx: 248, x: 0.86, at: 0.4 } },
+    glide: { y: 'pin', size: 0.9, top: 36, bottom: 36, at: 0.42, tablet: { size: 0.8, maxPx: 248, x: 0.86, at: 0.4 } },
   },
   {
     key: 'arch',
-    hex: ROUTE,
+    hex: INK,
     shape: 'lattice',
     glide: { y: 0.19, size: 0.72, front: true, from: { sel: 'h2', dy: 68 }, tablet: { x: 0.86, from: { sel: 'h2', dy: 90 } } },
   },
   {
     key: 'tuned',
-    hex: '#7c8cff',
+    hex: INK,
     shape: 'tunedlogo',
     glide: { y: 0.3, size: 0.72, column: { sel: '.stack', edge: 'top' }, at: 0.36, lift: 24, tablet: ROW_TABLET },
   },
   {
     key: 'frame',
-    hex: '#818cf8',
+    hex: INK,
     shape: 'fplogo',
     glide: { y: 0.755, size: 0.72, under: '.shot', tablet: ROW_TABLET },
   },
   {
     key: 'gift',
-    hex: '#a8ff35',
+    hex: INK,
     shape: 'dice',
     glide: { y: 0.3, size: 0.72, column: { sel: '.metrics', edge: 'bottom' }, at: 0.36, lift: 24, tablet: ROW_TABLET },
   },
   {
     key: 'dub',
-    hex: '#a855f7',
+    hex: INK,
     shape: 'sync',
     glide: { y: 0.777, size: 0.74, under: '.shot', tablet: ROW_TABLET },
   },
   {
     key: 'approach',
-    hex: ROUTE,
+    hex: INK,
     shape: 'stairs',
-    glide: { y: 0.245, size: 0.42, tablet: CARDS_TABLET(0.62, 200) },
+    glide: { y: 'pin', size: 0.5, top: 70, bottom: 60, at: 0.45, tablet: CARDS_TABLET(0.62, 200) },
   },
   {
     key: 'stack',
-    hex: ROUTE,
+    hex: INK,
     shape: 'wrench',
-    glide: { y: 0.29, size: 0.72, front: true, tablet: CARDS_TABLET(0.72, 224) },
+    glide: { y: 'pin', size: 0.72, top: 70, bottom: 60, at: 0.45, front: true, tablet: CARDS_TABLET(0.72, 224) },
   },
   {
     key: 'oss',
-    hex: ROUTE,
+    hex: INK,
     shape: 'star',
-    glide: { y: 0.345, size: 0.7, front: true, tablet: CARDS_TABLET(0.76, 236) },
+    glide: { y: 'pin', size: 0.7, top: 70, bottom: 60, at: 0.45, front: true, tablet: CARDS_TABLET(0.76, 236) },
   },
   {
     key: 'contact',
-    hex: GREEN,
+    hex: INK,
     shape: 'globe',
     glide: { y: 0.5, size: 0.9, tablet: { size: 0.72, x: 0.86 } },
   },

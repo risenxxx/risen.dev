@@ -17,6 +17,9 @@
    with the list is worse than no date. */
 const updated = '2026-10-04'
 
+/** Every link in the log leaves the page, so every one opens in a new tab. */
+const out = (html: string): string => html.replace(/<a href="http/g, '<a target="_blank" rel="noopener" href="http')
+
 /*
   Newest first, and `now` is a state rather than a date, so it sorts above every
   year. One line per thing worth knowing — not the CV, which is a click away
@@ -74,7 +77,7 @@ const entries = [
 
 <section id="now" data-object="now">
   <div class="wrap">
-    <h2 class="h-section" data-reveal>Looking for the next team</h2>
+    <h2 class="h-section" data-path="~/now" data-reveal>Looking for the next team</h2>
 
     <p class="lede" data-reveal style="--dl: 1">
       Open to senior engineering roles — remote worldwide as a contractor or through an EOR, or
@@ -84,17 +87,17 @@ const entries = [
 
     <p class="stamp mono" data-reveal style="--dl: 2">updated {updated}</p>
 
-    <p class="label mono" data-reveal style="--dl: 3">LATELY</p>
+    <p class="label mono" data-reveal style="--dl: 3">lately</p>
 
     <ul class="log">
       {
         entries.map((e, i) => (
           <li data-reveal style={`--dl: ${i}`}>
             <span class:list={['when', 'mono', { live: e.live }]}>
-              {e.live && <span class="dot" aria-hidden="true" />}
               {e.when}
+              {e.live && <span class="dot" aria-hidden="true" />}
             </span>
-            <span class="what" set:html={e.body} />
+            <span class="what" set:html={out(e.body)} />
           </li>
         ))
       }
@@ -119,20 +122,26 @@ const entries = [
     color: var(--fg3);
   }
 
+  /* The log is a file, and this is the command that prints it. */
   .label {
     margin-top: clamp(30px, 3.4vw, 42px);
-    font-size: 10.5px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
     color: var(--fg3);
   }
 
-  /*
-    The rules are the width of the list, and the list is a measure: a hairline
-    that runs to 1440 under a line that stops at 800 draws an empty second
-    column and makes the log look like a table with a field missing.
-  */
+  .label::before {
+    content: "$ cat ";
+    color: var(--fg4);
+  }
+
+  .label::after {
+    content: ".log";
+    color: var(--fg4);
+  }
+
+  /* No rules between the lines: the date column is what keeps them apart. */
   .log {
-    margin-top: 12px;
+    margin-top: 14px;
     max-width: 920px;
   }
 
@@ -140,15 +149,14 @@ const entries = [
     display: flex;
     align-items: baseline;
     gap: 26px;
-    padding: 15px 0;
-    border-top: 1px solid var(--line);
+    padding: 9px 0;
   }
 
   .when {
     flex: none;
     /* Wide enough for a range of two years and for `now` with its dot, so every
        line below starts on the same column. */
-    width: 80px;
+    width: 96px;
     display: flex;
     align-items: baseline;
     gap: 8px;
@@ -158,17 +166,23 @@ const entries = [
   }
 
   .when.live {
-    color: var(--fg-mid);
+    color: var(--amber);
   }
 
+  /* The cursor, still blinking on the lines that are now. */
   .dot {
     width: 6px;
-    height: 6px;
+    height: 11px;
     flex: none;
-    border-radius: 999px;
-    background: var(--green);
-    /* On the baseline the dot sits under the text rather than beside it. */
-    transform: translateY(-2px);
+    background: var(--amber);
+    transform: translateY(1px);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot {
+      animation: none;
+    }
   }
 
   .what {

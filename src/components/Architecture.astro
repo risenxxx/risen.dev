@@ -23,7 +23,7 @@
   <div class="wrap">
     <div data-reveal>
       <div class="head">
-        <h2 class="h-section">How I draw a system before any of it exists</h2>
+        <h2 class="h-section" data-path="~/architecture">How I draw a system before any of it exists</h2>
         <p class="lede">Every product below is a subset of this, sized to the problem.</p>
       </div>
 
@@ -41,7 +41,7 @@
           >
             <g class="b1">
               <text x="0" y="10" class="idx">01</text>
-              <circle cx="24" cy="6" r="1.5" class="sepdot"></circle>
+              <text x="22" y="10" class="idx">/</text>
               <text x="34" y="10" class="cap">DELIVERY, FROM A REVIEWED COMMIT TO THE CLUSTER</text>
               <rect x="0.5" y="24.5" width="1255" height="54" rx="10" class="strip"></rect>
               <path class="divider" d="M209.5 24.5v54M419.5 24.5v54M628.5 24.5v54M837.5 24.5v54M1047.5 24.5v54"></path>
@@ -58,7 +58,7 @@
 
             <g class="b2">
               <text x="0" y="110" class="idx">02</text>
-              <circle cx="24" cy="106" r="1.5" class="sepdot"></circle>
+              <text x="22" y="110" class="idx">/</text>
               <text x="34" y="110" class="cap">RUNTIME, ONE REQUEST FROM EDGE TO STORAGE</text>
 
               <rect x="0.5" y="124.5" width="175" height="257" rx="10" class="box"></rect>
@@ -131,7 +131,7 @@
 
             <g class="b3">
               <text x="0" y="408" class="idx">03</text>
-              <circle cx="24" cy="404" r="1.5" class="sepdot"></circle>
+              <text x="22" y="408" class="idx">/</text>
               <text x="34" y="408" class="cap">WHAT IT ALL RUNS ON, AND WHAT WATCHES IT</text>
               <path class="tap" d="M88 381v39M304 302v118M530 302v118M776 381v39M1002 291v129M1188 381v39"></path>
 
@@ -331,6 +331,8 @@
   .strip,
   .box {
     fill: none;
+    rx: 0;
+    ry: 0;
     stroke: rgba(255, 255, 255, 0.1);
   }
 
@@ -367,7 +369,8 @@
   .cap {
     font-size: 10.5px;
     fill: var(--fg3);
-    letter-spacing: 1.4px;
+    letter-spacing: 0;
+    text-transform: lowercase;
   }
 
   .sepdot {
@@ -377,7 +380,8 @@
   .lbl {
     font-size: 10px;
     fill: var(--fg3);
-    letter-spacing: 1.1px;
+    letter-spacing: 0;
+    text-transform: lowercase;
   }
 
   .b1 .lbl {

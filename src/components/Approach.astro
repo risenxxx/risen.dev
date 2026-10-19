@@ -1,5 +1,4 @@
 ---
-import Icon from './Icon.astro'
 import Sep from './Sep.astro'
 
 /*
@@ -12,42 +11,36 @@ const stages = [
   {
     n: '01',
     key: 'SPEC',
-    icon: 'u-spec',
     title: 'Acceptance cases first',
     body: 'Written down before implementation starts. It is what a reviewer checks the work against, and what an agent is held to.',
   },
   {
     n: '02',
     key: 'CONTRACTS',
-    icon: 'u-contracts',
     title: 'Types at every seam',
     body: 'One schema serves validation, types and the generated docs, so both sides of a seam can be built in parallel and a broken state is impossible to express.',
   },
   {
     n: '03',
     key: 'CI GATES',
-    icon: 'u-flask',
     title: 'Tested against the real thing',
     body: 'Unit, integration and contract tests, Testcontainers against real PostgreSQL, Redis and NATS. Security and performance are gates, not follow-ups.',
   },
   {
     n: '04',
     key: 'DELIVERY',
-    icon: 'u-branch',
     title: 'GitOps, not hands',
     body: 'FluxCD reconciles the cluster to the repository. Releases and rollbacks are the same operation, and both finish in under three minutes.',
   },
   {
     n: '05',
     key: 'INFRASTRUCTURE',
-    icon: 'u-server',
     title: 'Written down, not clicked',
     body: 'Kubernetes on Talos Linux across bare metal and cloud, described in one Pulumi program that anyone on the team can read and change.',
   },
   {
     n: '06',
     key: 'OPERATION',
-    icon: 'u-gauge',
     title: 'I hear about it first',
     body: 'Metrics, traces and structured logs on every service, and enough signal to know something is wrong before a user reports it.',
   },
@@ -58,7 +51,7 @@ const stages = [
   <div class="wrap">
     <div class="head" data-reveal>
       <div>
-        <h2 class="h-section">From a plan to a running service</h2>
+        <h2 class="h-section" data-path="~/approach">From a plan to a running service</h2>
         <p class="lede">
           The same six steps on every product above, whether it ships to a cluster or to an installer. Each
           one produces an artefact the next step depends on, and something the next person can read.
@@ -74,8 +67,7 @@ const stages = [
             <span class="marker" aria-hidden="true" />
             {i === stages.length - 1 && <span class="glint" aria-hidden="true" />}
             <p class="key">
-              <Icon name={s.icon} size={14} />
-              {s.n}
+              <b>{s.n}</b>
               <Sep />
               {s.key}
             </p>
@@ -391,6 +383,83 @@ const stages = [
       background-size: 100% 40%;
       background-position: 0 -70%;
       animation-name: glint-y;
+    }
+  }
+  /*
+    The terminal profile of the section. The step's key is `01 / spec`, the
+    number in the amber; the progress line, its markers and the glint are
+    gone, and so is the aside — a step is a block of text, and the six of
+    them sit in three columns over two thirds of the width, leaving the
+    right third to the object at every width it is there.
+  */
+  .key {
+    font-size: 12.5px;
+    letter-spacing: 0;
+    text-transform: lowercase;
+    color: var(--fg3);
+  }
+
+  .key b {
+    font-weight: 500;
+    color: var(--amber);
+  }
+
+  .key :global(.ic),
+  .marker,
+  .glint,
+  .aside {
+    display: none;
+  }
+
+  .steps li {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .steps li::before,
+  .steps li::after {
+    display: none;
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 34px;
+  }
+
+  @media (min-width: 1000px) {
+    :global(html.ascii-object) .steps,
+    :global(html.ascii-object) .head {
+      width: calc(100% - 300px);
+    }
+  }
+
+  /* A phone gets the list: one column, and under the key the title and the
+     text run on as one paragraph, the title in the brighter weight. */
+  @media (max-width: 760px) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 22px;
+      max-width: 60ch;
+    }
+
+    .steps li {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .steps h3 {
+      display: inline;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .steps h3::after {
+      content: ". ";
+    }
+
+    .steps .body {
+      display: inline;
+      font-size: 14.5px;
     }
   }
 </style>

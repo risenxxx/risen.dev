@@ -39,6 +39,8 @@ export interface Item {
   cell: number
   /** 0 to 1: how much dust the solid raises this frame. Only while it travels, so a still solid leaves none. */
   trail?: number
+  /** 0 to 1: a share of the glyphs drawn at random, over what a morph scatters. For a solid forming out of noise. */
+  scatter?: number
 }
 
 export interface Renderer {
@@ -392,7 +394,7 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
         gl.uniform3f(gu.u_accent, it.accent[0], it.accent[1], it.accent[2])
         gl.uniform1f(gu.u_alpha, it.alpha)
         gl.uniform1f(gu.u_t, t)
-        gl.uniform1f(gu.u_scatter, Math.sin(Math.PI * it.morph) * 0.5)
+        gl.uniform1f(gu.u_scatter, Math.max(Math.sin(Math.PI * it.morph) * 0.5, it.scatter ?? 0))
         gl.drawArrays(gl.TRIANGLES, 0, 3)
         // The texture must not stay bound while it is drawn into next time.
         bind(0, null)

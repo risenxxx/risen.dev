@@ -63,7 +63,7 @@ function pagesHeaders(): AstroIntegration {
 
 /**
  * The ASCII layer is a dynamic import, so its chunk's hashed name is only
- * known once the build is done. The page's inline hint (index.astro) carries a
+ * known once the build is done. The layout's inline hint (Page.astro) carries a
  * placeholder for it; this fills the path in, so the chunk is fetched
  * alongside the fonts rather than one round trip after the page's own script.
  */
@@ -74,9 +74,12 @@ function asciiPreload(): AstroIntegration {
       'astro:build:done': async ({ dir }) => {
         const chunk = (await readdir(new URL('_astro/', dir))).find((f) => /^ascii\..+\.js$/.test(f))
         if (!chunk) return
-        const page = new URL('index.html', dir)
-        const html = await readFile(page, 'utf8')
-        await writeFile(page, html.replaceAll('__ASCII_CHUNK__', `/_astro/${chunk}`))
+        for (const f of await readdir(dir)) {
+          if (!f.endsWith('.html')) continue
+          const page = new URL(f, dir)
+          const html = await readFile(page, 'utf8')
+          if (html.includes('__ASCII_CHUNK__')) await writeFile(page, html.replaceAll('__ASCII_CHUNK__', `/_astro/${chunk}`))
+        }
       },
     },
   }

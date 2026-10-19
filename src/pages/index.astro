@@ -15,24 +15,6 @@ import StructuredData from '../components/StructuredData.astro'
 ---
 
 <Page>
-  <!--
-    The ASCII module is wanted the moment the page knows it can run it, not
-    after the page's own script has arrived and asked for it: this hint
-    fetches it alongside the fonts, one round trip sooner. At low priority,
-    though — the page's own script and the fonts show the page, and on a thin
-    connection the layer must not take their bandwidth. The path is put in by
-    the build (astro.config.ts); in dev the placeholder stays and nothing is
-    fetched ahead.
-  -->
-  <script is:inline>
-    if (document.documentElement.classList.contains('ascii') && !'__ASCII_CHUNK__'.startsWith('__')) {
-      const l = document.createElement('link')
-      l.rel = 'modulepreload'
-      l.href = '__ASCII_CHUNK__'
-      l.fetchPriority = 'low'
-      document.head.append(l)
-    }
-  </script>
   <StructuredData />
   <IconSprite />
   <Nav />
