@@ -4,8 +4,9 @@
   Two passes per solid: it is ray-marched into a small texture, then a glyph
   pass over its box on screen reads that texture at the centre of every cell
   of a grid fixed to the screen — so the glyphs stay put while the shape moves
-  under them, the way a terminal would draw it. Morphing is a blend of two
-  distance fields with a moment of noise in the middle.
+  under them, the way a terminal would draw it. Morphing is a breath: the
+  solid contracts, the two distance fields blend while it is small, and it
+  expands again as the new shape.
 
   A solid that carries a `trail` also leaves dust: a texture with one texel
   per cell of the screen's glyph grid remembers how recently each cell was
@@ -66,6 +67,8 @@ uniform int u_a;
 uniform int u_b;
 uniform float u_spin;
 uniform float u_tilt;
+uniform float u_scale;
+uniform float u_noise;
 out vec4 o;
 ${SHAPES_GLSL}
 
@@ -84,14 +87,18 @@ float noise3(vec3 p) {
 }
 
 float map(vec3 p) {
+  // The whole field scaled about the centre: the breath a morph is drawn in.
+  // Unset, as on the export path, the scale reads as 1.
+  float sc = u_scale > 0.0 ? u_scale : 1.0;
+  p /= sc;
   p.yz *= rot(u_tilt);
   p.xz *= rot(u_spin);
   float d = shape(p, u_a);
   if (u_a != u_b) d = mix(d, shape(p, u_b), u_morph);
-  // Mid-morph the surface breaks up and settles again.
-  float k = sin(3.14159 * u_morph);
+  // Mid-morph the surface breaks up a little and settles again.
+  float k = sin(3.14159 * u_morph) * u_noise;
   if (k > 0.001) d += (noise3(p * 3.0 + u_t * 0.7) - 0.5) * 0.2 * k;
-  return d;
+  return d * sc;
 }
 
 // The tetrahedral gradient: four evaluations of the field instead of six.
@@ -241,7 +248,7 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
   const ageProg = program(gl, AGE_FRAG)
   const dustProg = program(gl, DUST_FRAG)
   const locate = () => ({
-    ou: uniforms(gl, objProg, ['u_n', 'u_t', 'u_morph', 'u_a', 'u_b', 'u_spin', 'u_tilt'] as const),
+    ou: uniforms(gl, objProg, ['u_n', 'u_t', 'u_morph', 'u_a', 'u_b', 'u_spin', 'u_tilt', 'u_scale', 'u_noise'] as const),
     gu: uniforms(gl, glyphProg, ['u_obj', 'u_atlas', 'u_res', 'u_glyphs', 'u_cell', 'u_box', 'u_accent', 'u_alpha', 'u_t', 'u_scatter'] as const),
     au: uniforms(gl, ageProg, ['u_prev', 'u_grid', 'u_cell', 'u_box', 'u_strength', 'u_decay', 'u_t'] as const),
     du: uniforms(gl, dustProg, ['u_age', 'u_atlas', 'u_res', 'u_cell', 'u_grid', 'u_glyphs', 'u_accent', 'u_alpha'] as const),
@@ -367,9 +374,20 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
         gl.disable(gl.BLEND)
         gl.clear(gl.COLOR_BUFFER_BIT)
         gl.useProgram(objProg)
+        /*
+          A morph is a breath: the solid draws in, changes shape while it is
+          small and lets out again as the new one. The blend runs on a
+          smootherstep so it starts and lands softly, and the surface only
+          roughens a little in the middle.
+        */
+        const m = it.morph
+        const bump = Math.sin(Math.PI * m)
+        const blend = m * m * m * (m * (6 * m - 15) + 10)
         gl.uniform1f(ou.u_n, OBJ_N)
         gl.uniform1f(ou.u_t, t)
-        gl.uniform1f(ou.u_morph, it.morph)
+        gl.uniform1f(ou.u_morph, blend)
+        gl.uniform1f(ou.u_scale, 1 - 0.36 * bump * bump)
+        gl.uniform1f(ou.u_noise, 0.35)
         gl.uniform1i(ou.u_a, it.a)
         gl.uniform1i(ou.u_b, it.b)
         gl.uniform1f(ou.u_spin, it.angle)
@@ -403,7 +421,7 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
         gl.uniform3f(gu.u_accent, it.accent[0], it.accent[1], it.accent[2])
         gl.uniform1f(gu.u_alpha, it.alpha)
         gl.uniform1f(gu.u_t, t)
-        gl.uniform1f(gu.u_scatter, Math.max(Math.sin(Math.PI * it.morph) * 0.5, it.scatter ?? 0))
+        gl.uniform1f(gu.u_scatter, Math.max(bump * 0.15, it.scatter ?? 0))
         gl.drawArrays(gl.TRIANGLES, 0, 3)
         // The texture must not stay bound while it is drawn into next time.
         bind(0, null)
