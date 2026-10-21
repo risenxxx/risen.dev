@@ -92,7 +92,7 @@ const steps = [
 
       <p class="cap-html mono">runtime/ <span class="dim">one request from edge to storage</span></p>
 
-      <div class="figwrap" data-pan-frame>
+      <div class="figwrap" data-pan-frame data-offscreen-pause>
         <div class="viewport">
           <div class="scroller" data-pan>
             <svg
@@ -652,6 +652,12 @@ const steps = [
     100% {
       stroke-dashoffset: -97;
     }
+  }
+
+  /* Off screen they stop: an endless dash animation repaints the figure
+     every frame wherever the reader is (motion.ts sets the class). */
+  .figwrap:global(.paused) .pulse {
+    animation-play-state: paused;
   }
 
   @media (prefers-reduced-motion: reduce) {

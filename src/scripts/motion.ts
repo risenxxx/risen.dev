@@ -158,6 +158,24 @@ function spy(): void {
   for (const p of pairs) observer.observe(p.section)
 }
 
+/*
+  Endless CSS animations keep the browser repainting even when what they move
+  is far off screen. Anything marked `data-offscreen-pause` gets `.paused`
+  while none of it is in view, and its own styles stop their animations on
+  that class. Not motion either, so this runs whatever the setting says.
+*/
+function pauseOffscreen(): void {
+  const els = document.querySelectorAll<HTMLElement>('[data-offscreen-pause]')
+  if (els.length === 0 || typeof IntersectionObserver !== 'function') return
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) entry.target.classList.toggle('paused', !entry.isIntersecting)
+  })
+  for (const el of els) {
+    el.classList.add('paused')
+    observer.observe(el)
+  }
+}
+
 export function initMotion(): void {
   /*
     First, and outside everything below it: panning is an affordance, not an
@@ -168,6 +186,7 @@ export function initMotion(): void {
   */
   pan()
   spy()
+  pauseOffscreen()
 
   // A scene that never runs must not be left blank, so the reduced-motion and
   // no-IntersectionObserver paths both mean "show the finished state", which is

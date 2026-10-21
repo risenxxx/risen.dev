@@ -254,9 +254,25 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     }
   }
 
+  /*
+    At most sixty frames a second while nothing is moving the object but its
+    own slow turn: a 120 Hz screen would otherwise draw the same turn twice
+    as often for nothing a glyph grid can show. Scrolling, a flight between
+    sections, a morph and the saucer get every frame the screen has, so the
+    object never lags the page under it.
+  */
+  let lastDrawn = -1e9
+  let lastSy = Number.NaN
   const frame = (now: number): void => {
     raf = 0
     if (!alive) return
+    const busy = scrollY !== lastSy || egg !== null || morph < 1 || now - flightStart < 1300 || vel > 0.02
+    if (!busy && now - lastDrawn < 15) {
+      raf = requestAnimationFrame(frame)
+      return
+    }
+    lastDrawn = now
+    lastSy = scrollY
     // Clamped below as well as above: a frame's timestamp is the time the
     // frame began, which can come before the moment the loop was started in
     // it, and a negative step would run every easing backwards.

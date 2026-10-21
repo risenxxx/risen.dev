@@ -94,12 +94,15 @@ float map(vec3 p) {
   return d;
 }
 
+// The tetrahedral gradient: four evaluations of the field instead of six.
 vec3 normalAt(vec3 p) {
-  vec2 e = vec2(0.004, 0.0);
-  return normalize(vec3(
-    map(p + e.xyy) - map(p - e.xyy),
-    map(p + e.yxy) - map(p - e.yxy),
-    map(p + e.yyx) - map(p - e.yyx)));
+  const vec2 k = vec2(1.0, -1.0);
+  const float h = 0.004;
+  return normalize(
+    k.xyy * map(p + k.xyy * h) +
+    k.yyx * map(p + k.yyx * h) +
+    k.yxy * map(p + k.yxy * h) +
+    k.xxx * map(p + k.xxx * h));
 }
 
 void main() {
@@ -267,6 +270,8 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
   let cols = 0
   let rows = 0
   let cur = 0
+  /** The time until which the dust may still hold a mote. */
+  let dustUntil = -1
   const grid = (c: number, r: number): void => {
     if (c === cols && r === rows && ages.length === 2) return
     cols = c
@@ -305,7 +310,11 @@ export function createRenderer(gl: GL, canvas: HTMLCanvasElement, atlas: Atlas):
       // and the ones round the item marked, then the marked cells are drawn
       // under everything.
       const dusty = items.find((it) => it.trail !== undefined)
-      if (dusty && renderer.trail.life > 0) {
+      // Both dust passes cover the whole screen, so they run only while some
+      // mote can still be alive: from the first frame that raises any until
+      // a life after the last one did. A still solid costs neither.
+      if (dusty && (dusty.trail ?? 0) > 0.01 && dusty.alpha > 0.005) dustUntil = t + renderer.trail.life + 0.1
+      if (dusty && renderer.trail.life > 0 && t < dustUntil) {
         const cw = renderer.trail.cell * atlas.aspect * ratio
         const ch = renderer.trail.cell * ratio
         grid(Math.ceil(canvas.width / cw), Math.ceil(canvas.height / ch))
