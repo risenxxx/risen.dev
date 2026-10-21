@@ -38,7 +38,13 @@ import Sep from './Sep.astro'
       <strong>Full-stack and platform engineer.</strong> Eight years taking products from a blank plan to a running service, most of it inside
       product teams: at X5 Group, a recipe platform at 7.5M monthly users. On my own, a real-time
       multiplayer game on a Kubernetes cluster I built and operated myself, and Tuned, a resume
-      SaaS live with payments.
+      SaaS live with payments. And the original author of{' '}
+      <a
+        class="oss"
+        href="https://github.com/BenLorantfy/nestjs-zod"
+        target="_blank"
+        rel="noopener"
+        aria-label="nestjs-zod on GitHub, 1.1k stars"><span class="nm">nestjs-zod</span><span class="stars mono" aria-hidden="true"><Icon name="u-star-solid" size={12} />1.1k</span></a>, the standard way to use Zod with NestJS.
     </p>
 
     <!-- Revealed first, because on the wide layout it is the leftmost thing on
@@ -138,6 +144,48 @@ import Sep from './Sep.astro'
   .lede strong {
     font-weight: 500;
     color: var(--fg);
+  }
+
+  /*
+    The one library worth naming up here, as a link with its star count
+    beside it: the name underlined the way the log's links are, the count a
+    small square tag in the mono with the amber star — the only badge on
+    the page, and it carries a number a reader can check.
+  */
+  .oss {
+    color: var(--fg);
+    white-space: nowrap;
+  }
+
+  .oss .nm {
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.32);
+    transition: text-decoration-color 0.18s;
+  }
+
+  .oss:hover .nm {
+    text-decoration-color: var(--fg);
+  }
+
+  .stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 7px;
+    padding: 1px 6px;
+    border: 1px solid var(--line3);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--fg);
+    transition: border-color 0.18s;
+  }
+
+  .stars :global(.ic) {
+    color: var(--amber);
+  }
+
+  .oss:hover .stars {
+    border-color: var(--fg3);
   }
 
   .cta {
