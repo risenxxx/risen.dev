@@ -23,14 +23,14 @@ const HEIGHT = 630
 
 const FONTS = [
   {
-    family: 'Sora Variable',
-    file: 'node_modules/@fontsource-variable/sora/files/sora-latin-wght-normal.woff2',
-    weight: '100 800',
+    family: 'Instrument Sans Variable',
+    file: 'node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2',
+    weight: '400 700',
   },
   {
-    family: 'Public Sans Variable',
-    file: 'node_modules/@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2',
-    weight: '100 900',
+    family: 'Martian Mono Variable',
+    file: 'node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2',
+    weight: '100 800',
   },
   {
     family: 'DM Mono',
