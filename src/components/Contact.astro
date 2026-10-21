@@ -7,7 +7,8 @@ import Sep from './Sep.astro'
 /* The second ask, and the shortest. The first is a button in the navigation,
    before anybody has a reason to press it; what I am looking for is written out
    in `Now`, near the top, where somebody deciding whether to read on needs it.
-   By here the only thing left to say is the address. */
+   By here the only thing left to say is the address, and the calendar for
+   whoever would rather talk than write. */
 const social = contacts.filter((c) => c.id !== 'email')
 ---
 
@@ -26,6 +27,7 @@ const social = contacts.filter((c) => c.id !== 'email')
         <Icon name="b-mail" />
         {site.email}
       </a>
+      <a class="btn btn-ghost btn-lg" href={site.call} target="_blank" rel="noopener">Book a call</a>
       <CvMenu id="contact" large />
     </div>
 
