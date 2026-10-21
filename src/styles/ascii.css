@@ -35,6 +35,14 @@ html.ascii-object footer {
   pointer-events: none;
 }
 
+/* While the saucer is out (object.ts), the canvas comes up over the page:
+   the saucer flies over the previews and the copy instead of behind them,
+   and goes back under the moment the section's own shape starts to form.
+   Every other shape stays under the page. Under the drawn cursor. */
+html.ascii-abduct .ascii-bg {
+  z-index: 50;
+}
+
 /* While the saucer has the cursor (object.ts), the real one is out of sight
    and a drawn copy stands in for it. */
 html.ascii-abduct,
