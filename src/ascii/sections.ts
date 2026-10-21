@@ -131,7 +131,7 @@ export const SECTIONS: readonly Section[] = [
     shape: 'lattice',
     // Rides the lane beside the six steps, from the heading down to the
     // figure's caption; the figure itself spans the width.
-    glide: { y: 'pin', size: 0.72, topFrom: 'h2', bottomFrom: '.cap-html', at: 0.45, tablet: { x: 0.86, size: 0.62, maxPx: 200 } },
+    glide: { y: 'pin', size: 0.84, topFrom: 'h2', bottomFrom: '.cap-html', at: 0.45, tablet: { x: 0.86, size: 0.62, maxPx: 200 } },
   },
   {
     key: 'tuned',
