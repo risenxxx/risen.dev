@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    The prompt the page opens with, `~` and the amber block cursor, on a
+    tile of the page's own near-black. The tile is rounded and inset a pixel
+    so it reads as a tile beside the square icons in a row of tabs, and the
+    mark sits at three quarters of it so there is air between the two. No
+    fonts: an icon cannot load the page's, so both glyphs are shapes.
+  -->
+  <rect x="1" y="1" width="30" height="30" rx="6" fill="#0b0d0b"/>
+  <g transform="translate(16 16) scale(0.74) translate(-16 -16)">
+    <path d="M3 18.6c1.8-4.6 5.1-4.6 7.1-1.6s4.9 3 6.9-1.6" fill="none" stroke="#e6e8e3" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/>
+    <rect x="21" y="8" width="7" height="16" fill="#f2b63d"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    The same mark for a home screen. Opaque and square: iOS rounds the
+    corners itself and fills any transparency with black. The mark keeps to
+    the middle three fifths, which is also inside a round mask.
+  -->
+  <rect width="32" height="32" fill="#0b0d0b"/>
+  <g transform="translate(16 16) scale(0.62) translate(-16 -16)">
+    <path d="M3 18.6c1.8-4.6 5.1-4.6 7.1-1.6s4.9 3 6.9-1.6" fill="none" stroke="#e6e8e3" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/>
+    <rect x="21" y="8" width="7" height="16" fill="#f2b63d"/>
+  </g>
+</svg>

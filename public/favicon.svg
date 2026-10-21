@@ -1,20 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!--
-    risen.dev, abbreviated: the wordmark's own lowercase r and the dot that
-    follows it, in the green the page keeps for the availability chip.
-
-    Drawn as a path rather than set in Sora, because a favicon loads no fonts.
-    The letter and the dot are centred together, not separately: the composite
-    box measures 7.62 either side and the stem's x-height band sits on the
-    tile's middle. The 0.35 lift off that middle is optical — the mark carries
-    the stem's foot and the dot along its bottom and nothing at the top right,
-    so a mathematically centred one reads as sinking.
-
-    The arm overshoots the stem's top and the dot overshoots the baseline, both
-    by a fraction, the way a round shape has to in order to look level with a
-    flat one.
+    The prompt the page opens with, `~` and the amber block cursor, on a
+    tile of the page's own near-black. The tile is rounded and inset a pixel
+    so it reads as a tile beside the square icons in a row of tabs, and the
+    mark sits at three quarters of it so there is air between the two. No
+    fonts: an icon cannot load the page's, so both glyphs are shapes.
   -->
-  <rect width="32" height="32" rx="8" fill="#0A0A0C"/>
-  <path d="M7.62 6.94h5.49v3.62c1.61 -2.68 4.42 -4.15 8.04 -4.15h1.74v5.76h-2.14c-4.82 0 -7.64 2.95 -7.64 7.91V24.36h-5.49z" fill="#F5F5F7"/>
-  <circle cx="20.89" cy="21.28" r="3.48" fill="#5BD8A6"/>
+  <rect x="1" y="1" width="30" height="30" rx="6" fill="#0b0d0b"/>
+  <g transform="translate(16 16) scale(0.74) translate(-16 -16)">
+    <path d="M3 18.6c1.8-4.6 5.1-4.6 7.1-1.6s4.9 3 6.9-1.6" fill="none" stroke="#e6e8e3" stroke-width="3" stroke-linecap="square" stroke-linejoin="round"/>
+    <rect x="21" y="8" width="7" height="16" fill="#f2b63d"/>
+  </g>
 </svg>

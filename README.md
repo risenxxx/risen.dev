@@ -120,6 +120,12 @@ the fonts as data URIs because a `file://` page drops a font fetched from a
 sibling path. Needs a Chrome on the machine — set `CHROME_PATH` if it is
 somewhere unusual.
 
+**The icons** are drawn in `src/favicon/` — the prompt, `~` and the amber
+cursor, on a rounded tile for tabs and on an opaque square for a home screen —
+and `npm run favicon` writes `favicon.svg`, a 16 + 32 px `favicon.ico` and the
+180 px `apple-touch-icon.png` into `public/`, rasterised by Chrome. Committed,
+like the link preview.
+
 **The pictures inside the previews** are the stills frameplayer.app uses: the
 frame on screen and the hover preview in Frame Player, and the lake under the
 Milky Way as DeskVolt's wallpaper. `public/assets/img` holds them already

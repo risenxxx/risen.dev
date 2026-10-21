@@ -82,8 +82,12 @@ if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: 
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="One engineer. Every layer. Evgenii Zakharov, full-stack &amp; platform engineer, risen.dev" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0A0A0C" />
+    <meta name="theme-color" content="#0b0d0b" />
+    <!-- The ICO first for the browsers that take no SVG (Safari among them),
+         the SVG for those that do, and an opaque PNG for a home screen. -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <!-- The three faces the first screen is set in: display, body and the mono
          that carries the availability line and every caption. The previews'
          Rubik is discovered from the stylesheet and can arrive late. -->
