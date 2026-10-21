@@ -4,6 +4,7 @@ import Icon from './Icon.astro'
 import CvMenu from './CvMenu.astro'
 
 const social = contacts.filter((c) => c.id !== 'email')
+const email = contacts.find((c) => c.id === 'email')
 ---
 
 <header class="bar">
@@ -11,7 +12,7 @@ const social = contacts.filter((c) => c.id !== 'email')
     <a class="mark" href="#top">{site.name}</a>
 
     <nav class="tabs" aria-label="Sections">
-      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {nav.map((item) => <a href={item.href} data-spy>{item.label}</a>)}
     </nav>
 
     <div class="right">
@@ -21,6 +22,13 @@ const social = contacts.filter((c) => c.id !== 'email')
             <Icon name={c.icon} size={Math.round(20 * c.optical)} />
           </a>
         ))
+      }
+      {
+        email && (
+          <a class="social mail" href={email.href} aria-label={email.label}>
+            <Icon name={email.icon} size={Math.round(20 * email.optical)} />
+          </a>
+        )
       }
       <CvMenu id="nav" class="cv" iconSize={15} align="end" />
     </div>
@@ -52,6 +60,7 @@ const social = contacts.filter((c) => c.id !== 'email')
     font-family: var(--mono);
     font-weight: 500;
     font-size: 13px;
+    white-space: nowrap;
   }
 
   .mark::before {
@@ -59,12 +68,17 @@ const social = contacts.filter((c) => c.id !== 'email')
     color: var(--amber);
   }
 
-  /* The sections, as a terminal would list them: lowercase, spaced, nothing
-     drawn round them. */
+  /*
+    The sections, as a terminal would list them: lowercase, spaced, nothing
+    drawn round them. The one being read is printed as its path, `~/work`, in
+    the amber, which is exactly how the label above its heading reads: the bar
+    is the working directory. The `~/` is there on every tab and only shown on
+    that one, so the row never changes width as the reader moves.
+  */
   .tabs {
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: 12px;
   }
 
   .tabs a {
@@ -75,8 +89,23 @@ const social = contacts.filter((c) => c.id !== 'email')
     transition: color 0.18s;
   }
 
+  .tabs a::before {
+    content: "~/";
+    color: var(--amber);
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+
   .tabs a:hover {
     color: var(--fg);
+  }
+
+  .tabs a[aria-current] {
+    color: var(--amber);
+  }
+
+  .tabs a[aria-current]::before {
+    opacity: 1;
   }
 
   .right {
@@ -125,14 +154,41 @@ const social = contacts.filter((c) => c.id !== 'email')
     }
   }
 
+  /* The address is the one contact the bar keeps on a phone: there the hero's
+     list of them is below the portrait, a screen and a half down. Wider, the
+     hero shows it in the first screen, and the bar keeps to the profiles. */
+  .right .mail {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .right .mail {
+      display: grid;
+    }
+  }
+
   @media (max-width: 560px) {
-    .right :global(.cv) {
+    .right :global(.cv .btn) {
       font-size: 13px;
-      padding: 0 14px;
+      padding: 0 12px;
     }
 
     .row {
       height: 64px;
+      gap: 12px;
+    }
+
+    .right {
+      gap: 2px;
+    }
+  }
+
+  /* On a phone the bar's CV button is the label alone, the full-stack resume.
+     The other two are one menu away at the end of the page, and the chevron
+     here is what pushed the name onto a second line. */
+  @media (max-width: 420px) {
+    .right :global(.cv .cv-more) {
+      display: none;
     }
   }
 </style>

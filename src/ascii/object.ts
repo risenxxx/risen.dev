@@ -303,7 +303,8 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     const ride = sy + innerHeight * (g.at ?? 0.5)
     const topEl = g.topFrom ? stop.el.querySelector<HTMLElement>(g.topFrom) : null
     const lo = (topEl ? topEl.getBoundingClientRect().top + sy : stop.box.y + (g.top ?? 70)) + S / 2
-    const hi = stop.box.y + stop.box.h - (g.bottom ?? 70) - S / 2
+    const botEl = g.bottomFrom ? stop.el.querySelector<HTMLElement>(g.bottomFrom) : null
+    const hi = (botEl ? botEl.getBoundingClientRect().top + sy - 20 : stop.box.y + stop.box.h - (g.bottom ?? 70)) - S / 2
     let placeY = g.y === 'pin' ? Math.min(Math.max(ride, lo), Math.max(lo, hi)) : stop.box.y + g.y * stop.box.h
     let placeX = innerWidth * (g.x ?? 0.875)
     if (g.from) {

@@ -55,8 +55,8 @@ const {
 /*
   Where the object rides a column inside the copy (sections.ts: a `column`
   place), the copy leaves it a lane down its right from the first paint —
-  everything above the column's limit element is padded by the object's
-  width and a gap — and the preview gives up a little width. Both used to
+  every block of the copy, down to the column's limit element, is padded by
+  the object's width and a gap — and the preview gives up a little width. Both used to
   be done by the object when it arrived, which moved the text under the
   reader's eyes; now its arrival moves nothing.
 */
@@ -64,11 +64,10 @@ const column = object ? sectionByKey(object)?.glide.column : undefined
 const laneSize = object ? (sectionByKey(object)?.glide.size ?? 1) : 1
 /* The object's width, which the lane is sized from (see the style below). */
 const lane = column ? `calc(100vh * ${(OBJECT_SIZE * laneSize).toFixed(3)})` : undefined
-const limit = column ? `lane-${column.sel.replace('.', '')}` : undefined
 ---
 
 <section
-  class:list={['project', { reverse, 'ascii-wide': !!column }, limit]}
+  class:list={['project', { reverse, 'ascii-wide': !!column }]}
   style={`--accent: ${accent}${lane ? `; --lane: ${lane}` : ''}`}
   data-object={object}
 >
@@ -246,7 +245,7 @@ const limit = column ? `lane-${column.sel.replace('.', '')}` : undefined
   }
 
   .note {
-    max-width: 68ch;
+    max-width: 60ch;
     margin-bottom: 22px;
     font-size: 14px;
     line-height: 1.55;
@@ -293,7 +292,8 @@ const limit = column ? `lane-${column.sel.replace('.', '')}` : undefined
     }
 
     /*
-      The lane: the copy above the limit element keeps clear of the object.
+      The lane: the whole copy keeps clear of the object, down to the links,
+      so the object has the full height of the copy to ride in.
       The object stands where it stands in every section — centred on 0.875
       of the viewport's width, whatever the viewport — so the lane is measured
       from there: from the copy's right edge back to the object's left edge,
@@ -313,11 +313,6 @@ const limit = column ? `lane-${column.sel.replace('.', '')}` : undefined
       max-width: none;
     }
 
-    :global(html.ascii-object) .lane-stack .copy > .stack,
-    :global(html.ascii-object) .lane-stack .copy > .stack ~ *,
-    :global(html.ascii-object) .lane-metrics .copy > .metrics ~ * {
-      padding-right: 0;
-    }
   }
 
   @media (min-width: 1441px) {

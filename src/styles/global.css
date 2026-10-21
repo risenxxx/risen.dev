@@ -119,6 +119,10 @@
     scroll-margin-top: 84px;
   }
 
+  main[id] {
+    scroll-margin-top: 74px;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;
@@ -170,6 +174,25 @@
     margin-inline: 6px;
   }
 
+  /* The first stop for a keyboard: off screen until it has focus, then a
+     primary button over the bar's left end. */
+  .skip {
+    position: fixed;
+    z-index: 60;
+    top: 14px;
+    left: var(--gut);
+    padding: 12px 16px;
+    font: 600 13px / 1 var(--mono);
+    background: var(--btn);
+    color: var(--btn-fg);
+    translate: 0 -200%;
+  }
+
+  .skip:focus-visible {
+    translate: 0 0;
+    outline-color: var(--btn);
+  }
+
   /* ── type ───────────────────────────────────────────────────────────── */
 
 
@@ -181,8 +204,10 @@
   .lede {
     font-size: clamp(16px, 1.2vw, 17px);
     line-height: 1.62;
-    /* A measure, not a pixel width: 66 characters holds at every type size. */
-    max-width: 66ch;
+    /* A measure, not a pixel width. `ch` is the width of a zero, which in this
+       face is wider than an average letter, so 58ch sets about 75 characters
+       to the line at every type size. */
+    max-width: 58ch;
     color: var(--fg2);
   }
 

@@ -120,6 +120,44 @@ function pan(): void {
   }
 }
 
+/*
+  The bar's working directory: the tab whose section holds the line a third of
+  the way down the screen gets `aria-current`, and none does while the reader is
+  above the first of them or between two that are not in the bar. Like panning,
+  this is not motion, so it runs whatever the reduced-motion setting says.
+*/
+function spy(): void {
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('a[data-spy]')]
+  const pairs = links.flatMap((link) => {
+    const section = document.getElementById(link.hash.slice(1))
+    return section ? [{ link, section }] : []
+  })
+  if (pairs.length === 0 || typeof IntersectionObserver !== 'function') return
+
+  const inside = new Set<Element>()
+  const mark = (): void => {
+    const current = pairs.find((p) => inside.has(p.section))
+    for (const p of pairs) {
+      if (p === current) p.link.setAttribute('aria-current', 'location')
+      else p.link.removeAttribute('aria-current')
+    }
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) inside.add(entry.target)
+        else inside.delete(entry.target)
+      }
+      mark()
+    },
+    // A thin band a third of the way down: one section at a time. Not zero
+    // tall, because an empty root rectangle intersects nothing reliably.
+    { rootMargin: '-33% 0px -66% 0px', threshold: 0 },
+  )
+  for (const p of pairs) observer.observe(p.section)
+}
+
 export function initMotion(): void {
   /*
     First, and outside everything below it: panning is an affordance, not an
@@ -129,6 +167,7 @@ export function initMotion(): void {
     saying so.
   */
   pan()
+  spy()
 
   // A scene that never runs must not be left blank, so the reduced-motion and
   // no-IntersectionObserver paths both mean "show the finished state", which is

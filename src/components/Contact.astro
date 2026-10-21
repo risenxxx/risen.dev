@@ -26,7 +26,7 @@ const social = contacts.filter((c) => c.id !== 'email')
         <Icon name="b-mail" />
         {site.email}
       </a>
-      <CvMenu id="contact" large align="center" />
+      <CvMenu id="contact" large />
     </div>
 
     <ul class="ids" data-reveal style="--dl: 4">
@@ -43,11 +43,11 @@ const social = contacts.filter((c) => c.id !== 'email')
     </ul>
 
     <p class="fine" data-reveal style="--dl: 5">
-      {site.location}, {site.timezone}
+      <span>{site.location}, {site.timezone}</span>
       <Sep />
-      remote worldwide, contractor or EOR
+      <span>remote worldwide, contractor or through an employer of record</span>
       <Sep />
-      English (full professional), Russian
+      <span>English (full professional), Russian</span>
     </p>
   </div>
 </section>
@@ -60,22 +60,19 @@ const social = contacts.filter((c) => c.id !== 'email')
   }
 
 
+  /* On the page's left edge like every section above it. Centred, it read as
+     a template's closing banner rather than the end of this page. */
   .inner {
     position: relative;
-    text-align: center;
   }
 
   h2 {
-    margin: 22px auto 20px;
+    margin-bottom: 20px;
     max-width: 900px;
     font-size: clamp(30px, 4vw, 48px);
     font-weight: 700;
     line-height: 1.08;
     letter-spacing: -0.035em;
-  }
-
-  .lede {
-    margin-inline: auto;
   }
 
   /* The one link in the copy, drawn the way the log draws its links: an
@@ -100,7 +97,6 @@ const social = contacts.filter((c) => c.id !== 'email')
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    justify-content: center;
     margin: 34px 0 22px;
   }
 
@@ -108,7 +104,6 @@ const social = contacts.filter((c) => c.id !== 'email')
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: center;
     margin-bottom: 26px;
   }
 
@@ -121,13 +116,27 @@ const social = contacts.filter((c) => c.id !== 'email')
 
   .fine {
     max-width: 70ch;
-    margin-inline: auto;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     flex-wrap: wrap;
-    justify-content: center;
     font-size: 13px;
     line-height: 1.7;
     color: var(--fg3);
+  }
+
+  /* Narrow, the three facts wrap anyway, and a slash left at the start or the
+     end of a line separates nothing: one fact to a line instead. */
+  @media (max-width: 560px) {
+    .fine {
+      display: block;
+    }
+
+    .fine > span {
+      display: block;
+    }
+
+    .fine :global(.sep) {
+      display: none;
+    }
   }
 </style>

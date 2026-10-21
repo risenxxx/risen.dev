@@ -13,9 +13,9 @@ export const site = {
 } as const
 
 /*
-  The public resumes on Tuned, one per direction. The CV button asks which one
-  before it goes anywhere, because each tells a different story about the same
-  eight years.
+  The public resumes on Tuned, one per direction, each a different story about
+  the same eight years. The first is the one the CV button opens; the menu
+  beside it offers all three.
 */
 export const resumes = [
   { id: 'fullstack', label: 'Full Stack Engineer', href: 'https://tunedhq.io/r/risen-fullstack-engineer' },
@@ -37,9 +37,11 @@ export const contacts = [
   { id: 'email', label: site.email, href: `mailto:${site.email}`, icon: 'b-mail', optical: 0.92 },
 ] as const
 
+/* In the order the sections come in. Each label is the last part of that
+   section's path, so the tab and the path above the heading read the same. */
 export const nav = [
-  { href: '#work', label: 'Work' },
-  { href: '#approach', label: 'Approach' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#architecture', label: 'architecture' },
+  { href: '#work', label: 'work' },
+  { href: '#stack', label: 'stack' },
+  { href: '#contact', label: 'contact' },
 ] as const

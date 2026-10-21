@@ -35,7 +35,7 @@ import Sep from './Sep.astro'
     </h1>
 
     <p class="lede" data-reveal style="--dl: 3">
-      Eight years taking products from a blank plan to a running service, most of it inside
+      <strong>Full-stack and platform engineer.</strong> Eight years taking products from a blank plan to a running service, most of it inside
       product teams: at X5 Group, a recipe platform at 7.5M monthly users. On my own, a real-time
       multiplayer game on a Kubernetes cluster I built and operated myself, and Tuned, a resume
       SaaS live with payments.
@@ -131,6 +131,13 @@ import Sep from './Sep.astro'
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.037em;
+  }
+
+  /* The role, said once in words: the heading is the claim, this is the job
+     title a recruiter is scanning for. */
+  .lede strong {
+    font-weight: 500;
+    color: var(--fg);
   }
 
   .cta {

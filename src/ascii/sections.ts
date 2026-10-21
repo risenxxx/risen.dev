@@ -21,6 +21,8 @@ export interface Place {
   bottom?: number
   /** For a pinned place: the element whose top is the upper bound, instead of `top` px from the section's top. */
   topFrom?: string
+  /** For a pinned place: the element whose top is the lower bound, instead of `bottom` px from the section's bottom. */
+  bottomFrom?: string
   /** The section's own cards or figure are opaque and in front, so the object never shrinks or dims for them and may sit partly behind them. */
   front?: boolean
   /**
@@ -65,6 +67,11 @@ export interface Section {
 /* On a tablet every project row stacks and the object rides a column down
    the right of the copy, from the top of the mock to the row's bottom
    padding; the desktop's floats and hangers are switched off. */
+/* Tuned and Gift Fight ride a column down the copy at 0.62 of the viewport:
+   the section hands the object on once its bottom is three quarters of the
+   way down the screen, so a ride point higher than this would reach the
+   column's top only as the section was leaving, and the object would barely
+   move. */
 const ROW_TABLET: Partial<Place> = {
   y: 'pin',
   size: 0.68,
@@ -79,7 +86,7 @@ const ROW_TABLET: Partial<Place> = {
   front: false,
 }
 
-/* The three card sections keep two thirds of the width on a tablet and the
+/* The two card sections keep two thirds of the width on a tablet and the
    object rides the right third, from the heading's top down. */
 const CARDS_TABLET = (size: number, maxPx: number): Partial<Place> => ({
   y: 'pin',
@@ -122,13 +129,15 @@ export const SECTIONS: readonly Section[] = [
     key: 'arch',
     hex: INK,
     shape: 'lattice',
-    glide: { y: 0.19, size: 0.72, front: true, from: { sel: 'h2', dy: 68 }, tablet: { x: 0.86, from: { sel: 'h2', dy: 90 } } },
+    // Rides the lane beside the six steps, from the heading down to the
+    // figure's caption; the figure itself spans the width.
+    glide: { y: 'pin', size: 0.72, topFrom: 'h2', bottomFrom: '.cap-html', at: 0.45, tablet: { x: 0.86, size: 0.62, maxPx: 200 } },
   },
   {
     key: 'tuned',
     hex: INK,
     shape: 'tunedlogo',
-    glide: { y: 0.3, size: 0.72, column: { sel: '.stack', edge: 'top' }, at: 0.36, lift: 24, tablet: ROW_TABLET },
+    glide: { y: 0.3, size: 0.72, column: { sel: '.links', edge: 'bottom' }, at: 0.62, lift: 24, tablet: ROW_TABLET },
   },
   {
     key: 'frame',
@@ -140,19 +149,13 @@ export const SECTIONS: readonly Section[] = [
     key: 'gift',
     hex: INK,
     shape: 'dice',
-    glide: { y: 0.3, size: 0.72, column: { sel: '.metrics', edge: 'bottom' }, at: 0.36, lift: 24, tablet: ROW_TABLET },
+    glide: { y: 0.3, size: 0.72, column: { sel: '.links', edge: 'bottom' }, at: 0.62, lift: 24, tablet: ROW_TABLET },
   },
   {
     key: 'dub',
     hex: INK,
     shape: 'sync',
     glide: { y: 0.777, size: 0.74, under: '.shot', tablet: ROW_TABLET },
-  },
-  {
-    key: 'approach',
-    hex: INK,
-    shape: 'stairs',
-    glide: { y: 'pin', size: 0.5, top: 70, bottom: 60, at: 0.45, tablet: CARDS_TABLET(0.62, 200) },
   },
   {
     key: 'stack',

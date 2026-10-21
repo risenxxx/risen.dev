@@ -32,27 +32,20 @@ import Stage from './Stage.astro'
     bullets={[
       "A provenance check refuses any claim that doesn't trace back to a source node, so the model can rewrite but cannot invent.",
       'The live preview renders the same react-pdf component inside a Web Worker and rasterises it with pdf.js, so page fitting is measured against a real renderer instead of estimated.',
-      'Anthropic and OpenAI-compatible adapters sit behind a single port; the editor has its own drag-and-drop engine.',
     ]}
     stack={[
       { label: 'TypeScript' },
       { label: 'React 19' },
-      { label: 'TanStack' },
-      { label: 'Tailwind v4' },
-      { label: 'Astro' },
       { label: 'pdf.js' },
       { label: 'Bun' },
       { label: 'Elysia' },
       { label: 'oRPC' },
       { label: 'PostgreSQL' },
       { label: 'Drizzle' },
-      { label: 'Redis' },
       { label: 'BullMQ' },
       { label: 'Kubernetes' },
-      { label: 'Pulumi' },
-      { label: 'FluxCD' },
     ]}
-    links={[{ label: 'Website', href: 'https://tunedhq.io', icon: 'u-external', primary: true }]}
+    links={[{ label: 'Website', href: 'https://tunedhq.io', icon: 'u-external' }]}
   >
     <Stage bare h={532}><TunedMock /></Stage>
   </Project>
@@ -65,7 +58,6 @@ import Stage from './Stage.astro'
     blurb="Casts a 4K HDR file to a television exactly as it is: no re-encode, no quality loss, and the app window stays a working remote. Torrents play while they are still downloading."
     bullets={[
       'mpv renders into a native child view <em>behind</em> a transparent webview, the whole UI composited on top as HTML. On macOS that meant patching libmpv, whose backend has no window-embedding support at all.',
-      'Piece priority follows the playhead, the seekbar shades what has already arrived, and the next episode is prefetched.',
       'Hover previews sharpen to the exact frame under the cursor. Naive keyframe mapping showed the wrong scene 60% of the time, so the cost of an exact seek is probed per file.',
     ]}
     metrics={[
@@ -93,7 +85,6 @@ import Stage from './Stage.astro'
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/frame-player/releases/latest',
         icon: 'u-download',
-        primary: true,
       },
     ]}
     reverse
@@ -110,13 +101,10 @@ import Stage from './Stage.astro'
     bullets={[
       "A round in progress lives in a Temporal workflow rather than in a server's memory, so a restart or a release never drops it.",
       'Live play runs over Socket.IO beside ordinary HTTP, with blockchain payments isolated behind transfer services and idempotent settlement.',
-      'Talos Linux and Kubernetes across bare metal and cloud, described in Pulumi, delivered by FluxCD, with secrets that never touch the repository.',
-      'The infrastructure went through four generations: Ansible and kubeadm on VPS hosts with no provider API, Terraform with Talos on DigitalOcean, Terragrunt for templating, then Pulumi, with values like registry credentials built in code.',
     ]}
     metrics={[
       { value: '120 ms', note: 'p95 state sync, 300 sessions' },
       { value: 'every round', note: 'survives a deploy' },
-      { value: '&lt; 3 min', note: 'release and rollback' },
       { value: '~1,500', note: 'players at launch' },
     ]}
     note="Shut down in 2025, on purpose: the funnel showed free channels bringing non-paying users, so the product was closed on the data rather than carried on. The cluster and the code are still the work."
@@ -149,12 +137,13 @@ import Stage from './Stage.astro'
     bullets={[
       'The soundtracks are correlated with GCC-PHAT and every result carries a peak-to-sidelobe score, so a bad match is <em>reported</em> rather than silently shipped.',
       'Differently cut releases are aligned segment by segment to about 50 ms, frame rates normalised, audio time-stretched instead of clipped, subtitles shifted to match.',
-      'Correlation is parallelised across cores; the same engine runs from a GUI, a CLI or a CI job on Windows, macOS and Linux.',
+      'The shared anchor track is correlated once into a piecewise offset map that every selected dub reuses, and each splice is snapped to a moment the master is silent, so the cut hides behind a quiet scene change.',
     ]}
     metrics={[
       { value: '±50 ms', note: 'per-segment alignment' },
       { value: 'scored', note: 'every result, never guessed' },
       { value: '3 modes', note: 'GUI, CLI, headless' },
+      { value: '1 pass', note: 'one correlation serves every dub' },
     ]}
     stack={[
       { label: 'Rust' },
@@ -169,7 +158,6 @@ import Stage from './Stage.astro'
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/dubsync/releases/latest',
         icon: 'u-download',
-        primary: true,
       },
     ]}
     reverse
@@ -208,7 +196,6 @@ import Stage from './Stage.astro'
         label: 'Download latest release',
         href: 'https://github.com/risenxxx/DeskVolt/releases/latest',
         icon: 'u-download',
-        primary: true,
       },
     ]}
   >

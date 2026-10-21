@@ -373,17 +373,23 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     begin()
   }
 
-  const onMove = (e: PointerEvent): void => {
+  const onMove = (e: MouseEvent): void => {
     const r = canvas.getBoundingClientRect()
     mouse = [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]
     kick()
   }
-  const onLeave = (): void => {
+  // A finger has no hover: a tap uncovers the photograph where it lands and
+  // leaves it uncovered until the next tap, since lifting the finger is not
+  // leaving. `click` rather than `pointerdown`, which also fires at the start
+  // of a scroll that merely began on the picture.
+  const onLeave = (e: PointerEvent): void => {
+    if (e.pointerType === 'touch') return
     mouse = [-10, -10]
     kick()
   }
   canvas.addEventListener('pointermove', onMove)
   canvas.addEventListener('pointerleave', onLeave)
+  canvas.addEventListener('click', onMove)
 
   const ro = new ResizeObserver(() => kick())
   ro.observe(img)
@@ -397,6 +403,7 @@ export async function mountAsciiImage(picture: HTMLElement, opts: AsciiOptions =
     ro.disconnect()
     canvas.removeEventListener('pointermove', onMove)
     canvas.removeEventListener('pointerleave', onLeave)
+    canvas.removeEventListener('click', onMove)
     picture.classList.remove('ascii-host')
     canvas.remove()
   }

@@ -3,18 +3,20 @@ import { resumes } from '../data/site.ts'
 import Icon from './Icon.astro'
 
 /*
-  The CV button, and the menu it opens beside itself: one public resume per
-  direction, each in a new tab.
+  The CV button. The label opens the full-stack resume, the one the page's own
+  claim is about, in a new tab; the chevron beside it opens a menu of all
+  three, one public resume per direction. A reader who wants a CV gets one in
+  a click, and the choice is still there for the one who wants the other two.
 
-  A native popover rather than a script. The browser already does everything a
-  menu needs to — open and close on the button, close on Escape and on a click
-  anywhere else, sit above every stacking context on the page — and anchor
-  positioning keeps it next to the button however the page scrolls. Where
-  anchoring is not supported the popover falls back to the centre of the
+  The menu is a native popover rather than a script. The browser already does
+  everything a menu needs to — open and close on the button, close on Escape
+  and on a click anywhere else, sit above every stacking context on the page —
+  and anchor positioning keeps it under the pair however the page scrolls.
+  Where anchoring is not supported the popover falls back to the centre of the
   viewport, which is still a working menu.
 
-  `id` is only there to give each instance its own anchor name; there are three
-  of these on the page.
+  `id` is only there to give each instance its own anchor name; there is more
+  than one of these on the page.
 */
 interface Props {
   id: string
@@ -28,18 +30,22 @@ interface Props {
 const { id, class: cls, primary = false, large = false, iconSize, align = 'start' } = Astro.props
 const menu = `cv-menu-${id}`
 const anchor = `--cv-${id}`
+const main = resumes[0]
+const look = ['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg']
 ---
 
-<button
-  type="button"
-  class:list={['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg', cls]}
-  popovertarget={menu}
-  aria-haspopup="menu"
-  style={`anchor-name: ${anchor}`}
->
-  View CV
-  <Icon name="u-chevron-down" size={iconSize} class="chev" />
-</button>
+<div class:list={['cv-pair', cls]} style={`anchor-name: ${anchor}`}>
+  <a class:list={[...look, 'cv-main']} href={main.href} target="_blank" rel="noopener">View CV</a>
+  <button
+    type="button"
+    class:list={[...look, 'cv-more']}
+    popovertarget={menu}
+    aria-haspopup="menu"
+    aria-label="Other versions of the CV"
+  >
+    <Icon name="u-chevron-down" size={iconSize} class="chev" />
+  </button>
+</div>
 
 <div
   id={menu}
@@ -67,13 +73,27 @@ const anchor = `--cv-${id}`
 </script>
 
 <style>
-  .btn :global(.chev) {
-    margin-right: -4px;
+  /* Two buttons drawn as one: they share the hairline between them. */
+  .cv-pair {
+    display: inline-flex;
+  }
+
+  .cv-more {
+    margin-left: -1px;
+    padding-inline: 11px;
+  }
+
+  /* The ghost's hover cursor belongs to the label, not to an arrow. */
+  .cv-more::after {
+    content: none;
+  }
+
+  .cv-more :global(.chev) {
     opacity: 0.6;
     transition: rotate 0.18s var(--ease);
   }
 
-  .btn:has(+ .cv-menu:popover-open) :global(.chev) {
+  .cv-pair:has(+ .cv-menu:popover-open) :global(.chev) {
     rotate: 180deg;
   }
 
@@ -124,12 +144,12 @@ const anchor = `--cv-${id}`
 
   @media (prefers-reduced-motion: reduce) {
     .cv-menu,
-    .btn :global(.chev) {
+    .cv-more :global(.chev) {
       transition: none;
     }
   }
 
-  a {
+  .cv-menu a {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -145,18 +165,18 @@ const anchor = `--cv-${id}`
       color 0.15s;
   }
 
-  a :global(.ic) {
+  .cv-menu a :global(.ic) {
     color: var(--fg3);
     transition: color 0.15s;
   }
 
-  a:hover,
-  a:focus-visible {
+  .cv-menu a:hover,
+  .cv-menu a:focus-visible {
     background: rgba(255, 255, 255, 0.06);
   }
 
-  a:hover :global(.ic),
-  a:focus-visible :global(.ic) {
+  .cv-menu a:hover :global(.ic),
+  .cv-menu a:focus-visible :global(.ic) {
     color: var(--fg);
   }
 </style>

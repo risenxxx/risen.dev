@@ -64,15 +64,15 @@ each product its own mark), flying between them and raising a little dust on
 the way; the headings decode out of random glyphs as they come into view; and
 the stills inside the previews are set as glyphs the pointer uncovers.
 
-The object needs room, and the sections make it under `html.ascii-object`,
-each in its own component: Approach and Open source give up their fills,
-the reference figure's boxes take the page's surface so the object ends behind
-the cluster cell, Approach's aside gives up its corner, Tuned's and Gift
-Fight's copy wraps round a column the object rides inside, and from 1400 px
-down every project row stacks with a column free down the right. Below 1000 px
-there is no room beside the copy, and the object stays away. The classes are
-set by the inline script before the first paint, so nothing reflows when the
-module lands; the page without them is the page as it was.
+The object needs room, and the sections make it under `html.ascii-object`, each
+in its own component: Open source gives up its fill, the reference figure's
+boxes take the page's surface and its delivery steps keep clear of the right
+lane, Tuned's and Gift Fight's copy wraps round a column the object rides
+inside, and from 1400 px down every project row stacks with a column free down
+the right. Below 1000 px there is no room beside the copy, and the object stays
+away. The classes are set by the inline script before the first paint, so
+nothing reflows when the module lands; the page without them is the page as it
+was.
 
 The puzzle piece on the link preview is the same solid as text, produced once
 by `src/ascii/export.ts` from the console in dev and pasted into the card.
