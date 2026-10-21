@@ -12,12 +12,19 @@
   module, fetched after the page has painted and only where WebGL2 is there
   and motion is not reduced; it has a budget of its own, so that it can
   neither hide inside the first one nor grow without anyone noticing.
+
+  The analytics loader is a third line. It is the page's own bytes, but it
+  does nothing for the page: it runs once the page has loaded and fetches
+  Rybbit's script in idle time. Counted with the page's script it would eat
+  the room kept for the reveals; counted nowhere it could grow into more than
+  a loader. Rybbit's own script is a third party's and is not in `dist`.
 */
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 
 const LIMIT = Number(process.env.JS_BUDGET ?? 6144)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
+const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 512)
 const DIST = 'dist'
 
 /** The deferred module: the chunk Vite names after src/ascii/ascii.ts. */
@@ -33,6 +40,7 @@ async function* walk(dir) {
 
 let total = 0
 let ascii = 0
+let analytics = 0
 const parts = []
 
 /*
@@ -54,9 +62,14 @@ for await (const path of walk(DIST)) {
 
   const html = await readFile(path, 'utf8')
   let bytes = 0
-  for (const [, body] of html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)) {
+  for (const [, attrs, body] of html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
     // Structured data is content, not behaviour.
     if (body.includes('"@context"')) continue
+    if (/\bdata-analytics\b/.test(attrs)) {
+      analytics += Buffer.byteLength(body)
+      parts.push([`${path} (analytics)`, Buffer.byteLength(body)])
+      continue
+    }
     bytes += Buffer.byteLength(body)
   }
   if (bytes > 0) {
@@ -70,6 +83,7 @@ for (const [name, bytes] of parts.sort((a, b) => b[1] - a[1])) {
 }
 console.log(`${String(total).padStart(7)}  the page's own (limit ${LIMIT})`)
 console.log(`${String(ascii).padStart(7)}  the ASCII layer, deferred (limit ${ASCII_LIMIT})`)
+console.log(`${String(analytics).padStart(7)}  the analytics loader, after load (limit ${ANALYTICS_LIMIT})`)
 
 let failed = false
 if (total > LIMIT) {
@@ -78,6 +92,10 @@ if (total > LIMIT) {
 }
 if (ascii > ASCII_LIMIT) {
   console.error(`::error::ASCII module budget exceeded: ${ascii} > ${ASCII_LIMIT} bytes`)
+  failed = true
+}
+if (analytics > ANALYTICS_LIMIT) {
+  console.error(`::error::Analytics loader budget exceeded: ${analytics} > ${ANALYTICS_LIMIT} bytes`)
   failed = true
 }
 if (failed) process.exit(1)

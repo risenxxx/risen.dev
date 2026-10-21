@@ -25,7 +25,7 @@ const email = contacts.find((c) => c.id === 'email')
       }
       {
         email && (
-          <a class="social mail" href={email.href} aria-label={email.label}>
+          <a class="social mail" href={email.href} aria-label={email.label} data-rybbit-event="Email" data-rybbit-prop-from="nav">
             <Icon name={email.icon} size={Math.round(20 * email.optical)} />
           </a>
         )

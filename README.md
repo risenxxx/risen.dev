@@ -25,6 +25,7 @@ npm run typecheck  # astro check
 | `src/scripts/motion.ts` | The whole motion system, about a hundred lines |
 | `src/styles/` | Tokens, then the primitives more than one section uses |
 | `src/ascii/` | The ASCII layer: the portrait that materialises, the object beside the content, the decoded headings |
+| `worker/index.ts` | The one piece of server code: the analytics counter's own address, forwarded to Rybbit |
 
 **Product previews are drawn, not captured.** Each one is rebuilt from that
 product's own source — Frame Player's control glyphs are the paths out of
@@ -152,11 +153,27 @@ labels, the log, the buttons), DM Mono for the ASCII layer's glyphs only. Rubik
 exists only inside two product previews and arrives when they do; Sora and
 Public Sans remain only for the link-preview card (`src/og/`).
 
+**Analytics is [Rybbit](https://rybbit.com)**, on the production build only — a
+preview or a dev server never reports. It is reached through this domain:
+`worker/index.ts` forwards `/s/script.js`, `/s/track` and the site's config to
+Rybbit and nothing else, so a blocker's host list has no third party to match.
+`run_worker_first` names `/s/*` alone, and every other request is a static file
+that never wakes the worker. The visitor's address goes on as `X-Forwarded-For`,
+which Rybbit only believes with **First-Party Proxy** on in the site's settings;
+the query string is cut to `utm_*` and the referrer to its origin on the way.
+The script is fetched after `load`, in idle time, rather than with the `defer`
+its snippet asks for: a deferred script runs in order with the page's own
+module, and the reveals would wait on it. Outbound links are tracked by the script; a `mailto:` has no host,
+so every address on the page carries `data-rybbit-event="Email"` and the place it
+sits in. Web vitals, error tracking and the rest are switched on in the site's
+settings on Rybbit, not here. To keep a browser of your own out of the numbers,
+run `localStorage.setItem('disable-rybbit', '1')` on risen.dev once.
+
 ## Deploying
 
-`.github/workflows/deploy.yml` builds, type-checks, enforces the two JavaScript
+`.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript
 budgets (`scripts/budget.mjs`: 6 KB for the page's own script, 48 KB for the
-deferred ASCII module, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
+deferred ASCII module, 512 bytes for the analytics loader, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
 uploads a preview version and comments the address on the PR.
 
 ### Repository secrets

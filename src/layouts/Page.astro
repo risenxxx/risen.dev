@@ -2,6 +2,7 @@
 import sans from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url'
 import mono from '@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2?url'
 import dmMono from '@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2?url'
+import { ANALYTICS_SRC } from '../analytics.ts'
 import { site } from '../data/site.ts'
 import '../styles/tokens.css'
 import '../styles/fonts.css'
@@ -23,7 +24,7 @@ const ogImage = new URL('/og.png', Astro.site)
 const preview = import.meta.env.SITE_PREVIEW === '1'
 
 /*
-  The one inline script on the page, and it runs before the first paint for a
+  The page's boot script, and it runs before the first paint for a
   reason: `.js` is what switches the hidden half of every reveal on. Adding it
   from the module instead would render the page in its finished state and then
   blank it out, which is a flash of exactly the content the animation is meant
@@ -56,6 +57,33 @@ if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: 
     document.head.append(l)
   }
 }`
+
+/*
+  Analytics is Rybbit, and only on the production build: a preview or a dev
+  server reporting its visits would count them against the real page.
+
+  It comes from this domain (`/s/`, src/analytics.ts and worker/), so a
+  blocker's host list has nothing to match and no second connection is
+  opened. And it is not a <script defer> in the head, which is what the
+  snippet asks for: deferred scripts run in document order with the page's
+  own module, so the page's reveals — the hero copy among them, the largest
+  paint — would wait on 35 KB of somebody else's script coming through the
+  proxy; on a thin line it would take the bandwidth the fonts and the ASCII
+  layer need. It is fetched after `load`, in idle time, instead. Nothing it measures is
+  lost by that: the pageview is sent when it arrives, and the web vitals it
+  can report are read from buffered performance entries. What is lost is a
+  visitor who closes the tab before the page has finished loading, who was
+  not reading it.
+
+  The script tracks clicks on outbound links by itself. A mailto link has no
+  host, so it is not one; the address carries data-rybbit-event instead.
+*/
+const analytics = import.meta.env.PROD && !preview
+const rybbit = `addEventListener('load', () => (window.requestIdleCallback || setTimeout)(() => {
+  const s = document.createElement('script')
+  s.src = '${ANALYTICS_SRC}'
+  document.head.append(s)
+}))`
 ---
 
 <!doctype html>
@@ -95,6 +123,7 @@ if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: 
     <link rel="preload" href={mono} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={dmMono} as="font" type="font/woff2" crossorigin />
     <script is:inline set:html={boot} />
+    {analytics && <script is:inline data-analytics set:html={rybbit} />}
   </head>
   <body>
     <slot />

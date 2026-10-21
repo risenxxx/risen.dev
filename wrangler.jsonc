@@ -1,6 +1,6 @@
 /*
-  risen.dev is static files and nothing else: Workers static assets serve `dist`
-  with no worker script at all. Pages was folded into Workers in wrangler 4, and
+  risen.dev is static files and one small worker: Workers static assets serve
+  `dist`, and the worker answers `/s/*` alone. Pages was folded into Workers in wrangler 4, and
   deploying through an explicit config keeps the CLI from rewriting package.json
   on first run.
 
@@ -12,9 +12,17 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "risen-dev",
   "compatibility_date": "2026-09-01",
+  /*
+    The worker is the page counter's own address, forwarded to Rybbit
+    (worker/index.ts). `run_worker_first` names its prefix and nothing else:
+    every other request is a static file, served without invoking the worker
+    and without counting against the account's Workers requests.
+  */
+  "main": "./worker/index.ts",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/s/*"]
   },
   "routes": [{ "pattern": "risen.dev", "custom_domain": true }],
   // One address rather than two: a *.workers.dev copy of the whole site under

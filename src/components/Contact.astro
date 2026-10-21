@@ -23,7 +23,7 @@ const social = contacts.filter((c) => c.id !== 'email')
     </p>
 
     <div class="cta" data-reveal style="--dl: 3">
-      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`}>
+      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`} data-rybbit-event="Email" data-rybbit-prop-from="contact">
         <Icon name="b-mail" />
         {site.email}
       </a>
