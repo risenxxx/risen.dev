@@ -13,7 +13,8 @@ const libraries = [
     badge: 'installs a month',
     figure: '5.5M',
     stars: '1.1k',
-    body: 'The standard way to use Zod with NestJS: one schema serves validation, TypeScript types and the generated OpenAPI docs, so the same data is never described twice. Written by me and transferred to another maintainer in 2024, still the ecosystem default.',
+    /* Trusted, hand-written copy: a link in it is markup. */
+    body: 'The standard way to use Zod with NestJS: one schema serves validation, TypeScript types and the generated OpenAPI docs, so the same data is never described twice. <a href="https://github.com/BenLorantfy/nestjs-zod/commits?author=risenxxx" target="_blank" rel="noopener">Written by me</a> and transferred to another maintainer in 2024, still the ecosystem default.',
     meta: ['original author', 'TypeScript', 'MIT'],
   },
   {
@@ -39,8 +40,10 @@ const libraries = [
       {
         libraries.map((lib) => (
           <li>
-            <a class="card" href={lib.href} target="_blank" rel="noopener">
-              <h3>{lib.name}</h3>
+            <div class="card">
+              <h3>
+                <a class="name" href={lib.href} target="_blank" rel="noopener">{lib.name}</a>
+              </h3>
               <!-- The figures as lines of output: the note, then the number. -->
               <dl class="figs">
                 {lib.figure && (
@@ -63,7 +66,7 @@ const libraries = [
                   </div>
                 )}
               </dl>
-              <p class="body">{lib.body}</p>
+              <p class="body" set:html={lib.body} />
               <p class="meta">
                 {lib.meta.map((part, j) => (
                   <Fragment>
@@ -72,7 +75,7 @@ const libraries = [
                   </Fragment>
                 ))}
               </p>
-            </a>
+            </div>
           </li>
         ))
       }
@@ -121,7 +124,13 @@ const libraries = [
     gap: 14px;
   }
 
+  /*
+    The whole card opens the repository, through the name: the name's link
+    is stretched over the card, so a link inside the text (which may not sit
+    inside another link) stays its own and clickable above it.
+  */
   .card {
+    position: relative;
     display: block;
     height: 100%;
     padding: 24px 22px;
@@ -171,6 +180,21 @@ const libraries = [
     margin-bottom: 16px;
   }
 
+  /* A link in the text, drawn the way the log draws its links. The one here
+     is the proof of a claim: "Written by me" opens the author's commits. */
+  .body :global(a) {
+    position: relative;
+    z-index: 1;
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.32);
+    transition: text-decoration-color 0.18s;
+  }
+
+  .body :global(a:hover) {
+    text-decoration-color: var(--fg);
+  }
+
   .meta {
     display: flex;
     align-items: center;
@@ -201,6 +225,12 @@ const libraries = [
 
   .card:hover h3 {
     color: var(--amber);
+  }
+
+  .name::after {
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   h3 {
