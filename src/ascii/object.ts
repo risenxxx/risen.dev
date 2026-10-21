@@ -101,6 +101,15 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     ink = inkBoxes('main :is(h1, h2, h3, h4, p, li, dd, dt, figcaption, .btn, .pill, picture, .stage .inner > *, figure, [data-pan-frame])')
   }
 
+  // The page's right edge: the gutter in from the viewport's edge up to
+  // 1440 px, the centred 1440 column's beyond it. Where a place names no `x`,
+  // the object stands with its right side on this edge, the way the
+  // previews on the right do.
+  const rightEdge = (): number => {
+    const gut = Math.min(60, Math.max(20, innerWidth * 0.042))
+    return innerWidth - Math.max(0, (innerWidth - 1440) / 2) - gut
+  }
+
   // Where a section's copy leaves a lane for the object down its right
   // (Project.astro pads the copy above the limit element from the first
   // paint, so nothing moves when this runs), a marker goes over the lane:
@@ -118,9 +127,8 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     const w = Math.round(innerHeight * o.size * g.size)
     f.style.width = `${w}px`
     if (g.lift) f.style.top = `${-g.lift}px`
-    // Centred where the object stands everywhere, 0.875 of the viewport,
-    // whatever the copy's right edge: past it the marker hangs into the margin.
-    f.style.right = `${Math.round(copy.getBoundingClientRect().right - innerWidth * 0.875 - w / 2)}px`
+    // On the page's right edge, where the object stands.
+    f.style.right = `${Math.round(copy.getBoundingClientRect().right - rightEdge())}px`
     copy.prepend(f)
     const lim = el.querySelector<HTMLElement>(g.column.sel)
     const top = f.getBoundingClientRect().top
@@ -306,7 +314,7 @@ export async function mountObject(opts: ObjectOptions = {}): Promise<AsciiObject
     const botEl = g.bottomFrom ? stop.el.querySelector<HTMLElement>(g.bottomFrom) : null
     const hi = (botEl ? botEl.getBoundingClientRect().top + sy - 20 : stop.box.y + stop.box.h - (g.bottom ?? 70)) - S / 2
     let placeY = g.y === 'pin' ? Math.min(Math.max(ride, lo), Math.max(lo, hi)) : stop.box.y + g.y * stop.box.h
-    let placeX = innerWidth * (g.x ?? 0.875)
+    let placeX = g.x !== undefined ? innerWidth * g.x : rightEdge() - S / 2
     if (g.from) {
       const fromEl = stop.el.querySelector<HTMLElement>(g.from.sel)
       if (fromEl) placeY = fromEl.getBoundingClientRect().top + sy + g.from.dy

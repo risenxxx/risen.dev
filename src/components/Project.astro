@@ -293,32 +293,22 @@ const lane = column ? `calc(100vh * ${(OBJECT_SIZE * laneSize).toFixed(3)})` : u
 
     /*
       The lane: the whole copy keeps clear of the object, down to the links,
-      so the object has the full height of the copy to ride in.
-      The object stands where it stands in every section — centred on 0.875
-      of the viewport's width, whatever the viewport — so the lane is measured
-      from there: from the copy's right edge back to the object's left edge,
-      and a gap. The copy's right edge is the page's: the gutter in from the
-      viewport's edge up to 1440 px, the centred 1440 column beyond it. Past
-      the column's edge the object hangs into the margin, as it always did.
+      so the object has the full height of the copy to ride in. The object
+      stands with its right side on the page's right edge, which is the
+      copy's right edge too, so the lane is the object's width and a gap.
     */
     :global(html.ascii-object) .ascii-wide .copy {
       position: relative;
     }
 
     :global(html.ascii-object) .ascii-wide .copy > * {
-      padding-right: max(0px, calc(12.5vw - var(--gut) + var(--lane) / 2 + 20px));
+      padding-right: calc(var(--lane) + 20px);
     }
 
     :global(html.ascii-object) .ascii-wide .copy > .metrics {
       max-width: none;
     }
 
-  }
-
-  @media (min-width: 1441px) {
-    :global(html.ascii-object) .ascii-wide .copy > * {
-      padding-right: max(0px, calc(720px - var(--gut) - 37.5vw + var(--lane) / 2 + 20px));
-    }
   }
 
   @media (min-width: 1000px) and (max-width: 1400px) {
