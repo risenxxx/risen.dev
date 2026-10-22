@@ -163,9 +163,11 @@ which Rybbit only believes with **First-Party Proxy** on in the site's settings;
 the query string is cut to `utm_*` and the referrer to its origin on the way.
 The script is fetched after `load`, in idle time, rather than with the `defer`
 its snippet asks for: a deferred script runs in order with the page's own
-module, and the reveals would wait on it. Outbound links are tracked by the script; a `mailto:` has no host,
-so every address on the page carries `data-rybbit-event="Email"` and the place it
-sits in. Web vitals, error tracking and the rest are switched on in the site's
+module, and the reveals would wait on it. Outbound links are tracked by the script; on top of that every way
+of getting in touch — the address, the call, a CV, LinkedIn, Telegram — is one
+`Contact` event with `via` and `from` (`src/analytics.ts`), so a funnel can end on
+any of them; a `mailto:` has no host and would not be counted otherwise. How far a reader gets is a `Section` event with the section's object key
+as `id`, sent once a section has held the middle of the screen for a second. Web vitals, error tracking and the rest are switched on in the site's
 settings on Rybbit, not here. To keep a browser of your own out of the numbers,
 run `localStorage.setItem('disable-rybbit', '1')` on risen.dev once.
 
@@ -173,7 +175,7 @@ run `localStorage.setItem('disable-rybbit', '1')` on risen.dev once.
 
 `.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript
 budgets (`scripts/budget.mjs`: 6 KB for the page's own script, 48 KB for the
-deferred ASCII module, 512 bytes for the analytics loader, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
+deferred ASCII module, 1.5 KB for the analytics loader on both pages, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
 uploads a preview version and comments the address on the PR.
 
 ### Repository secrets

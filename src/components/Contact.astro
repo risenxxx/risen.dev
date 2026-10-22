@@ -1,4 +1,5 @@
 ---
+import { contactEvent } from '../analytics.ts'
 import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
 import CvMenu from './CvMenu.astro'
@@ -23,11 +24,11 @@ const social = contacts.filter((c) => c.id !== 'email')
     </p>
 
     <div class="cta" data-reveal style="--dl: 3">
-      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`} data-rybbit-event="Email" data-rybbit-prop-from="contact">
+      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`} {...contactEvent('email', 'contact')}>
         <Icon name="b-mail" />
         {site.email}
       </a>
-      <a class="btn btn-ghost btn-lg" href={site.call} target="_blank" rel="noopener">Book a call</a>
+      <a class="btn btn-ghost btn-lg" href={site.call} target="_blank" rel="noopener" {...contactEvent('call', 'contact')}>Book a call</a>
       <CvMenu id="contact" large />
     </div>
 
@@ -35,7 +36,7 @@ const social = contacts.filter((c) => c.id !== 'email')
       {
         social.map((c) => (
           <li>
-            <a class="btn btn-id" href={c.href} rel="me noopener" target="_blank">
+            <a class="btn btn-id" href={c.href} rel="me noopener" target="_blank" {...contactEvent(c.id, 'contact')}>
               <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}
             </a>

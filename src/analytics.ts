@@ -22,3 +22,19 @@ export const RYBBIT_UPSTREAM = 'https://app.rybbit.io/api'
 export const ANALYTICS_PREFIX = '/s/'
 
 export const ANALYTICS_SRC = `${ANALYTICS_PREFIX}script.js?siteId=${RYBBIT_SITE_ID}`
+
+/**
+ * Every way of getting in touch is one `Contact` event, told apart by `via`
+ * (`email`, `call`, `cv`, `linkedin`, `telegram`) and by `from`, the place on
+ * the page. One name, because a funnel step in Rybbit matches one event and
+ * its filters all have to hold: an "email or a call" last step can only be a
+ * single event. The outbound ones are still recorded as outbound links too —
+ * the script sends both for one click.
+ *
+ * GitHub is not on the list: a reader opening it is checking the work, not
+ * reaching out.
+ */
+export function contactEvent(via: string, from: string): Record<string, string> {
+  if (via === 'github') return {}
+  return { 'data-rybbit-event': 'Contact', 'data-rybbit-prop-via': via, 'data-rybbit-prop-from': from }
+}

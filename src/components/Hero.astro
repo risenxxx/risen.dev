@@ -1,4 +1,5 @@
 ---
+import { contactEvent } from '../analytics.ts'
 import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
 import CvMenu from './CvMenu.astro'
@@ -71,8 +72,7 @@ import Sep from './Sep.astro'
               href={c.href}
               rel={c.id === 'email' ? undefined : 'me noopener'}
               target={c.id === 'email' ? undefined : '_blank'}
-              data-rybbit-event={c.id === 'email' ? 'Email' : undefined}
-              data-rybbit-prop-from={c.id === 'email' ? 'hero' : undefined}
+              {...contactEvent(c.id, 'hero')}
             >
               <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}

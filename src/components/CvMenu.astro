@@ -1,4 +1,5 @@
 ---
+import { contactEvent } from '../analytics.ts'
 import { resumes } from '../data/site.ts'
 import Icon from './Icon.astro'
 
@@ -35,7 +36,14 @@ const look = ['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg']
 ---
 
 <div class:list={['cv-pair', cls]} style={`anchor-name: ${anchor}`}>
-  <a class:list={[...look, 'cv-main']} href={main.href} target="_blank" rel="noopener">View CV</a>
+  <a
+    class:list={[...look, 'cv-main']}
+    href={main.href}
+    target="_blank"
+    rel="noopener"
+    {...contactEvent('cv', id)}
+    data-rybbit-prop-resume={main.id}
+  >View CV</a>
   <button
     type="button"
     class:list={[...look, 'cv-more']}
@@ -57,7 +65,7 @@ const look = ['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg']
 >
   {
     resumes.map((r) => (
-      <a role="menuitem" href={r.href} target="_blank" rel="noopener">
+      <a role="menuitem" href={r.href} target="_blank" rel="noopener" {...contactEvent('cv', id)} data-rybbit-prop-resume={r.id}>
         <span class="label">{r.label}</span>
         <Icon name="u-external" size={14} />
       </a>

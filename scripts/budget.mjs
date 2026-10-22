@@ -14,8 +14,9 @@
   neither hide inside the first one nor grow without anyone noticing.
 
   The analytics loader is a third line. It is the page's own bytes, but it
-  does nothing for the page: it runs once the page has loaded and fetches
-  Rybbit's script in idle time. Counted with the page's script it would eat
+  does nothing for the page: it runs once the page has loaded, fetches
+  Rybbit's script in idle time and then watches which sections are read.
+  Both pages carry it, so the limit is two copies' worth. Counted with the page's script it would eat
   the room kept for the reveals; counted nowhere it could grow into more than
   a loader. Rybbit's own script is a third party's and is not in `dist`.
 */
@@ -24,7 +25,7 @@ import { basename, join } from 'node:path'
 
 const LIMIT = Number(process.env.JS_BUDGET ?? 6144)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
-const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 512)
+const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 1536)
 const DIST = 'dist'
 
 /** The deferred module: the chunk Vite names after src/ascii/ascii.ts. */
