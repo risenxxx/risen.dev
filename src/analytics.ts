@@ -25,7 +25,7 @@ export const ANALYTICS_SRC = `${ANALYTICS_PREFIX}script.js?siteId=${RYBBIT_SITE_
 
 /**
  * Every way of getting in touch is one `Contact` event, told apart by `via`
- * (`email`, `call`, `cv`, `linkedin`, `telegram`) and by `from`, the place on
+ * (`email`, `copy`, `call`, `cv`, `linkedin`, `telegram`) and by `from`, the place on
  * the page. One name, because a funnel step in Rybbit matches one event and
  * its filters all have to hold: an "email or a call" last step can only be a
  * single event. The outbound ones are still recorded as outbound links too —

@@ -117,7 +117,7 @@ export const SECTIONS: readonly Section[] = [
     key: 'top',
     hex: INK,
     shape: 'dyson',
-    glide: { y: 0.5, size: 1, tablet: { y: 0.24, size: 0.62, maxPx: 192, x: 0.86, wide: { y: 0.5, size: 0.82, maxPx: 260, x: 0.87 } } },
+    glide: { y: 0.5, size: 1, tablet: { y: 0.27, size: 0.62, maxPx: 192, x: 0.86, wide: { y: 0.5, size: 0.82, maxPx: 260, x: 0.87 } } },
   },
   {
     key: 'now',

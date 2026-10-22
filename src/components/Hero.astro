@@ -2,6 +2,7 @@
 import { contactEvent } from '../analytics.ts'
 import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
+import CopyText from './CopyText.astro'
 import CvMenu from './CvMenu.astro'
 import Portrait from './Portrait.astro'
 import Sep from './Sep.astro'
@@ -14,11 +15,15 @@ import Sep from './Sep.astro'
   so a photograph next to it reads as an ornament rather than as the subject.
   Everything on the page below now shares this left edge.
 
-  The markup is the narrow layout, in reading order: name the state, the claim,
-  the evidence, then the face, then the two things to do about it. The wide
-  layout is a grid laid over that, which is the only way the portrait can be a
-  column beside the copy at one width and a beat inside it at another without
-  the page carrying two copies of the same heading.
+  The markup is the phone's layout, in reading order: the state, then the face
+  and the claim side by side, the evidence, and the two things to do about it.
+  A phone gets the portrait as a small square beside the heading rather than a
+  beat of its own: at full width it was a screen of face between the sentence
+  and the buttons, and the buttons fell below the fold. The other layouts are
+  laid over the same markup — the face and the heading's wrapper dissolves
+  (`display: contents`) — which is the only way the portrait can be a column
+  beside the copy at one width, a beat inside it at another and a mark beside
+  the heading at a third, without the page carrying two copies of the heading.
 */
 ---
 
@@ -27,13 +32,29 @@ import Sep from './Sep.astro'
     <p class="pill" data-reveal style="--dl: 1">
       <span class="live" aria-hidden="true"></span>
       Open to senior engineering roles
+      <span class="when"><Sep /> {site.availability}</span>
+    </p>
+    <!-- The phone's version of the line's tail and of the portrait's caption,
+         which have no room there: one is past the width of the screen, the
+         other is under a 72 px portrait. -->
+    <p class="sub mono" data-reveal style="--dl: 1">
+      <span class="when">{site.availability}</span>
+      <span>{site.location}, {site.timezone}<Sep tight />{site.hours}</span>
     </p>
 
-    <h1 data-reveal style="--dl: 2">
-      <!-- The space belongs after the break: at the start of a line it is
-           collapsed away, and when the break is hidden it is the word gap. -->
-      One engineer.<br /> Every layer.
-    </h1>
+    <div class="head">
+      <!-- Revealed first, because on the wide layout it is the leftmost thing on
+           the page and a column that fades in after its own text reads as late. -->
+      <figure class="me" data-reveal>
+        <Portrait />
+        <figcaption class="mono">{site.location}<Sep tight />{site.timezone}<Sep tight />{site.hours}</figcaption>
+      </figure>
+      <h1 data-reveal style="--dl: 2">
+        <!-- The space belongs after the break: at the start of a line it is
+             collapsed away. -->
+        One engineer.<br /> Every layer.
+      </h1>
+    </div>
 
     <p class="lede" data-reveal style="--dl: 3">
       <strong>Full-stack and platform engineer.</strong> Eight years taking products from a blank plan to a running service,
@@ -50,13 +71,6 @@ import Sep from './Sep.astro'
         rel="noopener"
         aria-label="nestjs-zod on GitHub, 1.1k stars"><span class="nm">nestjs-zod</span><span class="stars mono" aria-hidden="true"><Icon name="u-star-solid" size={12} />1.1k</span></a>, at 5.5M installs a month.
     </p>
-
-    <!-- Revealed first, because on the wide layout it is the leftmost thing on
-         the page and a column that fades in after its own text reads as late. -->
-    <figure class="me" data-reveal>
-      <Portrait />
-      <figcaption class="mono">{site.location}<Sep tight />{site.timezone}</figcaption>
-    </figure>
 
     <div class="cta" data-reveal style="--dl: 4">
       <a class="btn btn-primary btn-lg" href="#work">See the work</a>
@@ -77,6 +91,7 @@ import Sep from './Sep.astro'
               <Icon name={c.icon} size={Math.round(16 * c.optical)} />
               {c.label}
             </a>
+            {c.id === 'email' && <CopyText text={site.email} from="hero" />}
           </li>
         ))
       }
@@ -107,6 +122,29 @@ import Sep from './Sep.astro'
      out from the left already. */
   .pill {
     justify-self: start;
+  }
+
+  /* Only a box on a phone (see the bottom of this sheet); everywhere else its
+     two children are items of the grid like the rest of the copy. */
+  .head {
+    display: contents;
+  }
+
+  /* After the state, in the page's own grey: a fact about it, not a second
+     state. */
+  .pill .when {
+    display: inline-flex;
+    align-items: center;
+    color: var(--fg2);
+  }
+
+  .pill .when :global(.sep) {
+    margin-inline: 9px;
+    font-size: 1em;
+  }
+
+  .sub {
+    display: none;
   }
 
   .me {
@@ -220,10 +258,84 @@ import Sep from './Sep.astro'
     gap: 10px;
   }
 
+  /*
+    Between a phone and a laptop the portrait is still a beat of its own, after
+    the sentence that earns it and before the buttons, as the narrow layout
+    always had it; the markup now puts it with the heading, so the order is
+    said here.
+  */
+  @media (min-width: 561px) and (max-width: 860px) {
+    .me {
+      order: 1;
+    }
+
+    .cta,
+    .ids {
+      order: 2;
+    }
+  }
+
+  /*
+    A phone: the portrait as a square mark beside the heading, about its two
+    lines high, so the face is on the first screen and so are the buttons. The
+    caption goes, having no room at 72 px; `.sub` under the state says it
+    instead.
+
+    The heading keeps its break and its two lines, and the size it is set at
+    is what the column beside the portrait leaves for "One engineer." — the
+    gutters, the portrait and the gap come to 132 px, and the line is 6.3 ems
+    long — so a narrow phone gets a smaller heading rather than a third line.
+  */
   @media (max-width: 560px) {
-    h1 br {
+    .pill .when {
       display: none;
     }
+
+    /* Under the state, lined up with its words rather than with its cursor
+       (7 px of cursor, 9 px of gap). */
+    .sub {
+      display: flex;
+      flex-direction: column;
+      margin: 6px 0 0 16px;
+      font-size: 12px;
+      line-height: 1.6;
+      text-transform: lowercase;
+      color: var(--fg3);
+    }
+
+    .sub .when {
+      color: var(--fg2);
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 22px 0 20px;
+    }
+
+    .me {
+      width: 72px;
+      margin: 0;
+      flex: none;
+    }
+
+    .me figcaption {
+      display: none;
+    }
+
+    h1 {
+      margin: 0;
+      min-width: 0;
+      font-size: min(40px, calc((100vw - 132px) / 6.3));
+    }
+  }
+
+  /* The address and the button that copies it, on one line. */
+  .ids li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
   }
 
   /* With the ASCII object beside it, and the page's own layout still the
@@ -262,7 +374,8 @@ import Sep from './Sep.astro'
       align-content: start;
     }
 
-    .copy > :not(.me) {
+    .copy > :not(.head),
+    .head > h1 {
       grid-column: 2;
     }
 

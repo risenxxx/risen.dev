@@ -26,10 +26,11 @@ import glyphs from '../portrait/glyphs.txt?raw'
 const widths = [300, 380, 600, 680]
 const srcset = (ext: string) => widths.map((w) => `/assets/img/portrait-${w}.${ext} ${w}w`).join(', ')
 
-/* The two sizes the hero ever draws it at, either side of the width where the
-   portrait leaves the flow and becomes a column. The narrow one is the larger
-   of the two: with nothing beside it, a small picture just looks stranded. */
-const sizes = '(min-width: 861px) 300px, min(340px, 78vw)'
+/* The three sizes the hero draws it at: a column from a laptop up, a beat of
+   its own between a phone and a laptop — the larger, since with nothing beside
+   it a small picture just looks stranded — and a mark beside the heading on a
+   phone, where the smallest rung is already more than a 3× screen needs. */
+const sizes = '(min-width: 861px) 300px, (min-width: 561px) min(340px, 78vw), 72px'
 ---
 
 <div class="frame" style={`--mosaic: url(${mosaic})`}>

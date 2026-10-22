@@ -23,7 +23,9 @@
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 
-const LIMIT = Number(process.env.JS_BUDGET ?? 6144)
+/* 6.5 KB since the address got a copy button: 6 KB was already 39 bytes from
+   full, and the copy is a quarter of a kilobyte the page should have. */
+const LIMIT = Number(process.env.JS_BUDGET ?? 6656)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
 const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 1536)
 const DIST = 'dist'

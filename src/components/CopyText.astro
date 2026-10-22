@@ -1,0 +1,120 @@
+---
+import { contactEvent } from '../analytics.ts'
+import Icon from './Icon.astro'
+
+/*
+  A button that puts the address on the clipboard.
+
+  A `mailto:` does nothing on a desktop with no mail client set up, which is
+  most of the desktops a recruiter reads this on: the click lands, nothing
+  opens, and the address has to be selected by hand. This is the other half of
+  that button — the address stays a link, and this copies it.
+
+  Two looks. `primary` is the right half of the amber address button, drawn
+  as one with it the way the CV's chevron is drawn with its label: an icon,
+  then a tick for a moment once the address is copied, so the pair keeps its
+  width. `line` follows an address written as a line of output, in the mono
+  and the greys, saying what it does in a word.
+
+  It is one more way of getting in touch, so it is a `Contact` event like the
+  rest, with `via=copy`. Without a script it is not there at all. The page is
+  served over HTTPS, so the clipboard is there wherever the script runs.
+*/
+interface Props {
+  text: string
+  /** Where on the page it is, for the event. */
+  from: string
+  look?: 'primary' | 'line'
+}
+
+const { text, from, look = 'line' } = Astro.props
+---
+
+<button
+  type="button"
+  class:list={['copy', look, look === 'primary' && 'btn btn-primary btn-lg']}
+  data-copy={text}
+  aria-label="Copy the address"
+  {...contactEvent('copy', from)}
+>
+  <Icon name="u-copy" class="i-copy" size={look === 'line' ? 13 : undefined} />
+  <Icon name="u-check" class="i-done" size={look === 'line' ? 13 : undefined} />
+  {look === 'line' && <span class="w-copy">copy</span>}
+  {look === 'line' && <span class="w-done">copied</span>}
+</button><span class="said" role="status"></span>
+
+<script>
+  /* A refusal (a permission, a frame) leaves the button as it was: the link
+     beside it still works. */
+  for (const button of document.querySelectorAll<HTMLElement>('[data-copy]')) {
+    button.onclick = () =>
+      navigator.clipboard.writeText(button.dataset.copy!).then(() => {
+        const said = button.nextElementSibling!
+        button.classList.add('done')
+        said.textContent = 'Copied'
+        setTimeout(() => {
+          button.classList.remove('done')
+          said.textContent = ''
+        }, 1600)
+      }, () => {})
+  }
+</script>
+
+<style>
+  :global(html:not(.js)) .copy {
+    display: none;
+  }
+
+  .i-done,
+  .w-done,
+  .done .i-copy,
+  .done .w-copy {
+    display: none;
+  }
+
+  .done .i-done {
+    display: block;
+  }
+
+  .done .w-done {
+    display: inline;
+  }
+
+  /* Read out once it has happened; on screen the tick says it. */
+  .said {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* The pair's seam: a hairline of the button's own ink, as the CV pair has
+     one of the page's. */
+  .primary {
+    padding-inline: 15px;
+    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--btn-fg) 32%, transparent);
+  }
+
+  .line {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 2px;
+    border: 0;
+    background: none;
+    font: 400 12px / 1 var(--mono);
+    color: var(--fg3);
+    cursor: pointer;
+    transition: color 0.18s;
+  }
+
+  .line:hover {
+    color: var(--fg);
+  }
+
+  .line.done {
+    color: var(--amber);
+  }
+</style>

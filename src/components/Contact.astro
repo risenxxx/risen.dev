@@ -2,6 +2,7 @@
 import { contactEvent } from '../analytics.ts'
 import { contacts, site } from '../data/site.ts'
 import Icon from './Icon.astro'
+import CopyText from './CopyText.astro'
 import CvMenu from './CvMenu.astro'
 import Sep from './Sep.astro'
 
@@ -24,10 +25,13 @@ const social = contacts.filter((c) => c.id !== 'email')
     </p>
 
     <div class="cta" data-reveal style="--dl: 3">
-      <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`} {...contactEvent('email', 'contact')}>
-        <Icon name="b-mail" />
-        {site.email}
-      </a>
+      <div class="mail">
+        <a class="btn btn-primary btn-lg" href={`mailto:${site.email}`} {...contactEvent('email', 'contact')}>
+          <Icon name="b-mail" />
+          {site.email}
+        </a>
+        <CopyText text={site.email} from="contact" look="primary" />
+      </div>
       <a class="btn btn-ghost btn-lg" href={site.call} target="_blank" rel="noopener" {...contactEvent('call', 'contact')}>Book a call</a>
       <CvMenu id="contact" large />
     </div>
@@ -101,6 +105,11 @@ const social = contacts.filter((c) => c.id !== 'email')
     flex-wrap: wrap;
     gap: 12px;
     margin: 34px 0 22px;
+  }
+
+  /* The address and its copy button, one amber block with a seam. */
+  .mail {
+    display: inline-flex;
   }
 
   .ids {

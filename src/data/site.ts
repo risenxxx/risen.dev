@@ -11,6 +11,10 @@ export const site = {
   call: 'https://cal.com/risenx/intro',
   location: 'Yerevan',
   timezone: 'UTC+4',
+  /* What a recruiter scans the first screen for after the role: when, and
+     whose working day. */
+  availability: 'available immediately',
+  hours: 'mostly EU hours',
   repo: 'https://github.com/risenxxx/risen.dev',
 } as const
 

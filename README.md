@@ -164,7 +164,7 @@ the query string is cut to `utm_*` and the referrer to its origin on the way.
 The script is fetched after `load`, in idle time, rather than with the `defer`
 its snippet asks for: a deferred script runs in order with the page's own
 module, and the reveals would wait on it. Outbound links are tracked by the script; on top of that every way
-of getting in touch — the address, the call, a CV, LinkedIn, Telegram — is one
+of getting in touch — the address, copying it, the call, a CV, LinkedIn, Telegram — is one
 `Contact` event with `via` and `from` (`src/analytics.ts`), so a funnel can end on
 any of them; a `mailto:` has no host and would not be counted otherwise. How far a reader gets is a `Section` event with the section's object key
 as `id`, sent once a section has held the middle of the screen for a second. Web vitals, error tracking and the rest are switched on in the site's
@@ -174,7 +174,7 @@ run `localStorage.setItem('disable-rybbit', '1')` on risen.dev once.
 ## Deploying
 
 `.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript
-budgets (`scripts/budget.mjs`: 6 KB for the page's own script, 48 KB for the
+budgets (`scripts/budget.mjs`: 6.5 KB for the page's own script, 48 KB for the
 deferred ASCII module, 1.5 KB for the analytics loader on both pages, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
 uploads a preview version and comments the address on the PR.
 
