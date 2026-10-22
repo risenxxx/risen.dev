@@ -3,10 +3,21 @@
   triangle, a texture from an image or canvas, and a resize that respects the
   device pixel ratio.
 */
+import type { AsciiOff } from '../scripts/off'
+
 export type GL = WebGL2RenderingContext
 
+/**
+ * Tells the page the layer has given up on something; the page counts it
+ * (src/scripts/off.ts). Said here rather than imported from there, so the
+ * layer and the page's own script share no chunk.
+ */
+export function off(kind: AsciiOff['off'], detail?: unknown): void {
+  dispatchEvent(new CustomEvent('ascii-off', { detail: { off: kind, detail: detail === undefined ? undefined : String(detail) } }))
+}
+
 export function getGL(canvas: HTMLCanvasElement): GL | null {
-  return canvas.getContext('webgl2', {
+  const gl = canvas.getContext('webgl2', {
     alpha: true,
     antialias: false,
     depth: false,
@@ -14,6 +25,8 @@ export function getGL(canvas: HTMLCanvasElement): GL | null {
     premultipliedAlpha: true,
     powerPreference: 'low-power',
   })
+  if (!gl) off('context')
+  return gl
 }
 
 /* One triangle that covers the clip space; no buffers, the vertex id is enough. */
@@ -58,7 +71,9 @@ export function ready(gl: GL, prog: WebGLProgram): boolean {
   }
   if (ext && !gl.getProgramParameter(prog, ext.COMPLETION_STATUS_KHR)) return false
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    throw new Error(`program failed to link:\n${gl.getProgramInfoLog(prog) ?? ''}`)
+    const log = gl.getProgramInfoLog(prog) ?? ''
+    off('link', log)
+    throw new Error(`program failed to link:\n${log}`)
   }
   return true
 }

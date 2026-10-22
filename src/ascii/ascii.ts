@@ -20,6 +20,7 @@
   stays a photograph. What is still to come into view gets the layer in full.
 */
 import { decodeOnView } from './decode'
+import { off } from './gl'
 import { mountObject } from './object'
 import { mountAsciiImage } from './picture'
 
@@ -47,9 +48,14 @@ const shown = (picture: Element): boolean => {
 const take = (picture: HTMLElement, opts: Parameters<typeof mountAsciiImage>[1]): void => {
   if (shown(picture)) return
   picture.classList.add('ascii-pending')
-  void mountAsciiImage(picture, opts).then((made) => {
-    if (!made) picture.classList.add('ascii-covered')
-  })
+  mountAsciiImage(picture, opts)
+    .then((made) => {
+      if (!made) picture.classList.add('ascii-covered')
+    })
+    .catch((e: unknown) => {
+      picture.classList.add('ascii-covered')
+      off('error', e)
+    })
 }
 
 export function mount(): void {
@@ -64,10 +70,15 @@ export function mount(): void {
 
   idle(() => {
     if (html.classList.contains('ascii-object')) {
-      void mountObject().then((object) => {
-        // No context after all: the room made for it is given back.
-        if (!object) html.classList.remove('ascii-object')
-      })
+      // No context after all, or no object: the room made for it is given back.
+      mountObject()
+        .then((object) => {
+          if (!object) html.classList.remove('ascii-object')
+        })
+        .catch((e: unknown) => {
+          html.classList.remove('ascii-object')
+          off('error', e)
+        })
     }
     for (const pic of document.querySelectorAll<HTMLElement>('.stage picture')) {
       take(pic, { end: 'ascii', trigger: 'none', cell: 5, levels: 0, bg: [0.03, 0.03, 0.04] })

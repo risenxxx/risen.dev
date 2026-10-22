@@ -86,12 +86,17 @@ if ('WebGL2RenderingContext' in window && !matchMedia('(prefers-reduced-motion: 
   middle fifth of the screen for a second, so a jump from the bar to
   #contact does not count everything it flew past. The hero is the pageview
   itself and is not sent; the 404 has no sections in its main and sends none.
+
+  Once it is there the loader says so with a `rybbit` event on `window`: the
+  ASCII layer's failures (scripts/off.ts) can come before the counter does,
+  and wait for it.
 */
 const analytics = import.meta.env.PROD && !preview
 const rybbit = `addEventListener('load', () => (window.requestIdleCallback || setTimeout)(() => {
   const s = document.createElement('script')
   s.src = '${ANALYTICS_SRC}'
   s.onload = () => {
+    dispatchEvent(new Event('rybbit'))
     const timers = new Map()
     const seen = new IntersectionObserver((entries) => {
       for (const e of entries) {

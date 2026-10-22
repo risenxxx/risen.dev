@@ -23,9 +23,10 @@
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 
-/* 6.5 KB since the address got a copy button: 6 KB was already 39 bytes from
-   full, and the copy is a quarter of a kilobyte the page should have. */
-const LIMIT = Number(process.env.JS_BUDGET ?? 6656)
+/* 7 KB since the address got a copy button and the ASCII layer reports when
+   it gives up (src/scripts/off.ts): 6 KB was already 39 bytes from full, and
+   the two are under a kilobyte the page should have. */
+const LIMIT = Number(process.env.JS_BUDGET ?? 7168)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
 const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 1536)
 const DIST = 'dist'

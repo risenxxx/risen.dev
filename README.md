@@ -167,14 +167,18 @@ module, and the reveals would wait on it. Outbound links are tracked by the scri
 of getting in touch — the address, copying it, the call, a CV, LinkedIn, Telegram — is one
 `Contact` event with `via` and `from` (`src/analytics.ts`), so a funnel can end on
 any of them; a `mailto:` has no host and would not be counted otherwise. How far a reader gets is a `Section` event with the section's object key
-as `id`, sent once a section has held the middle of the screen for a second. Web vitals, error tracking and the rest are switched on in the site's
-settings on Rybbit, not here. To keep a browser of your own out of the numbers,
+as `id`, sent once a section has held the middle of the screen for a second. When the ASCII
+layer gives up — the module never arrives, no WebGL2 context, a shader that will
+not link — it is one `Ascii` event with `off` (`load`, `context`, `link`, `error`)
+and a `detail` (`src/scripts/off.ts`). Web vitals and the rest are switched on in the site's
+settings on Rybbit, not here; its error tracking is off, since it starts after the layer and
+would miss exactly these. To keep a browser of your own out of the numbers,
 run `localStorage.setItem('disable-rybbit', '1')` on risen.dev once.
 
 ## Deploying
 
 `.github/workflows/deploy.yml` builds, type-checks, enforces the JavaScript
-budgets (`scripts/budget.mjs`: 6.5 KB for the page's own script, 48 KB for the
+budgets (`scripts/budget.mjs`: 7 KB for the page's own script, 48 KB for the
 deferred ASCII module, 1.5 KB for the analytics loader on both pages, raw bytes) and then runs `wrangler deploy`. A pull request builds the same way,
 uploads a preview version and comments the address on the PR.
 

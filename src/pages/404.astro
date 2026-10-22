@@ -19,11 +19,17 @@ import { site } from '../data/site.ts'
   </main>
 
   <script>
+    import { asciiOff, countAsciiOff } from '../scripts/off.ts'
+
+    countAsciiOff()
     const html = document.documentElement
     if (html.classList.contains('ascii')) {
       import('../ascii/ascii.ts')
         .then((m) => m.mount())
-        .catch(() => html.classList.remove('ascii', 'ascii-object'))
+        .catch((e: unknown) => {
+          html.classList.remove('ascii', 'ascii-object')
+          asciiOff('load', e)
+        })
     }
   </script>
 </Page>
