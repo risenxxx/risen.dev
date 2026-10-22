@@ -15,7 +15,7 @@
 
 /* Bumped by hand when a line below changes. A date that drifts out of step
    with the list is worse than no date. */
-const updated = '2026-10-04'
+const updated = '2026-10-22'
 
 /** Every link in the log leaves the page, so every one opens in a new tab. */
 const out = (html: string): string => html.replace(/<a href="http/g, '<a target="_blank" rel="noopener" href="http')
@@ -70,7 +70,10 @@ const entries = [
   },
   {
     when: '2018',
-    body: 'Went freelance full time and started dealing with the client directly: scope, deploy, and the support after launch. Where the eight years start.',
+    /* The one line here with a record to show for it, dated from its first
+       contract: linked quietly, where the claim is, rather than as a profile
+       beside the others — the jobs are the size jobs were in 2018. */
+    body: 'Went <a href="https://www.upwork.com/freelancers/~01f19529f24408ca07">freelance</a> full time and started dealing with the client directly: scope, deploy, and the support after launch. Where the eight years start.',
   },
 ]
 ---
