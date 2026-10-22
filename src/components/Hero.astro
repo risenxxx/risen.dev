@@ -143,6 +143,25 @@ import Sep from './Sep.astro'
     font-size: 1em;
   }
 
+  /* Up to a narrow laptop the fact takes a line of its own under the state,
+     lined up with its words (7 px of cursor, 9 px of gap): on one line it ran
+     into the object standing to the right of the copy. */
+  @media (min-width: 561px) and (max-width: 1200px) {
+    .pill {
+      flex-wrap: wrap;
+      row-gap: 4px;
+    }
+
+    .pill .when {
+      flex-basis: 100%;
+      padding-left: 16px;
+    }
+
+    .pill .when :global(.sep) {
+      display: none;
+    }
+  }
+
   .sub {
     display: none;
   }
