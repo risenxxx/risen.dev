@@ -102,7 +102,7 @@ const steps = [
             data-dur="1600"
             data-ease="linear"
             role="img"
-            aria-label="One request at run time: clients through the edge and an API gateway into HTTP services and a real-time layer, through RabbitMQ, the brokers layer, to workers and durable workflows, then into the OLTP, OLAP and cache tiers."
+            aria-label="One request at run time: clients through the edge and an API gateway into HTTP services and a real-time layer, through RabbitMQ and NATS, the brokers layer, to workers and durable workflows, then into the OLTP, OLAP and cache tiers."
           >
             <g class="b2">
               <rect x="0.5" y="0.5" width="149" height="256" class="box"></rect>
@@ -127,9 +127,9 @@ const steps = [
               <rect x="542.5" y="160.5" width="197" height="76" class="box lit"></rect>
               <text x="558" y="184" class="lbl">real-time layer</text>
               <text x="558" y="208" class="val2">WebSockets, reconnect-safe</text>
-              <rect x="764.5" y="79.5" width="137" height="98" class="box"></rect>
+              <rect x="764.5" y="79.5" width="141" height="98" class="box"></rect>
               <text x="780" y="103" class="lbl">brokers</text>
-              <text x="780" y="127" class="val2 big">RabbitMQ</text>
+              <text x="780" y="127" class="val2 big">RabbitMQ, NATS</text>
               <text x="780" y="145" class="sub">Messages between</text>
               <text x="780" y="161" class="sub">services, and jobs</text>
               <rect x="926.5" y="20.5" width="181" height="76" class="box"></rect>
@@ -164,7 +164,7 @@ const steps = [
             <path class="arrow" style="--from: 0.48" d="M536 54.0l6 4.5-6 4.5M536 194.0l6 4.5-6 4.5"></path>
             <path class="leg" style="--from: 0.57; --len: 94" d="M740 58.5h12V128.5H764M740 198.5h12V128.5H764"></path>
             <path class="arrow" style="--from: 0.57" d="M758 124.0l6 4.5-6 4.5"></path>
-            <path class="leg" style="--from: 0.66; --len: 94" d="M902 128.5h12V58.5H926M902 128.5h12V198.5H926"></path>
+            <path class="leg" style="--from: 0.66; --len: 90" d="M906 128.5h8V58.5H926M906 128.5h8V198.5H926"></path>
             <path class="arrow" style="--from: 0.66" d="M920 54.0l6 4.5-6 4.5M920 194.0l6 4.5-6 4.5"></path>
             <path class="leg" style="--from: 0.75; --len: 94" d="M1108 58.5h12V38.5H1132M1108 58.5h12V128.5H1132M1108 198.5h12V218.5H1132M1108 198.5h12V128.5"></path>
             <path class="arrow" style="--from: 0.75" d="M1126 34.0l6 4.5-6 4.5M1126 124.0l6 4.5-6 4.5M1126 214.0l6 4.5-6 4.5"></path>
@@ -177,7 +177,7 @@ const steps = [
               <path class="pulse p2" d="M324 128.5H348"></path>
               <path class="pulse p3" d="M518 128.5h12V58.5H542M518 128.5h12V198.5H542"></path>
               <path class="pulse p4" d="M740 58.5h12V128.5H764M740 198.5h12V128.5H764"></path>
-              <path class="pulse p5" d="M902 128.5h12V58.5H926M902 128.5h12V198.5H926"></path>
+              <path class="pulse p5" d="M906 128.5h8V58.5H926M906 128.5h8V198.5H926"></path>
               <path class="pulse p6" d="M1108 58.5h12V38.5H1132M1108 58.5h12V128.5H1132M1108 198.5h12V218.5H1132M1108 198.5h12V128.5"></path>
             </g>
           </svg>
