@@ -102,6 +102,7 @@ import Stage from './Stage.astro'
     bullets={[
       "A round in progress lives in a Temporal workflow rather than in a server's memory, so a restart or a release never drops it.",
       'Live play runs over Socket.IO beside ordinary HTTP, with blockchain payments isolated behind transfer services and idempotent settlement.',
+      'Analytics go through Kafka topics on Redpanda into ClickHouse in deduplicated batches that resume after a failure.',
     ]}
     metrics={[
       { value: '120 ms', note: 'p95 state sync, 300 sessions' },
