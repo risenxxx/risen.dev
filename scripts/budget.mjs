@@ -19,6 +19,10 @@
   Both pages carry it, so the limit is two copies' worth. Counted with the page's script it would eat
   the room kept for the reveals; counted nowhere it could grow into more than
   a loader. Rybbit's own script is a third party's and is not in `dist`.
+
+  The console's greeting (src/scripts/hello.ts) is a fourth: a module fetched
+  in idle time after `load`, for whoever opens devtools. Like the ASCII layer
+  it is kept apart so it neither hides in the page's budget nor grows unseen.
 */
 import { readdir, readFile, stat } from 'node:fs/promises'
 import { basename, join } from 'node:path'
@@ -29,10 +33,14 @@ import { basename, join } from 'node:path'
 const LIMIT = Number(process.env.JS_BUDGET ?? 7168)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
 const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 1536)
+const HELLO_LIMIT = Number(process.env.HELLO_BUDGET ?? 5120)
 const DIST = 'dist'
 
 /** The deferred module: the chunk Vite names after src/ascii/ascii.ts. */
 const isAscii = (path) => basename(path).startsWith('ascii.') && path.endsWith('.js')
+
+/** The console's greeting: the chunk named after src/scripts/hello.ts. */
+const isHello = (path) => basename(path).startsWith('hello.') && path.endsWith('.js')
 
 async function* walk(dir) {
   for (const entry of await readdir(dir)) {
@@ -45,6 +53,7 @@ async function* walk(dir) {
 let total = 0
 let ascii = 0
 let analytics = 0
+let hello = 0
 const parts = []
 
 /*
@@ -57,6 +66,7 @@ for await (const path of walk(DIST)) {
   if (path.endsWith('.js') && !EXEMPT.has(path)) {
     const bytes = (await readFile(path)).byteLength
     if (isAscii(path)) ascii += bytes
+    else if (isHello(path)) hello += bytes
     else total += bytes
     parts.push([path, bytes])
     continue
@@ -88,6 +98,7 @@ for (const [name, bytes] of parts.sort((a, b) => b[1] - a[1])) {
 console.log(`${String(total).padStart(7)}  the page's own (limit ${LIMIT})`)
 console.log(`${String(ascii).padStart(7)}  the ASCII layer, deferred (limit ${ASCII_LIMIT})`)
 console.log(`${String(analytics).padStart(7)}  the analytics loader, after load (limit ${ANALYTICS_LIMIT})`)
+console.log(`${String(hello).padStart(7)}  the console's greeting, after load (limit ${HELLO_LIMIT})`)
 
 let failed = false
 if (total > LIMIT) {
@@ -100,6 +111,10 @@ if (ascii > ASCII_LIMIT) {
 }
 if (analytics > ANALYTICS_LIMIT) {
   console.error(`::error::Analytics loader budget exceeded: ${analytics} > ${ANALYTICS_LIMIT} bytes`)
+  failed = true
+}
+if (hello > HELLO_LIMIT) {
+  console.error(`::error::Console greeting budget exceeded: ${hello} > ${HELLO_LIMIT} bytes`)
   failed = true
 }
 if (failed) process.exit(1)

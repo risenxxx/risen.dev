@@ -154,5 +154,14 @@ const rybbit = `addEventListener('load', () => (window.requestIdleCallback || se
   </head>
   <body>
     <slot />
+    <script>
+      /* The console's greeting (scripts/hello.ts): after `load`, in idle time, so
+         nothing the reader came for waits on it. */
+      addEventListener('load', () =>
+        (window.requestIdleCallback || setTimeout)(() => {
+          import('../scripts/hello.ts').then((m) => m.hello()).catch(() => {})
+        }),
+      )
+    </script>
   </body>
 </html>
