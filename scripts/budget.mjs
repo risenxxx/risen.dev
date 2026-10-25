@@ -29,8 +29,11 @@ import { basename, join } from 'node:path'
 
 /* 7 KB since the address got a copy button and the ASCII layer reports when
    it gives up (src/scripts/off.ts): 6 KB was already 39 bytes from full, and
-   the two are under a kilobyte the page should have. */
-const LIMIT = Number(process.env.JS_BUDGET ?? 7168)
+   the two are under a kilobyte the page should have. 7.5 KB since Vite
+   8.3.5, whose helper for dynamic imports (preload-helper.js) came in 301
+   bytes heavier with nothing on the page changed; Vite 8 adds it to every
+   dynamic import whatever `build.modulePreload` says. */
+const LIMIT = Number(process.env.JS_BUDGET ?? 7680)
 const ASCII_LIMIT = Number(process.env.ASCII_BUDGET ?? 49152)
 const ANALYTICS_LIMIT = Number(process.env.ANALYTICS_BUDGET ?? 1536)
 const HELLO_LIMIT = Number(process.env.HELLO_BUDGET ?? 5120)
