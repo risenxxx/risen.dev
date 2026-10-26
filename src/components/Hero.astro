@@ -374,7 +374,15 @@ import Sep from './Sep.astro'
     }
   }
 
-  @media (min-width: 1401px) {
+  /* Until the page reaches its 1440 px the object's lane narrows with the
+     screen faster than the copy does. */
+  @media (min-width: 1401px) and (max-width: 1440px) {
+    :global(html.ascii-object) .lede {
+      max-width: 600px;
+    }
+  }
+
+  @media (min-width: 1441px) {
     :global(html.ascii-object) .lede {
       max-width: 56ch;
     }
