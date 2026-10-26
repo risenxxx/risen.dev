@@ -69,7 +69,7 @@ import Sep from './Sep.astro'
         href="https://github.com/BenLorantfy/nestjs-zod"
         target="_blank"
         rel="noopener"
-        aria-label="nestjs-zod on GitHub, 1.1k stars"><span class="nm">nestjs-zod</span><span class="stars mono" aria-hidden="true"><Icon name="u-star-solid" size={12} />1.1k</span></a>, at 5.5M installs a month.
+        aria-label="nestjs-zod on GitHub, 1.1k stars"><span class="nm">nestjs-zod</span><span class="stars mono" aria-hidden="true"><Icon name="u-star-solid" size={12} />1.1k</span></a>, at 5.5M installs a&nbsp;month.
     </p>
 
     <div class="cta" data-reveal style="--dl: 4">
@@ -199,6 +199,15 @@ import Sep from './Sep.astro'
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.037em;
+  }
+
+  /* Plain wrapping, not the paragraphs' `pretty`: Safari's `pretty` breaks the
+     line after the unbreakable star badge early, leaving a line half empty and
+     "installs a month." on one of its own. The no-break space in "a month"
+     keeps the last word from standing alone, which is all `pretty` did here
+     in Chrome. */
+  .lede {
+    text-wrap: wrap;
   }
 
   /* The role, said once in words: the heading is the claim, this is the job
