@@ -4,6 +4,7 @@
     favicon.svg           the tab icon, as drawn
     favicon.ico           the same at 16 and 32 px, for browsers that take no SVG
     apple-touch-icon.png  180 px, opaque, for a home screen
+    bimi.svg              the mail logo (BIMI), SVG Tiny PS, copied as drawn
 
   The PNGs are rasterised by Chrome itself: a page draws each SVG into a
   canvas at the size wanted and writes the result into its own DOM, and
@@ -103,9 +104,10 @@ function ico(images) {
 }
 
 copyFileSync('src/favicon/favicon.svg', 'public/favicon.svg')
+copyFileSync('src/favicon/bimi.svg', 'public/bimi.svg')
 writeFileSync('public/favicon.ico', ico([{ size: 16, data: png('ico16') }, { size: 32, data: png('ico32') }]))
 writeFileSync('public/apple-touch-icon.png', png('touch'))
 
-for (const f of ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png']) {
+for (const f of ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'bimi.svg']) {
   console.log(`public/${f} — ${(readFileSync(`public/${f}`).byteLength / 1024).toFixed(1)} KB`)
 }
