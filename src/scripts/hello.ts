@@ -57,7 +57,9 @@ DESCRIPTION
      ${site.location}, ${site.timezone}, ${site.hours}.
 
 SEE ALSO
-     ${site.email} · t.me/risenx · ${site.call.replace('https://', '')}
+     ${site.email}
+     t.me/risenx
+     ${site.call.replace('https://', '')}
 
 Type %chelp()%c to look around.`
 
