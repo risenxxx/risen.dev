@@ -9,6 +9,13 @@
   wallet pill, the points badge, the pot ValueBadge, a ContentCard holding the
   live bet feed, and the gradient Place-bet button.
 
+  The round plays to its end: the wheel stops on the reader's own seat and the
+  app's winner screen takes the board, with the pot heaped behind the avatar.
+  The gifts are real ones — numbered collectibles from Fragment, the source
+  the app loaded them from (public/assets/gifts): in the feed the preview with
+  its backdrop, as the feed showed it, and in the pot the first frame of each
+  gift's animation with the backdrop removed, as the winner screen showed it.
+
   Two things here are about performance rather than looks. The rotation is on
   the <svg> ELEMENT, not on a group inside it: an element transform is handed to
   the compositor, while a transform on an inner <g> makes the browser re-raster
@@ -19,7 +26,7 @@
 */
 ---
 
-<div class="device" aria-hidden="true" data-scene data-dur="2200">
+<div class="device" aria-hidden="true" data-scene data-dur="5400" data-ease="linear">
   <div class="screen">
     <span class="backdrop"></span>
 
@@ -97,7 +104,31 @@
             <g class="seat" style="--x:-33px;--y:-113.3px"><circle r="15" stroke="#ff8a3d"></circle><text class="ini" y="3.4">PL</text></g>
           </g>
         </svg>
-        <span class="centre">24</span>
+        <div class="win">
+          <svg class="hub" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="35"></circle>
+            <circle class="ring" cx="40" cy="40" r="35" transform="rotate(-90 40 40)"></circle>
+          </svg>
+          <span class="disc"></span>
+          <span class="count">24</span>
+          <span class="label">GIFT<br />FIGHT</span>
+          <div class="card">
+            <div class="champ">
+              <span class="loot">
+                <img src="/assets/gifts/swisswatch-404.webp" style="--x:-57.6px;--y:-18.3px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+                <img src="/assets/gifts/lovepotion-404.webp" style="--x:27.1px;--y:-20.1px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+                <img src="/assets/gifts/toybear-303.webp" style="--x:-49.8px;--y:-41px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+                <img src="/assets/gifts/jellybunny-303.webp" style="--x:15.7px;--y:-41.9px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+                <img src="/assets/gifts/trappedheart-303.webp" style="--x:-29.7px;--y:-55px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+                <img src="/assets/gifts/signetring-303.webp" style="--x:-5.2px;--y:-55px" alt="" width="28" height="28" loading="lazy" decoding="async" />
+              </span>
+              <span class="crown">RZ</span>
+            </div>
+            <p class="winner"><i></i>Risen<i></i></p>
+            <p class="prize"><small>Prize</small><b>$261.02</b></p>
+            <span class="chance">11.05% chance</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -117,15 +148,15 @@
       <p class="live"><i></i>Bets</p>
       <div class="bet">
         <span class="face">NK</span>
-        <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
-        <span class="what"><b>Plush Pepe</b><em>@nikita<i class="sep"></i>2s ago</em></span>
-        <span class="value">21.4</span>
+        <span class="gift"><img src="/assets/gifts/trappedheart-303.card.webp" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+        <span class="what"><b>Trapped Heart</b><em>@nikita<i class="sep"></i>2s ago</em></span>
+        <span class="value">11.8</span>
       </div>
       <div class="bet drop">
         <span class="face alt">AI</span>
-        <span class="gift"><svg viewBox="0 0 24 24"><path d="M4 11h16v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM3 7h18v4H3zM12 7v13M12 7C10 7 7.5 4 9 3s3 3 3 4M12 7c2 0 4.5-3 3-4s-3 3-3 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
-        <span class="what"><b>Durov’s Cap</b><em>@aiko<i class="sep"></i>9s ago</em></span>
-        <span class="value">18.0</span>
+        <span class="gift"><img src="/assets/gifts/signetring-303.card.webp" alt="" width="28" height="28" loading="lazy" decoding="async" /></span>
+        <span class="what"><b>Signet Ring</b><em>@aiko<i class="sep"></i>9s ago</em></span>
+        <span class="value">17.7</span>
       </div>
     </div>
 
@@ -166,6 +197,35 @@
       0 30px 60px -28px rgba(0, 0, 0, 0.9);
     font-family: var(--ui);
     contain: content;
+
+    /*
+      The round, in the app's own order and on its own clock. The scene hands
+      over plain time (`data-ease="linear"`), turned here into seconds, and
+      every beat eases on its own. A last bet lands with the countdown running,
+      the wheel turns for 2.2 s and stops on the reader's own seat, rests there
+      for the second the app held it before the result, and then the winner
+      sequence plays as roulette-wheel.tsx timed it: the pointer lifts away, the hub
+      grows over the board and turns green, and the winner, the name, the prize
+      and the odds come in a tenth of a second apart. With the scene finished
+      — no script, reduced motion — it is the result that stays on screen.
+    */
+    --s: calc(var(--p) * 5.4);
+    --bet: clamp(0, var(--s) / 0.4, 1);
+    --betting: clamp(0, (0.5 - var(--s)) * 100, 1);
+    --spin-t: clamp(0, (var(--s) - 0.5) / 2.2, 1);
+    --spin: calc(1 - (1 - var(--spin-t)) * (1 - var(--spin-t)) * (1 - var(--spin-t)));
+    --lift: clamp(0, (var(--s) - 3.7) / 0.5, 1);
+    --hush: clamp(0, (var(--s) - 3.7) / 0.3, 1);
+    --dim: clamp(0, (var(--s) - 4) / 0.3, 1);
+    --grow-t: clamp(0, (var(--s) - 4.2) / 0.8, 1);
+    --grow: calc(var(--grow-t) * var(--grow-t) * (3 - 2 * var(--grow-t)));
+    --green: clamp(0, (var(--s) - 4.2) / 0.5, 1);
+    --crown-t: clamp(0, (var(--s) - 4.7) / 0.5, 1);
+    --crown-u: calc(var(--crown-t) - 1);
+    --name: clamp(0, (var(--s) - 4.8) / 0.4, 1);
+    --prize-t: clamp(0, (var(--s) - 4.9) / 0.4, 1);
+    --prize-u: calc(var(--prize-t) - 1);
+    --odds: clamp(0, (var(--s) - 5) / 0.4, 1);
   }
 
   .screen {
@@ -518,12 +578,14 @@
     border-right: 4px solid transparent;
     border-top: 8px solid #a8ff35;
     z-index: 2;
+    opacity: calc(1 - var(--lift));
+    transform: translateY(calc(var(--lift) * -6px));
   }
 
   /*
-    Three turns and a little, easing into the winner. The rotation lives on the
-    element so the compositor owns it; the progress is the scene's, so it cannot
-    run away on a slow frame.
+    Three turns and a little, easing into the winner — RZ, whose sector stops
+    under the pointer. The rotation lives on the element so the compositor owns
+    it; the progress is the scene's, so it cannot run away on a slow frame.
   */
   .wheel {
     width: 262px;
@@ -531,7 +593,7 @@
     max-height: 100%;
     height: auto;
     aspect-ratio: 1;
-    transform: rotate(calc(var(--p) * 1134deg));
+    transform: rotate(calc(var(--spin) * 1134deg));
     will-change: transform;
   }
 
@@ -552,7 +614,7 @@
   .seat {
     transform-box: view-box;
     transform-origin: 0 0;
-    transform: translate(var(--x), var(--y)) rotate(calc(var(--p) * -1134deg));
+    transform: translate(var(--x), var(--y)) rotate(calc(var(--spin) * -1134deg));
   }
 
   .seats .ini {
@@ -563,17 +625,187 @@
     fill: #bdb7d4;
   }
 
-  /* Over the wheel, not in it: anything inside the <svg> turns with the wheel. */
-  .centre {
+  /*
+    Over the wheel, not in it: anything inside the <svg> turns with the wheel.
+    Sized off the app's own, where the wheel is 300 across and this one is 262,
+    so everything here is the original's at seven eighths.
+  */
+  .win {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
-    font-family: var(--ui);
+    pointer-events: none;
+  }
+
+  .win > * {
+    grid-area: 1 / 1;
+  }
+
+  /*
+    The countdown's dark hub, with the time left drawn round it while bets are
+    open — 24 of the round's 60 seconds — and the app's name in it while the
+    wheel turns. All of it gives way when the round is decided.
+  */
+  .hub {
+    width: 70px;
+    height: 70px;
+    opacity: calc(1 - var(--dim));
+  }
+
+  .hub circle {
+    fill: rgba(15, 15, 16, 0.85);
+  }
+
+  .hub .ring {
+    fill: none;
+    stroke: #a8ff35;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 219.9;
+    stroke-dashoffset: 131.9;
+    opacity: var(--betting);
+  }
+
+  .count {
     font-size: 20px;
     font-weight: 700;
     color: #fff;
-    pointer-events: none;
+    opacity: var(--betting);
+  }
+
+  .label {
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 14px;
+    text-align: center;
+    color: #fff;
+    opacity: calc((1 - var(--betting)) * (1 - var(--hush)) * 0.8);
+  }
+
+  /*
+    The hub growing to cover the board. The app animates its width; here it is
+    drawn at the size it ends at and scaled up from the hub's, which leaves the
+    work to the compositor.
+  */
+  .disc {
+    width: calc(100% - 14px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, rgb(34, 85, 34), rgb(21, 51, 21));
+    opacity: var(--green);
+    transform: scale(calc(0.246 + 0.754 * var(--grow)));
+  }
+
+  /* Cut to the disc, as in the app: the outer gifts of a big pot go past it. */
+  .card {
+    align-self: stretch;
+    justify-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    clip-path: circle(calc(50% - 7px));
+    text-align: center;
+  }
+
+  .champ {
+    position: relative;
+    margin-bottom: 4px;
+    opacity: var(--crown-t);
+    transform: scale(calc(1 + 2.70158 * var(--crown-u) * var(--crown-u) * var(--crown-u) + 1.70158 * var(--crown-u) * var(--crown-u)));
+  }
+
+  /* The pot, heaped behind the winner: every gift of the round, on the app's
+     own spiral, as the first frame of its animation with the backdrop taken
+     off — which is what the app showed. */
+  .loot {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .loot img {
+    position: absolute;
+    left: calc(50% + var(--x));
+    top: calc(50% + var(--y));
+    width: 28px;
+    height: 28px;
+  }
+
+  .crown {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #a8ff35;
+    background: linear-gradient(135deg, #4a4468, #2e2a44);
+    box-shadow: 0 16px 20px -6px rgba(0, 0, 0, 0.35);
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #c7c2e0;
+    letter-spacing: 0.02em;
+  }
+
+  .winner {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #fff;
+    text-shadow: 0 0 3px #000;
+    opacity: var(--name);
+    transform: translateY(calc((1 - var(--name)) * 17px));
+  }
+
+  .winner i {
+    width: 21px;
+    height: 2px;
+    background: rgba(168, 255, 53, 0.6);
+  }
+
+  .prize {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    border: 2px solid rgba(168, 255, 53, 0.3);
+    background: rgba(168, 255, 53, 0.15);
+    opacity: var(--prize-t);
+    transform: scale(calc(1 + 2.70158 * var(--prize-u) * var(--prize-u) * var(--prize-u) + 1.70158 * var(--prize-u) * var(--prize-u)));
+  }
+
+  .prize small {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    color: #a8ff35;
+  }
+
+  .prize b {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #fff;
+  }
+
+  .chance {
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.8);
+    opacity: var(--odds);
   }
 
   .stats {
@@ -691,10 +923,11 @@
     margin-top: 7px;
   }
 
-  /* The newest bet slides in from the left, the way the real feed animates it. */
+  /* The last bet of the round slides in from the left, the way the real feed
+     animates it, before the wheel starts. */
   .drop {
-    opacity: calc((var(--p) - 0.72) * 5);
-    transform: translateX(calc((1 - clamp(0, (var(--p) - 0.72) * 5, 1)) * -16px));
+    opacity: var(--bet);
+    transform: translateX(calc((1 - var(--bet)) * (1 - var(--bet)) * -16px));
   }
 
   .face,
@@ -718,16 +951,16 @@
     background: #45406b;
   }
 
+  /* The gift's own preview, backdrop and all, as the feed showed it. */
   .gift {
-    border-radius: 8px;
-    background: #241f38;
-    border: 1px solid #3e3a5c;
-    color: #8f8aa8;
+    border-radius: 6px;
+    overflow: hidden;
   }
 
-  .gift svg {
-    width: 16px;
-    height: 16px;
+  .gift img {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .what {
