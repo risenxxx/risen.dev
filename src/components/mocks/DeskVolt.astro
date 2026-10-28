@@ -242,4 +242,10 @@ const devices = [
     vertical-align: middle;
     margin-inline: 9px;
   }
+
+  /* A dot, not the page's separator: that one draws its slash in ::before,
+     which reaches in here because the class name is the same. */
+  .sep::before {
+    content: none;
+  }
 </style>
