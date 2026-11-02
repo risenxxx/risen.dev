@@ -86,6 +86,17 @@ const look = ['btn', primary ? 'btn-primary' : 'btn-ghost', large && 'btn-lg']
     display: inline-flex;
   }
 
+  /* The shared hairline belongs to whichever half is lit, so its hover edge
+     is drawn whole instead of under the neighbour. */
+  .cv-pair > .btn {
+    position: relative;
+  }
+
+  .cv-pair > .btn:hover,
+  .cv-pair > .btn:focus-visible {
+    z-index: 1;
+  }
+
   .cv-more {
     margin-left: -1px;
     padding-inline: 11px;
