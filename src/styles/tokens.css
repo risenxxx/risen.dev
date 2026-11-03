@@ -59,7 +59,9 @@
        purpose: a narrower, lighter one for a texture. */
     --mono: "Martian Mono Variable", "Martian Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     /* Frame Player and Gift Fight are both drawn in Rubik. The previews use it
-       so their chrome matches the real applications rather than this page. */
+       so their chrome matches the real applications rather than this page;
+       Tolkly's sets the shop around its widget in it, so the widget, which
+       takes the site's face, has one that is not the page's either. */
     --ui: "Rubik Variable", "Rubik", ui-sans-serif, system-ui, sans-serif;
 
     --ease: cubic-bezier(0.16, 1, 0.3, 1);

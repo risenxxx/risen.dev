@@ -1,7 +1,7 @@
 ---
-import DubsyncMock from './mocks/Dubsync.astro'
 import FramePlayerMock from './mocks/FramePlayer.astro'
 import GiftFightMock from './mocks/GiftFight.astro'
+import TolklyMock from './mocks/Tolkly.astro'
 import TunedMock from './mocks/Tuned.astro'
 import Project from './Project.astro'
 import Stage from './Stage.astro'
@@ -12,7 +12,26 @@ import Stage from './Stage.astro'
   import are commented below rather than removed, because the product is still
   shipped and still linked from the log — this is an editing decision about the
   page, and the day it stops being one the two comments come out again.
+
+  dubsync went the same way when Tolkly came in at the top, for the same
+  reason: four products are as many screens as the section should ask a
+  reader to scroll through, and dubsync is the one of them furthest from the
+  work the page is looking for. The log still links it, and its block, its
+  preview and its place in the ASCII layer (src/ascii/sections.ts, `dub`) all
+  stay where they are; bringing it back is uncommenting the block and the
+  import below.
+
+  The rows alternate, preview on the left then on the right: Tolkly, Frame
+  Player, Tuned, Gift Fight. The side decides where the ASCII object can live
+  (src/ascii/sections.ts): with the copy on the right it rides a column down
+  the copy's right edge, as in Tolkly and Tuned; with the copy on the left the
+  preview has the right edge, and the object hangs under it, as in Frame
+  Player, or, beside a preview as narrow as Gift Fight's phone, rides the
+  strip it leaves. A row that changes side changes its place there too.
+  dubsync, if it comes back after Gift Fight, comes back with its preview on
+  the left, and so with a column rather than the hung place it has now.
 */
+// import DubsyncMock from './mocks/Dubsync.astro'
 ---
 
 <section id="work">
@@ -24,30 +43,27 @@ import Stage from './Stage.astro'
   </div>
 
   <Project
-    accent="#7c8cff"
-    object="tuned"
-    title="Tuned"
-    meta={['Document tooling', 'Hosted SaaS']}
-    blurb="Resume tailoring where every variant is a patch over one base document rather than a copy, so a hundred applications stay one source of truth, and nothing silently drifts."
+    accent="#239d6a"
+    object="tolkly"
+    title="Tolkly"
+    meta={['Customer support', 'Chat widget']}
+    blurb="A support chat for websites where an AI answers first, from the site’s own rules, and never makes an answer up."
     bullets={[
-      "A provenance check refuses any claim that doesn't trace back to a source node, so the model can rewrite but cannot invent.",
-      'The live preview renders the same react-pdf component inside a Web Worker and rasterises it with pdf.js, so page fitting is measured against a real renderer instead of estimated.',
+      'Every answer links to the page it came from and quotes the line behind it. On twenty questions about GrowthBook’s docs it got all 15 they cover right and declined all 5 they do not.',
+      'What the rules do not cover goes to a person, in the inbox or the team’s Telegram, with the order number already attached.',
+      'Takes the site’s colours, font and corners by itself. Two lines to install, and the chat loads only when opened.',
     ]}
     stack={[
       { label: 'TypeScript' },
-      { label: 'React 19' },
-      { label: 'pdf.js' },
       { label: 'Bun' },
-      { label: 'Elysia' },
+      { label: 'PostgreSQL + pgvector' },
+      { label: 'React 19' },
       { label: 'oRPC' },
-      { label: 'PostgreSQL' },
-      { label: 'Drizzle' },
-      { label: 'BullMQ' },
-      { label: 'Kubernetes' },
+      { label: 'Web Components' },
     ]}
-    links={[{ label: 'Website', href: 'https://tunedhq.io', icon: 'u-external' }]}
+    links={[{ label: 'Website', href: 'https://tolkly.io', icon: 'u-external' }]}
   >
-    <Stage bare h={532}><TunedMock /></Stage>
+    <Stage bare h={700}><TolklyMock /></Stage>
   </Project>
 
   <Project
@@ -55,18 +71,18 @@ import Stage from './Stage.astro'
     object="frame"
     title="Frame Player"
     meta={['Media playback', 'Windows and macOS']}
-    blurb="Casts a 4K HDR file to a television exactly as it is: no re-encode, no quality loss, and the app window stays a working remote. Torrents play while they are still downloading."
+    blurb="A video player that sends a 4K HDR film to the television exactly as it is, with no loss of quality, while the app on the computer stays a working remote. Torrents play while they are still downloading."
     bullets={[
-      'mpv renders into a native child view <em>behind</em> a transparent webview, the whole UI composited on top as HTML. On macOS that meant patching libmpv, whose backend has no window-embedding support at all.',
-      'Hover previews sharpen to the exact frame under the cursor. Naive keyframe mapping showed the wrong scene 60% of the time, so the cost of an exact seek is probed per file.',
+      'One interface for Windows and macOS, drawn as a web page over a native video engine. On macOS the engine (libmpv) could not sit inside another window at all, so I patched it.',
+      'Hovering the timeline shows the exact frame under the cursor. The usual shortcut showed the wrong scene 60% of the time; the player now measures each file and gets it right.',
     ]}
     metrics={[
-      { value: '2 platforms', note: 'signed, auto-updated by CI' },
-      { value: '0 re-encodes', note: 'on a 4K HDR cast' },
+      { value: '2 platforms', note: 'signed, updates itself' },
+      { value: '0 re-encodes', note: 'the television gets the original' },
       {
         value:
           '60% <svg class="ic arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg> 0',
-        note: 'wrong-frame previews',
+        note: 'previews showing the wrong frame',
       },
     ]}
     stack={[
@@ -94,22 +110,49 @@ import Stage from './Stage.astro'
   </Project>
 
   <Project
+    accent="#7c8cff"
+    object="tuned"
+    title="Tuned"
+    meta={['Document tooling', 'Hosted SaaS']}
+    blurb="Tailors a resume to every job posting without losing the original: each version is a set of changes over one base resume, so a hundred applications never drift apart. Live with payments five weeks after the first commit."
+    bullets={[
+      'The AI can reword but cannot invent: a claim that does not trace back to the base resume is refused.',
+      'The preview is drawn by the same PDF renderer as the download, so a page that fits on screen fits in the file, measured rather than estimated.',
+    ]}
+    stack={[
+      { label: 'TypeScript' },
+      { label: 'React 19' },
+      { label: 'pdf.js' },
+      { label: 'Bun' },
+      { label: 'Elysia' },
+      { label: 'oRPC' },
+      { label: 'PostgreSQL' },
+      { label: 'Drizzle' },
+      { label: 'BullMQ' },
+      { label: 'Kubernetes' },
+    ]}
+    links={[{ label: 'Website', href: 'https://tunedhq.io', icon: 'u-external' }]}
+  >
+    <Stage bare h={532}><TunedMock /></Stage>
+  </Project>
+
+  <Project
     accent="#a8ff35"
     object="gift"
     title="Gift Fight"
     meta={['Real-time multiplayer', 'Telegram Mini App']}
-    blurb="A PvP roulette where players bet collectible Telegram gifts against each other, and every round can be recomputed afterwards by anyone who played it. Architected, built and operated end to end."
+    blurb="A real-time game inside Telegram where players bet collectible gifts against each other, and anyone who played a round can check afterwards that it was fair. Designed, built and run in production end to end."
     bullets={[
-      "A round in progress lives in a Temporal workflow rather than in a server's memory, so a restart or a release never drops it.",
-      'Live play runs over Socket.IO beside ordinary HTTP, with blockchain payments isolated behind transfer services and idempotent settlement.',
-      'Analytics go through Kafka topics on Redpanda into ClickHouse in deduplicated batches that resume after a failure.',
+      'No game is lost mid-round: a round in progress survives a server restart or a new release (Temporal).',
+      'Play is live, and crypto payments run through separate services that never settle the same bet twice.',
+      'Every game event reaches the analytics once, with no gaps or duplicates, even after a failure (Kafka into ClickHouse).',
     ]}
     metrics={[
-      { value: '120 ms', note: 'p95 state sync, 300 sessions' },
-      { value: 'every round', note: 'survives a deploy' },
+      { value: '120 ms', note: 'to reach players, 300 at once' },
+      { value: 'every round', note: 'survives a release' },
       { value: '~1,500', note: 'players at launch' },
     ]}
-    note="Shut down in 2025, on purpose: the funnel showed free channels bringing non-paying users, so the product was closed on the data rather than carried on. The cluster and the code are still the work."
+    note="Closed in 2025 on purpose: the data showed free channels bringing players who did not pay, so it was shut down rather than kept going. The code and the cluster are still the work."
     stack={[
       { label: 'TypeScript' },
       { label: 'React' },
@@ -125,11 +168,15 @@ import Stage from './Stage.astro'
       { label: 'Codebase', href: 'https://github.com/gift-fight/gift-fight', icon: 'b-github' },
       { label: 'Infrastructure', href: 'https://github.com/gift-fight/gift-fight-infra', icon: 'b-github' },
     ]}
+    reverse
   >
     <Stage bare w={700} h={776}>
       <GiftFightMock />
     </Stage>
   </Project>
+
+  {
+    /* Hidden, see the note above. Uncomment this and the DubsyncMock import to bring it back.
 
   <Project
     accent="#a855f7"
@@ -167,6 +214,9 @@ import Stage from './Stage.astro'
   >
     <Stage bare><DubsyncMock /></Stage>
   </Project>
+    */
+  }
+
 
   {
     /* Hidden, see the note above. Uncomment this and the DeskVoltMock import to bring it back.

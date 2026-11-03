@@ -13,6 +13,7 @@ export const SHAPES = [
   { id: 'dyson', label: 'Dyson sphere', sway: false, tilt: 0.4, detail: 0.72 },
   { id: 'puzzle', label: 'Puzzle piece', sway: true, tilt: 0.25, detail: 0.9 },
   { id: 'lattice', label: 'Lattice', sway: false, tilt: 0.5, detail: 0.72 },
+  { id: 'tolklylogo', label: 'Tolkly mark', sway: true, tilt: 0.25, detail: 0.85 },
   { id: 'tunedlogo', label: 'Tuned mark', sway: true, tilt: 0.25, detail: 0.9 },
   { id: 'fplogo', label: 'Frame Player mark', sway: true, tilt: 0.2, detail: 0.85 },
   { id: 'dice', label: 'Die', sway: false, tilt: 0.55, detail: 0.82 },
@@ -100,6 +101,25 @@ float shLattice(vec3 p) {
   float ry = max(length(xz) - 0.03, a.y - k);
   float rz = max(length(xy) - 0.03, a.z - k);
   return min(nodes, min(rx, min(ry, rz)));
+}
+// Tolkly's mark, two turns of a conversation, in the proportions of its
+// 32-unit SVG (branding/logo/mark.svg, units of 14.5 about the mark's centre):
+// the visitor's question, an outlined rounded frame up on the left, and the
+// answer, a solid bubble with its tail, over its lower-right corner. The
+// frame is cut away 1.3 units round the bubble, as the drawing cuts it — the
+// gap is never filled — and the answer stands a little proud of it, the way
+// Tuned's square does. The frame's stroke is a touch heavier than the
+// drawing's 2.4, so it holds at the object's cell size.
+float shTolklyLogo(vec3 p) {
+  vec2 q = p.xy;
+  float body = sdRR2(q - vec2(0.345, -0.207), vec2(0.655, 0.517), 0.345);
+  float tail = sdTri2(q, vec2(0.655, -0.6), vec2(0.61, -0.96), vec2(0.26, -0.6)) - 0.03;
+  float bubble = min(body, tail);
+  float ring = abs(sdRR2(q - vec2(-0.297, 0.414), vec2(0.621, 0.503), 0.345)) - 0.1;
+  ring = max(ring, -(bubble - 0.09));
+  float frame = extrude(p, ring, 0.14);
+  float answer = extrude(vec3(q, p.z - 0.1), bubble, 0.14);
+  return min(frame, answer);
 }
 // Tuned's mark, in the proportions of the SVG (units of 13): a 20-wide
 // rounded frame with a 3-wide stroke, and a 12-wide rounded square over its
@@ -256,15 +276,16 @@ float shape(vec3 p, int s) {
   if (s == 0) return shDyson(p);
   if (s == 1) return shPuzzle(p);
   if (s == 2) return shLattice(p);
-  if (s == 3) return shTunedLogo(p);
-  if (s == 4) return shFpLogo(p);
-  if (s == 5) return shDice(p);
-  if (s == 6) return shSync(p);
-  if (s == 7) return shStairs(p);
-  if (s == 8) return shWrench(p);
-  if (s == 9) return shStar(p);
-  if (s == 10) return shGlobe(p);
-  if (s == 11) return shUfo(p);
+  if (s == 3) return shTolklyLogo(p);
+  if (s == 4) return shTunedLogo(p);
+  if (s == 5) return shFpLogo(p);
+  if (s == 6) return shDice(p);
+  if (s == 7) return shSync(p);
+  if (s == 8) return shStairs(p);
+  if (s == 9) return shWrench(p);
+  if (s == 10) return shStar(p);
+  if (s == 11) return shGlobe(p);
+  if (s == 12) return shUfo(p);
   return shBeam(p);
 }
 `

@@ -6,7 +6,8 @@
   - `[data-reveal]` gets `.in` when it first crosses into view, and CSS does the
     rest with a transition plus a `--dl` stagger.
   - `[data-scene]` gets `--p`, a number from 0 to 1, animated once over
-    `data-dur` milliseconds while the element is on screen. The previews read it
+    `data-dur` milliseconds when the element comes on screen, and again from
+    0 whenever a `[data-replay]` control inside it is pressed. The previews read it
     for every value that moves — a bar width, a rotation, an opacity — so a
     scene is written in CSS and this file never touches a product's markup.
     It is eased out by default; `data-ease="linear"` hands over plain time, for
@@ -37,12 +38,19 @@ function tick(now: number): void {
     if (!scene) continue
     const t = Math.min(1, (now - scene.start) / scene.dur)
     scene.el.style.setProperty('--p', (scene.linear ? t : easeOut(t)).toFixed(4))
-    if (t >= 1) running.splice(i, 1)
+    if (t >= 1) {
+      running.splice(i, 1)
+      scene.el.classList.add('played')
+    }
   }
   if (running.length > 0) frame = requestAnimationFrame(tick)
 }
 
 function play(el: HTMLElement, dur: number): void {
+  // A replay pressed mid-run starts over rather than running twice.
+  const at = running.findIndex((s) => s.el === el)
+  if (at >= 0) running.splice(at, 1)
+  el.classList.remove('played')
   running.push({ el, start: performance.now(), dur, linear: el.dataset.ease === 'linear' })
   if (frame === 0) frame = requestAnimationFrame(tick)
 }
@@ -220,6 +228,17 @@ export function initMotion(): void {
 
   for (const el of document.querySelectorAll('[data-reveal], [data-scene]')) {
     observer.observe(el)
+  }
+
+  /*
+    A scene that has run gets `.played`, and a `[data-replay]` control inside
+    it runs it again from the start; the preview's CSS decides when the
+    control shows. Only here, past the reduced-motion return: with motion
+    reduced there is nothing to replay, the finished state is all there is.
+  */
+  for (const button of document.querySelectorAll<HTMLElement>('[data-replay]')) {
+    const el = button.closest<HTMLElement>('[data-scene]')
+    if (el) button.addEventListener('click', () => play(el, Number(el.dataset.dur ?? 900)))
   }
 
   /*

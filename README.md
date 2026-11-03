@@ -19,7 +19,7 @@ npm run typecheck  # astro check
 | --- | --- |
 | `src/pages/index.astro` | The page, section by section |
 | `src/components/` | One component per section |
-| `src/components/mocks/` | The five product previews, rebuilt in HTML and CSS |
+| `src/components/mocks/` | The product previews, rebuilt in HTML and CSS (four on the page, two set aside in `Work.astro`) |
 | `src/portrait/source.jpg` | The photograph the hero portrait is cut from |
 | `src/components/IconSprite.astro` | Every brand mark, inlined once |
 | `src/scripts/motion.ts` | The whole motion system, about a hundred lines |
@@ -28,10 +28,11 @@ npm run typecheck  # astro check
 | `worker/index.ts` | The one piece of server code: the analytics counter's own address, forwarded to Rybbit |
 
 **Product previews are drawn, not captured.** Each one is rebuilt from that
-product's own source — Frame Player's control glyphs are the paths out of
-`Controls.svelte`, DeskVolt's rows are the geometry in `render.rs`, Gift Fight's
-wheel is its real sector arithmetic. A screenshot would go stale and would say
-nothing about how the page itself is built.
+product's own source — Tolkly's widget is its `styles.ts` and its strings in
+the order its answer pipeline sends them, Frame Player's control glyphs are the
+paths out of `Controls.svelte`, DeskVolt's rows are the geometry in
+`render.rs`, Gift Fight's wheel is its real sector arithmetic. A screenshot
+would go stale and would say nothing about how the page itself is built.
 
 **Motion never takes the scroll.** `[data-reveal]` fades a block in when it
 first crosses into view; `[data-scene]` animates a custom property from 0 to 1
@@ -68,9 +69,11 @@ the stills inside the previews are set as glyphs the pointer uncovers.
 The object needs room, and the sections make it under `html.ascii-object`, each
 in its own component: Open source gives up its fill, the reference figure's
 boxes take the page's surface and its delivery steps keep clear of the right
-lane, Tuned's and Gift Fight's copy wraps round a column the object rides
-inside, and from 1400 px down every project row stacks with a column free down
-the right. Below 1000 px there is no room beside the copy, and the object stays
+lane, Tolkly's and Tuned's copy wraps round a column the object rides
+inside, Gift Fight's phone stands to the left of its column and the object
+rides the strip beside it,
+and from 1400 px down every project row stacks with a column free down the
+right. Below 1000 px there is no room beside the copy, and the object stays
 away. The classes are set by the inline script before the first paint, so
 nothing reflows when the module lands; the page without them is the page as it
 was.
@@ -150,7 +153,7 @@ body face whatever their size, because monospace on prose is a costume.
 Martian Mono and DM Mono — set the first screen and are preloaded: the sans for
 headings and prose, Martian Mono for everything a terminal would print (paths,
 labels, the log, the buttons), DM Mono for the ASCII layer's glyphs only. Rubik
-exists only inside two product previews and arrives when they do; Sora and
+exists only inside the product previews and arrives when they do; Sora and
 Public Sans remain only for the link-preview card (`src/og/`).
 
 **Analytics is [Rybbit](https://rybbit.com)**, on the production build only — a

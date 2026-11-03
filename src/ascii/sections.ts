@@ -42,6 +42,12 @@ export interface Place {
   lift?: number
   /** An element the object hangs just under, at the common vertical. */
   under?: string
+  /**
+   * The preview is narrower than its column: on a desktop it moves to the
+   * column's left (Project.astro) and the object rides the strip it leaves
+   * free on the right, pinned between the preview's top and the row's bottom.
+   */
+  strip?: boolean
   /** An element the object's centre is measured from: `dy` px below its top. Holds across widths where a share of the section's height would not. */
   from?: { sel: string; dy: number }
   /** A ceiling on the object's size in px, for a column that is only so wide. */
@@ -67,7 +73,7 @@ export interface Section {
 /* On a tablet every project row stacks and the object rides a column down
    the right of the copy, from the top of the mock to the row's bottom
    padding; the desktop's floats and hangers are switched off. */
-/* Tuned and Gift Fight ride a column down the copy at 0.62 of the viewport:
+/* Tolkly and Tuned ride a column down the copy at 0.62 of the viewport:
    the section hands the object on once its bottom is three quarters of the
    way down the screen, so a ride point higher than this would reach the
    column's top only as the section was leaving, and the object would barely
@@ -136,6 +142,12 @@ export const SECTIONS: readonly Section[] = [
     glide: { y: 'pin', size: 0.84, topFrom: 'h2', bottomFrom: '.cap-html', at: 0.45, tablet: { x: 0.86, size: 0.62, maxPx: 200 } },
   },
   {
+    key: 'tolkly',
+    hex: INK,
+    shape: 'tolklylogo',
+    glide: { y: 0.3, size: 0.72, column: { sel: '.links', edge: 'bottom' }, at: 0.62, lift: 24, tablet: ROW_TABLET },
+  },
+  {
     key: 'tuned',
     hex: INK,
     shape: 'tunedlogo',
@@ -151,7 +163,10 @@ export const SECTIONS: readonly Section[] = [
     key: 'gift',
     hex: INK,
     shape: 'dice',
-    glide: { y: 0.3, size: 0.72, column: { sel: '.links', edge: 'bottom' }, at: 0.62, lift: 24, tablet: ROW_TABLET },
+    // The phone is a third of its column wide: it stands to the left and
+    // the die rides the strip beside it, down the phone's height. Capped so
+    // a tall screen does not grow it past the strip's 330-odd px.
+    glide: { y: 'pin', size: 0.72, maxPx: 290, topFrom: '.shot', bottom: 56, at: 0.5, strip: true, tablet: { ...ROW_TABLET, strip: undefined } },
   },
   {
     key: 'dub',

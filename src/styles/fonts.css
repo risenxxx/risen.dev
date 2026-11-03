@@ -31,11 +31,12 @@
 
   /*
     Rubik is what Frame Player and Gift Fight are really set in, and it is used
-    nowhere else here — two previews, below the fold, at 9 to 17 px. The package
+    nowhere else here but in previews below the fold — those two, and the shop
+    Tolkly's widget stands in, which the widget takes its face from. The package
     ships 35 KB of it, which made it the heaviest file on the page and the
     longest leg of the critical request chain for a few dozen labels.
 
-    This is a subset: printable ASCII plus the typographic characters those two
+    This is a subset: printable ASCII plus the typographic characters those
     previews use, weight axis clipped to the 400–700 they ask for. 12.7 KB.
     Regenerate with `scripts/subset-rubik.sh` after editing a preview's copy.
   */

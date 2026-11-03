@@ -1,0 +1,1214 @@
+---
+/*
+  Tolkly's widget, rebuilt from its own source and set where it lives: in the
+  corner of somebody else's site.
+
+  The site is Shelf, a shop Tolkly's own landing uses as an example
+  (apps/server/src/landing/copy.ts): its colours, its corner radius and the
+  question about returns are that example's. The widget is drawn from
+  packages/widget/src/styles.ts at its real size — the 380 px window, the
+  56 px launcher, the 14/20 type, the 12 px corners a 12 px site gets — and
+  scaled as one piece, so its proportions stay the product's. Its accent, font
+  and corners are the site's, because that is what the widget does: it reads
+  them from the customer's page. The shop is set in Rubik and so is the
+  widget; neither is the face of the page around them.
+
+  The words are the widget's own strings (packages/widget/src/i18n.ts, `en`),
+  in the order the answer pipeline sends its events: searching, the clauses
+  found, the quotes checked, the statement with its source mark, the check
+  made visible under it. The second question is one the rules do not cover:
+  the refusal says so, keeps the order number from the message, and one press
+  hands it to people. The card that lands in the team's Telegram topic is the
+  bot's own (apps/server/src/telegram/bot.ts): the project and the reason, the
+  order, the page, the question and what the AI did with it.
+
+  The log keeps to its end the way the real one does. Messages grow into it
+  from the bottom, and once they outgrow the window the oldest leave over the
+  top: the log is a column aligned to its end, with a filler after the last
+  message that takes up whatever room is left while there is any. Nothing here
+  computes a scroll position.
+
+  Decorative in full, hidden from assistive technology, but for the reload
+  button in the bar, which plays the run again: the product's claims are made
+  in the prose beside it.
+*/
+---
+
+<div class="tolkly" data-scene data-dur="10600" data-ease="linear" data-offscreen-pause>
+  <div class="browser" aria-hidden="true">
+    <div class="bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="url">
+        <svg viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+        shelf.example
+      </span>
+      <span class="tag">sample</span>
+    </div>
+
+    <div class="site">
+      <div class="s-head">
+        <span class="s-logo"><i></i>Shelf</span>
+        <span class="s-nav"><span>Catalogue</span><span>Delivery</span><span>Returns</span><span>Contacts</span></span>
+      </div>
+      <p class="s-h">Books and home goods delivered in a day</p>
+      <p class="s-p">Free delivery in town from $30.</p>
+      <span class="s-cta">To the catalogue</span>
+      <div class="s-blocks">
+        <span><small>Books</small><b>12,400</b></span>
+        <span><small>Home</small><b>3,100</b></span>
+        <span><small>Gifts</small><b>860</b></span>
+      </div>
+
+      <!-- The widget, at the size the product draws it, scaled as one piece. -->
+      <div class="corner">
+        <div class="window">
+          <div class="head">
+            <span class="mono">S</span>
+            <span class="who"><b>Shelf</b><span class="status-line">By the site's rules</span></span>
+            <span class="x">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6z" fill="currentColor"></path></svg>
+            </span>
+          </div>
+
+          <div class="log">
+            <div class="msg bot">
+              <span class="ai-tag">AI</span>
+              <p class="text">Hello! I am the AI assistant of Shelf. I answer from the delivery and returns rules.</p>
+            </div>
+
+            <div class="grow" style="--t: 2.05; --h: 40px">
+              <div class="msg user"><span class="bubble">How do I return an item?</span></div>
+            </div>
+
+            <div class="grow" style="--t: 2.25; --h: 24px">
+              <span class="ai-tag">AI</span>
+            </div>
+
+            <!-- What the pipeline is doing, from the events it really sends. -->
+            <div class="grow status-row" style="--t: 2.25; --h: 24px; --gap: 4px; --out: 4.25">
+              <span class="status">
+                <span class="st st-search">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M10.5 17.5a7 7 0 1 1 0-14 7 7 0 0 1 0 14zM15.5 15.5l5 5"></path></svg>
+                  Searching the rules of Shelf…
+                </span>
+                <span class="st st-found">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5zM14 3.5V8h4M9.5 12h5M9.5 15.5h5"></path></svg>
+                  Found 2 clauses
+                </span>
+                <span class="st st-check">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l7 2.6v5.4c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.1zM8.8 12.2l2.2 2.2 4.3-4.4"></path></svg>
+                  Checking the quotes…
+                </span>
+                <span class="st st-write">Writing on…</span>
+              </span>
+            </div>
+
+            <div class="grow answer" style="--t: 3.85; --h: 48px; --gap: 4px">
+              <p class="para">
+                Returns are accepted within 14 days, with the packaging and the receipt.<span class="cite">1</span>
+              </p>
+            </div>
+
+            <!-- The quote opens right under the claim it backs, as copied, with its link. -->
+            <div class="peek">
+              <p class="quote">An item of proper quality can be returned within 14 days with its packaging and receipt.</p>
+              <span class="peek-link">
+                <span class="title">4. Timing</span><i class="sep"></i><span class="from">Returns</span>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8.5 8.5M17.5 13.5v4a1.5 1.5 0 0 1-1.5 1.5H6.5A1.5 1.5 0 0 1 5 17.5V8a1.5 1.5 0 0 1 1.5-1.5h4"></path></svg>
+              </span>
+            </div>
+
+            <div class="grow" style="--t: 4.3; --h: 28px; --gap: 12px">
+              <span class="verified">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l7 2.6v5.4c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.1zM8.8 12.2l2.2 2.2 4.3-4.4"></path></svg>
+                Checked against the rules: 1 of 1
+              </span>
+            </div>
+
+            <div class="grow" style="--t: 4.4; --h: 44px; --gap: 12px">
+              <div class="after">
+                <span class="act">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M7.5 10.5v9h-3v-9zM7.5 10.5l3.6-6.3c.5-.8 1.7-.6 1.9.3l.4 1.8-1 4.2h5.7c1.2 0 2.1 1.1 1.8 2.3l-1.4 5.8c-.2.9-1 1.4-1.8 1.4H7.5"></path></svg>
+                  It helped
+                </span>
+                <span class="act">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.5c.8-3.6 3.9-6 7.5-6s6.7 2.4 7.5 6"></path></svg>
+                  Talk to an operator
+                </span>
+              </div>
+            </div>
+
+            <div class="grow" style="--t: 7.35; --h: 64px">
+              <div class="msg user"><span class="bubble">Can you deliver to a pickup locker? It's for order 48213.</span></div>
+            </div>
+
+            <div class="grow" style="--t: 7.55; --h: 24px">
+              <span class="ai-tag">AI</span>
+            </div>
+
+            <div class="grow status-row" style="--t: 7.55; --h: 24px; --gap: 4px; --out: 8.4">
+              <span class="status">
+                <span class="st">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M10.5 17.5a7 7 0 1 1 0-14 7 7 0 0 1 0 14zM15.5 15.5l5 5"></path></svg>
+                  Searching the rules of Shelf…
+                </span>
+              </span>
+            </div>
+
+            <!-- Nothing in the rules: said plainly, with the order kept and a way to a person. -->
+            <div class="grow" style="--t: 8.4; --h: 200px; --gap: 4px">
+              <div class="card refused">
+                <p class="refusal">I did not find this in the help pages and rules of the site.</p>
+                <span class="tokens">
+                  <span class="token">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5zM14 3.5V8h4M9.5 12h5M9.5 15.5h5"></path></svg>
+                    Order 48213
+                  </span>
+                </span>
+                <span class="press">
+                  <span class="act primary">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20.5c.8-3.6 3.9-6 7.5-6s6.7 2.4 7.5 6"></path></svg>
+                    Hand over to an operator
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <!-- The press: the button gives way, and the handoff is its own reply. -->
+            <div class="grow" style="--t: 9.55; --h: 24px">
+              <span class="ai-tag">AI</span>
+            </div>
+
+            <div class="grow" style="--t: 9.55; --h: 180px; --gap: 4px">
+              <div class="card">
+                <p class="refusal">Bringing in an operator.</p>
+                <span class="tokens">
+                  <span class="token">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5zM14 3.5V8h4M9.5 12h5M9.5 15.5h5"></path></svg>
+                    Order 48213
+                  </span>
+                </span>
+                <span class="waiting">
+                  <span class="waiting-head"><i class="pulse"></i>Waiting for an operator…</span>
+                  <span class="waiting-hint">You can add details here: the operator will see them.</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="compose">
+            <span class="field">
+              <span class="ph ph-ask">Write a question…</span>
+              <span class="ph ph-op">Message to the operator…</span>
+              <span class="line q1"><span>How do I return an item?</span></span>
+              <span class="line q2"><span>Can you deliver to a pickup locker? It's for order 48213.</span></span>
+            </span>
+            <span class="send">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"></path></svg>
+            </span>
+          </div>
+          <p class="foot">Powered by Tolkly</p>
+        </div>
+
+        <span class="launcher">
+          <svg class="icon when-closed" viewBox="0 0 24 24"><path d="M5.5 2.5h6A3.5 3.5 0 0 1 15 6v1h-3a5 5 0 0 0-5 5v1H5.5A3.5 3.5 0 0 1 2 9.5V6a3.5 3.5 0 0 1 3.5-3.5zM12 8.5h6.5a3.5 3.5 0 0 1 3.5 3.5v3.5a3.5 3.5 0 0 1-3.5 3.5v2.1c0 .6-.7.9-1.2.5L14.6 19H12a3.5 3.5 0 0 1-3.5-3.5V12A3.5 3.5 0 0 1 12 8.5z" fill="currentColor"></path></svg>
+          <svg class="icon when-open" viewBox="0 0 24 24"><path d="M6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6z" fill="currentColor"></path></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- The browser's own reload, the one control here that works: it plays the run again. -->
+  <button class="replay" type="button" data-replay aria-label="Replay the Tolkly preview" title="Replay">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4.2h-4.2"></path></svg>
+  </button>
+
+  <!-- Where it lands: a topic of its own in the team's Telegram group, the bot's card on top. -->
+  <div class="tg" aria-hidden="true">
+    <div class="tg-head">
+      <span class="tg-topic">
+        <svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.4c-.5.4-1.3 0-1.3-.6V17A2.5 2.5 0 0 1 4 14.5z" fill="currentColor"></path></svg>
+      </span>
+      <span class="tg-who">
+        <b>Can you deliver to a pickup locker? It's for order 48213. · 7f3a</b>
+        <span>Shelf support</span>
+      </span>
+    </div>
+    <div class="tg-msg">
+      <span class="tg-from">Tolkly</span>
+      <p><b>Shelf</b><i class="tsep"></i>Asked for a person</p>
+      <p>Order: <code>48213</code></p>
+      <p>Page: shelf.example</p>
+      <p class="tg-gap"><b>Question</b></p>
+      <p class="tg-quote">Can you deliver to a pickup locker? It's for order 48213.</p>
+      <p>The AI found no answer in the knowledge base.</p>
+      <span class="tg-time">14:02</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  /*
+    The run, on its own clock: plain time from the scene (`data-ease="linear"`)
+    turned into seconds, every beat easing on its own. With the scene finished
+    — no script, reduced motion — the handoff is what stays on screen: the
+    first answer's source and its check at the top of the log, the refusal
+    and the operator being brought in under them, the card in the topic.
+  */
+  .tolkly {
+    --s: calc(var(--p) * 10.6);
+    /* The launcher arrives with the theme: until the project's colours come,
+       the real one stays hidden rather than flash in the default ones. */
+    --launch: clamp(0, (var(--s) - 0.2) / 0.3, 1);
+    --open: clamp(0, (var(--s) - 0.75) / 0.25, 1);
+    /* Typing the two questions, and the moments each is sent. */
+    --type1: clamp(0, (var(--s) - 1.05) / 0.9, 1);
+    --sent1: clamp(0, (var(--s) - 2) * 40, 1);
+    --type2: clamp(0, (var(--s) - 5.85) / 1.35, 1);
+    --sent2: clamp(0, (var(--s) - 7.3) * 40, 1);
+    /* Something is in the field: from the first key of a question to its send. */
+    --full: calc(
+      clamp(0, (var(--s) - 1.05) * 40, 1) * (1 - var(--sent1)) + clamp(0, (var(--s) - 5.85) * 40, 1) * (1 - var(--sent2))
+    );
+    --peek: clamp(0, (var(--s) - 4.95) / 0.3, 1);
+    --press: clamp(0, (var(--s) - 9.15) / 0.15, 1);
+    --gone: clamp(0, (var(--s) - 9.35) / 0.2, 1);
+    --waiting: clamp(0, (var(--s) - 9.4) * 40, 1);
+    --tg-t: clamp(0, (var(--s) - 9.85) / 0.5, 1);
+    --tg: calc(1 - (1 - var(--tg-t)) * (1 - var(--tg-t)) * (1 - var(--tg-t)));
+
+    position: relative;
+    width: 660px;
+    height: 700px;
+    font-variant-numeric: normal;
+  }
+
+  /* ── the browser and the shop in it ─────────────────────────────────── */
+
+  .browser {
+    position: absolute;
+    top: 0;
+    left: 22px;
+    width: 638px;
+    height: 664px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff6f2;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: var(--sh-mock);
+  }
+
+  .bar {
+    flex: none;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    background: #0f1116;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    color: #a1a7b3;
+  }
+
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.11);
+  }
+
+  .url {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 24px;
+    margin-inline: 40px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .url svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: 11px;
+  }
+
+  /* Shelf, as the landing draws it: a warm paper, a brick accent, 12 px corners. */
+  .site {
+    --s-fg: #2a1712;
+    --s-acc: #c8401f;
+    position: relative;
+    flex: 1;
+    padding: 18px 22px;
+    font-family: var(--ui);
+    color: var(--s-fg);
+  }
+
+  .s-head {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(42, 23, 18, 0.1);
+    white-space: nowrap;
+  }
+
+  .s-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .s-logo i {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--s-acc);
+  }
+
+  .s-nav {
+    display: flex;
+    gap: 18px;
+    font-size: 12.5px;
+    color: rgba(42, 23, 18, 0.7);
+  }
+
+  .s-h {
+    width: 260px;
+    margin-top: 34px;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  .s-p {
+    margin-top: 12px;
+    font-size: 13.5px;
+    color: rgba(42, 23, 18, 0.72);
+  }
+
+  .s-cta {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    margin-top: 18px;
+    padding: 0 16px;
+    border-radius: 12px;
+    background: var(--s-acc);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .s-blocks {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .s-blocks span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 120px;
+    flex: none;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fbefe9;
+  }
+
+  .s-blocks small {
+    font-size: 11.5px;
+    color: rgba(42, 23, 18, 0.65);
+  }
+
+  .s-blocks b {
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  /* ── the widget, in its own pixels ─────────────────────────────────── */
+
+  /*
+    The corner the widget takes, drawn at the product's size and scaled
+    down from the bottom right: 1 / 0.85 of the site's height, which leaves
+    the window within a few pixels of the 640 the real one stops at.
+  */
+  .corner {
+    /* The site's theme, as the widget reads it: its accent and its text
+       colour, its surface, its radius, its font. The rest are the widget's
+       own light defaults. */
+    --tk-accent: #c8401f;
+    --tk-accent-fg: #ffffff;
+    --tk-bg: #ffffff;
+    --tk-fg: #2a1712;
+    --tk-muted: #6f625d;
+    --tk-border: #eadcd5;
+    --tk-surface: #fbefe9;
+    --tk-r: 12px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 420px;
+    height: 741px;
+    transform: scale(0.85);
+    transform-origin: bottom right;
+    font-family: var(--ui);
+    color: var(--tk-fg);
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .launcher {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--tk-accent);
+    color: var(--tk-accent-fg);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+    opacity: var(--launch);
+    transform: scale(calc(0.8 + 0.2 * var(--launch)));
+  }
+
+  .launcher .icon {
+    grid-area: 1 / 1;
+    width: 26px;
+    height: 26px;
+    stroke: none;
+  }
+
+  .when-closed {
+    opacity: calc(1 - var(--open));
+  }
+
+  .when-open {
+    opacity: var(--open);
+  }
+
+  .window {
+    position: absolute;
+    right: 20px;
+    bottom: 88px;
+    top: 20px;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    background: var(--tk-bg);
+    border: 1px solid var(--tk-border);
+    border-radius: var(--tk-r);
+    box-shadow: 0 24px 64px rgb(0 0 0 / 0.22);
+    overflow: hidden;
+    opacity: var(--open);
+    transform: translateY(calc((1 - var(--open)) * 8px));
+  }
+
+  .head {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px 12px 16px;
+    border-bottom: 1px solid var(--tk-border);
+  }
+
+  .mono {
+    width: 36px;
+    height: 36px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: var(--tk-r);
+    background: var(--tk-accent);
+    color: var(--tk-accent-fg);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .who {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .who b {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  .status-line {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--tk-muted);
+  }
+
+  .x {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    color: var(--tk-muted);
+  }
+
+  .x .icon {
+    width: 20px;
+    height: 20px;
+    stroke: none;
+  }
+
+  /*
+    A column held to its end: while the messages fit, the filler after them
+    takes the rest and they sit at the top; once they do not, there is no
+    rest to take and they overflow upwards, off the top of the log.
+  */
+  .log {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 16px 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .log::after {
+    content: "";
+    flex: 1 0 0;
+  }
+
+  .log > :first-child {
+    margin-top: 16px;
+  }
+
+  /*
+    A message arriving: it opens its own height, its gap above it included,
+    so the ones before it move up by exactly that much. `--h` is a ceiling
+    a little over the message's height, `--t` the second it arrives.
+  */
+  .grow {
+    --a: clamp(0, (var(--s) - var(--t)) / 0.22, 1);
+    --z: clamp(0, (var(--s) - var(--out, 99)) / 0.2, 1);
+    flex: none;
+    max-height: calc((var(--a) - var(--z)) * var(--h));
+    margin-top: calc((var(--a) - var(--z)) * var(--gap, 16px));
+    opacity: calc(var(--a) - var(--z));
+    overflow: hidden;
+  }
+
+  .msg.bot {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-tag {
+    display: block;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--tk-muted);
+  }
+
+  .text {
+    margin: 0;
+  }
+
+  .msg.user {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .bubble {
+    max-width: 85%;
+    padding: 8px 12px;
+    background: var(--tk-accent);
+    color: var(--tk-accent-fg);
+    border-radius: var(--tk-r);
+    border-bottom-right-radius: 4px;
+  }
+
+  .status {
+    display: grid;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--tk-muted);
+  }
+
+  .st {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* One line of status, rewritten as each event comes in. */
+  .st-search {
+    opacity: clamp(0, (2.9 - var(--s)) * 40, 1);
+  }
+
+  .st-found {
+    opacity: calc(clamp(0, (var(--s) - 2.9) * 40, 1) * clamp(0, (3.35 - var(--s)) * 40, 1));
+  }
+
+  .st-check {
+    opacity: calc(clamp(0, (var(--s) - 3.35) * 40, 1) * clamp(0, (3.85 - var(--s)) * 40, 1));
+  }
+
+  .st-write {
+    font-size: 12px;
+    line-height: 16px;
+    opacity: clamp(0, (var(--s) - 3.85) * 40, 1);
+  }
+
+  .para {
+    margin: 0;
+  }
+
+  /*
+    The source mark is a footnote, not a chip, and pressed it takes the
+    accent: that is how the widget shows which statement the open quote
+    belongs to.
+  */
+  .cite {
+    display: inline-block;
+    margin-left: 1px;
+    padding: 1px 2px;
+    vertical-align: 0.5em;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 3px;
+    color: color-mix(in srgb, var(--tk-accent-fg) calc(var(--peek) * 100%), var(--tk-accent));
+    background: color-mix(in srgb, var(--tk-accent) calc(var(--peek) * 100%), transparent);
+  }
+
+  .peek {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(var(--peek) * 150px);
+    overflow: hidden;
+  }
+
+  .quote {
+    margin: 8px 0 0;
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 20px;
+    background: var(--tk-surface);
+    border: 1px solid var(--tk-border);
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .peek-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--tk-muted);
+    background: var(--tk-surface);
+    border: 1px solid var(--tk-border);
+    border-radius: 0 0 12px 12px;
+  }
+
+  .peek-link .sep {
+    margin: 0;
+  }
+
+  .peek-link .icon {
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+  }
+
+  .verified {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--tk-muted);
+  }
+
+  .verified .icon {
+    width: 14px;
+    height: 14px;
+    color: var(--tk-accent);
+  }
+
+  .after,
+  .tokens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .act {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 32px;
+    padding: 6px 12px;
+    border-radius: var(--tk-r);
+    border: 1px solid var(--tk-border);
+    background: var(--tk-bg);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+  }
+
+  .act.primary {
+    min-height: 40px;
+    padding: 8px 16px;
+    font-weight: 600;
+    border-color: var(--tk-accent);
+    background: color-mix(in srgb, var(--tk-accent) calc(100% - var(--press) * 12%), var(--tk-fg));
+    color: var(--tk-accent-fg);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: var(--tk-surface);
+    border: 1px solid var(--tk-border);
+    border-radius: var(--tk-r);
+  }
+
+  .refusal {
+    margin: 0;
+  }
+
+  /*
+    The press gives the button way: it closes up, the card's gap above it
+    with it, and the card is left with the refusal and the order.
+  */
+  .press {
+    display: block;
+    max-height: calc((1 - var(--gone)) * 40px);
+    margin-top: calc(var(--gone) * -12px);
+    opacity: calc(1 - var(--gone));
+    overflow: hidden;
+  }
+
+  .token {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 550;
+    background: var(--tk-bg);
+    border: 1px solid var(--tk-border);
+    border-radius: var(--tk-r);
+  }
+
+  .token .icon {
+    width: 14px;
+    height: 14px;
+    color: var(--tk-muted);
+  }
+
+  .waiting {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .waiting-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+
+  .pulse {
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--tk-accent);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .waiting-hint {
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--tk-muted);
+  }
+
+  .compose {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 12px 8px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--tk-border);
+    border-radius: 12px;
+  }
+
+  .field {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+  }
+
+  .field > * {
+    grid-area: 1 / 1;
+    overflow: hidden;
+  }
+
+  .ph {
+    color: var(--tk-muted);
+  }
+
+  /* Empty between the two questions; in waiting mode it addresses the operator. */
+  .ph-ask {
+    opacity: calc((1 - var(--full)) * (1 - var(--waiting)));
+  }
+
+  .ph-op {
+    opacity: var(--waiting);
+  }
+
+  /*
+    Typed out the way a one-line field shows it: the text grows from the
+    left, and once it is wider than the field its start goes out of the left
+    edge, so the last letters typed are the ones in sight. Gone on send: the
+    field clears the moment the bubble appears.
+  */
+  .line {
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+
+  .line::after {
+    content: "";
+    flex: 1 0 0;
+  }
+
+  .line > span {
+    flex: none;
+    max-width: calc(var(--k) * var(--w));
+    overflow: hidden;
+  }
+
+  .q1 {
+    --k: var(--type1);
+    --w: 180px;
+    opacity: calc(1 - var(--sent1));
+  }
+
+  .q2 {
+    --k: var(--type2);
+    --w: 400px;
+    opacity: calc(1 - var(--sent2));
+  }
+
+  .send {
+    width: 36px;
+    height: 36px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--tk-accent) calc(var(--full) * 100%), var(--tk-surface));
+    color: color-mix(in srgb, var(--tk-accent-fg) calc(var(--full) * 100%), var(--tk-muted));
+  }
+
+  .send .icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+  }
+
+  .foot {
+    flex: none;
+    margin: 0;
+    padding: 0 16px 8px;
+    font-size: 11px;
+    line-height: 16px;
+    text-align: center;
+    color: var(--tk-muted);
+  }
+
+  /*
+    Replay, as a browser's reload: in the bar, between the window's dots and
+    the address, where a reload button is anyway, so it covers nothing of the
+    page or the widget. It needs the script, so without one it is not there;
+    with motion reduced the script never adds it either (motion.ts), and the
+    finished frame stays. It comes in once the run has ended — or the moment
+    it takes the keyboard's focus — and pressing it mid-run starts over.
+  */
+  .replay {
+    display: none;
+  }
+
+  :global(html.js) .replay {
+    position: absolute;
+    top: 6px;
+    left: 89px;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #a1a7b3;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.5s var(--ease),
+      color 0.15s ease-out,
+      background-color 0.15s ease-out;
+  }
+
+  /* A finger's worth of target round a 24 px button, inside the bar. */
+  :global(html.js) .replay::after {
+    content: "";
+    position: absolute;
+    inset: -6px -8px;
+  }
+
+  .tolkly:global(.played) .replay,
+  .replay:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .replay:hover {
+    color: #f2f4f8;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .replay:focus-visible {
+    outline-offset: 1px;
+    border-radius: 6px;
+  }
+
+  .replay svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── the operators' side: a topic in the team's Telegram group ──────── */
+
+  /*
+    Telegram's dark theme, because that is where a small team already is:
+    one topic per conversation handed over, the bot's card at the top of it.
+    It comes in last, over the shop, as the thing the press set off.
+  */
+  .tg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 312px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #0e1621;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 0, 0, 0.2);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #f5f5f5;
+    opacity: var(--tg-t);
+    transform: translateY(calc((1 - var(--tg)) * 18px));
+  }
+
+  .tg-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: #17212b;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .tg-topic {
+    width: 30px;
+    height: 30px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(106, 179, 243, 0.16);
+    color: #6ab3f3;
+  }
+
+  .tg-topic svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tg-who {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tg-who b {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 17px;
+  }
+
+  .tg-who span {
+    font-size: 11.5px;
+    line-height: 15px;
+    color: #708499;
+  }
+
+  .tg-msg {
+    position: relative;
+    margin: 12px 14px 12px 12px;
+    padding: 7px 11px 9px;
+    border-radius: 12px 12px 12px 4px;
+    background: #182533;
+    font-size: 12.5px;
+    line-height: 17px;
+  }
+
+  .tg-msg p {
+    margin: 0;
+  }
+
+  .tg-from {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6ab3f3;
+  }
+
+  .tg-msg code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #9ccbf5;
+  }
+
+  .tg-gap {
+    margin-top: 9px !important;
+  }
+
+  .tg-quote {
+    margin: 2px 0 4px !important;
+    padding: 3px 8px;
+    border-left: 3px solid #6ab3f3;
+    border-radius: 4px;
+    background: rgba(106, 179, 243, 0.1);
+  }
+
+  .tg-time {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 10.5px;
+    color: #6d7f8f;
+  }
+
+  /* A dot, not the page's separator: that one draws its slash in ::before,
+     which reaches in here because the class name is the same. */
+  .sep,
+  .tsep {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: middle;
+    margin-inline: 8px;
+  }
+
+  .sep::before,
+  .tsep::before {
+    content: none;
+  }
+
+  /* An endless pulse stops off screen, and never runs for a reader who asked for less motion. */
+  .tolkly:global(.paused) .pulse {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

@@ -60,14 +60,21 @@ const {
   be done by the object when it arrived, which moved the text under the
   reader's eyes; now its arrival moves nothing.
 */
-const column = object ? sectionByKey(object)?.glide.column : undefined
-const laneSize = object ? (sectionByKey(object)?.glide.size ?? 1) : 1
+const glide = object ? sectionByKey(object)?.glide : undefined
+const column = glide?.column
+/*
+  A preview narrower than its column (sections.ts: `strip`) stands to the
+  column's left from the first paint, and the object rides the strip on its
+  right; like the lane, set here so the object's arrival moves nothing.
+*/
+const strip = !column && !!glide?.strip
+const laneSize = glide?.size ?? 1
 /* The object's width, which the lane is sized from (see the style below). */
 const lane = column ? `calc(100vh * ${(OBJECT_SIZE * laneSize).toFixed(3)})` : undefined
 ---
 
 <section
-  class:list={['project', { reverse, 'ascii-wide': !!column }]}
+  class:list={['project', { reverse, 'ascii-wide': !!column, 'ascii-strip': strip }]}
   style={`--accent: ${accent}${lane ? `; --lane: ${lane}` : ''}`}
   data-object={object}
 >
@@ -307,6 +314,16 @@ const lane = column ? `calc(100vh * ${(OBJECT_SIZE * laneSize).toFixed(3)})` : u
 
     :global(html.ascii-object) .ascii-wide .copy > .metrics {
       max-width: none;
+    }
+
+    /* The strip: the preview goes to the left of its column, the phone to
+       the left of its stage, and the object has the right of the column. */
+    :global(html.ascii-object) .ascii-strip .shot :global(.frame) {
+      justify-content: flex-start;
+    }
+
+    :global(html.ascii-object) .ascii-strip .shot :global(.device) {
+      margin-inline: 0;
     }
 
   }
