@@ -53,7 +53,7 @@ SYNOPSIS
 DESCRIPTION
      Full-stack and platform engineer: the interface, the
      services behind it and the infrastructure they run
-     on, for eight years. ${cap(site.availability)}.
+     on, for seven years. ${cap(site.availability)}.
      ${site.location}, ${site.timezone}, ${site.hours}.
 
 SEE ALSO
@@ -128,7 +128,7 @@ export function hello(): void {
     contact('cv')
     open(resumes[0].href, '_blank', 'noopener')
     const others = resumes.slice(1).map((r) => `  ${r.label}: ${r.href}`)
-    say([`Opened the ${resumes[0].label} resume. The same eight years, told differently:`, ...others].join('\n'))
+    say([`Opened the ${resumes[0].label} resume. The same seven years, told differently:`, ...others].join('\n'))
   }
 
   window.source = () => {

@@ -114,7 +114,7 @@ import Stage from './Stage.astro'
     object="tuned"
     title="Tuned"
     meta={['Document tooling', 'Hosted SaaS']}
-    blurb="Tailors a resume to every job posting without losing the original: each version is a set of changes over one base resume, so a hundred applications never drift apart. Live with payments five weeks after the first commit."
+    blurb="A single home for your career history and resumes: one complete base per direction, and every version for a job posting is a set of changes over it, so a hundred applications never drift apart. Live with payments a few weeks after the first commit."
     bullets={[
       'The AI can reword but cannot invent: a claim that does not trace back to the base resume is refused.',
       'The preview is drawn by the same PDF renderer as the download, so a page that fits on screen fits in the file, measured rather than estimated.',
@@ -141,11 +141,11 @@ import Stage from './Stage.astro'
     object="gift"
     title="Gift Fight"
     meta={['Real-time multiplayer', 'Telegram Mini App']}
-    blurb="A real-time game inside Telegram where players bet collectible gifts against each other, and anyone who played a round can check afterwards that it was fair. Designed, built and run in production end to end."
+    blurb="A real-time game inside Telegram where players bet collectible gifts against each other, and anyone who played a round can check afterwards that it was fair. Built with a business partner and run in production end to end."
     bullets={[
       'No game is lost mid-round: a round in progress survives a server restart or a new release (Temporal).',
       'Play is live, and crypto payments run through separate services that never settle the same bet twice.',
-      'Every game event reaches the analytics once, with no gaps or duplicates, even after a failure (Kafka into ClickHouse).',
+      'Game events go to the analytics through Kafka (Redpanda) into ClickHouse, verified on 1M events without loss or duplicates.',
     ]}
     metrics={[
       { value: '120 ms', note: 'to reach players, 300 at once' },

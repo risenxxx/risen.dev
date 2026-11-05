@@ -5,7 +5,7 @@ export const site = {
   domain: 'risen.dev',
   title: 'Evgenii Zakharov — full-stack & platform engineer',
   description:
-    'Full-stack & platform engineer across every layer: the interface, the services behind it and the infrastructure they run on. Eight years of it inside product teams, and solo products running in production.',
+    'Full-stack & platform engineer across every layer: the interface, the services behind it and the infrastructure they run on. Seven years of it inside product teams, and solo products running in production.',
   email: 'to@risen.dev',
   /* Half an hour on the calendar; the booking form asks what it is about. */
   call: 'https://cal.com/risenx/intro',
@@ -20,7 +20,7 @@ export const site = {
 
 /*
   The public resumes on Tuned, one per direction, each a different story about
-  the same eight years. The first is the one the CV button opens; the menu
+  the same seven years. The first is the one the CV button opens; the menu
   beside it offers all three.
 */
 export const resumes = [
